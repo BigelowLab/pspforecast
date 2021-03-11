@@ -1,0 +1,16 @@
+Package: pspforecast
+Title: pspforecast
+Description: Tools for storing and retrieving shellfish toxicity forecasts.
+URL: https://github.com/BigelowLab/pspforecast
+Version: 0.1
+Depends:
+  R (>= 4.0)
+Imports:
+  rlang,
+  dplyr,
+  readr
+Maintainer: Johnathan Evanilla <jevanilla@bigelow.org>
+Author: Johnathan Evanilla <jevanilla@bigelow.org>
+License: MIT + file LICENSE
+Encoding: UTF-8
+RoxygenNote: 7.1.1
