@@ -4,10 +4,13 @@
 \alias{read_forecast}
 \title{Reads forecast database}
 \usage{
-read_forecast()
+read_forecast(new_only = FALSE)
+}
+\arguments{
+\item{new_only}{logical, if true then only the newest observations from each station will be served}
 }
 \value{
-tibble of forecasted shellfish toxicity classifications along with their metadata
+tibble of predicted shellfish toxicity classifications along with their metadata
 }
 \description{
 Reads forecast database

@@ -1,13 +1,29 @@
 #' Reads forecast database
 #' 
-#' @return tibble of forecasted shellfish toxicity classifications along with their metadata
+#' @param new_only logical, if true then only the newest observations from each station will be served
+#' @return tibble of predicted shellfish toxicity classifications along with their metadata
 #' 
 #' @export
-read_forecast <- function() {
+read_forecast <- function(new_only=FALSE) {
   
   file <- system.file("forecastdb/test_forecast_db.csv.gz", package="pspforecast")
-
-  forecast <- suppressMessages(readr::read_csv(file))
+  
+  if (new_only == TRUE) {
+    all_forecast <- suppressMessages(readr::read_csv(file))
+    
+    get_newest <- function(tbl, key) {
+      newest <- tbl %>% tail(n=1)
+      return(newest)
+    }
+    
+    forecast <- all_forecast %>% 
+      dplyr::group_by(.data$location) %>% 
+      dplyr::group_map(get_newest, .keep=TRUE) %>% 
+      dplyr::bind_rows()
+    
+  } else {
+    forecast <- suppressMessages(readr::read_csv(file))
+  }
   
   return(forecast)
 }

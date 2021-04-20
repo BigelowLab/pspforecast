@@ -3,3 +3,4 @@
 export(read_forecast)
 importFrom(dplyr,"%>%")
 importFrom(rlang,.data)
+importFrom(utils,tail)
