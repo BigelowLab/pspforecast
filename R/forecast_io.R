@@ -17,6 +17,7 @@ read_forecast <- function(new_only=FALSE) {
     }
     
     forecast <- all_forecast %>% 
+      dplyr::arrange(.data$date) %>% 
       dplyr::group_by(.data$location) %>% 
       dplyr::group_map(get_newest, .keep=TRUE) %>% 
       dplyr::bind_rows()
