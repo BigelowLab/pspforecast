@@ -6,7 +6,7 @@
 #' @export
 read_forecast <- function(new_only=FALSE) {
   
-  file <- system.file("forecastdb/test_forecast_db.csv.gz", package="pspforecast")
+  file <- system.file("forecastdb/psp_forecast_2021.csv.gz", package="pspforecast")
   
   if (new_only == TRUE) {
     all_forecast <- suppressMessages(readr::read_csv(file))
