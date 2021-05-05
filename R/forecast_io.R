@@ -36,7 +36,7 @@ read_forecast <- function(new_only=FALSE) {
 #' 
 write_forecast <- function(predictions) {
   
-  file <- file.path("inst/forecastdb/test_forecast_db.csv.gz")
+  file <- file.path("inst/forecastdb/psp_forecast_2021.csv.gz")
   
   predictions %>% suppressMessages(readr::write_csv(file))
   
