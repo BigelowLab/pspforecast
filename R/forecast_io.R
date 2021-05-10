@@ -38,7 +38,7 @@ write_forecast <- function(predictions) {
   
   file <- file.path("inst/forecastdb/psp_forecast_2021.csv.gz")
   
-  predictions %>% suppressMessages(readr::write_csv(file))
+  predictions %>% suppressMessages(readr::write_csv(file, append=TRUE))
   
 }
 
@@ -56,5 +56,60 @@ append_forecast <- function(predictions) {
     dplyr::distinct() %>% 
     suppressMessages(readr::write_csv(file))
   
+}
+
+
+#' After making predictions the week prior, add the actual toxicity classification to assess
+#' 
+#' 
+add_forecast_results <- function() {
+  
+  predictions <- pspforecast::read_forecast()
+  
+  tox_levels <- c(0,10,30,80)
+  
+  toxin_measurements <- pspdata::read_psp_data(model_ready=TRUE) %>% 
+    dplyr::mutate(classification = psptools::recode_classification(.data$total_toxicity, tox_levels)) %>% 
+    dplyr::filter(date >= min(predictions$forecast_start_date))
+  
+  
+  find_result <- function(tbl, key) {
+    
+    db <- toxin_measurements %>% 
+      dplyr::filter(.data$location_id == key$location[1]) %>% 
+      dplyr::filter(dplyr::between(date, tbl$forecast_start_date, tbl$forecast_end_date))
+    
+    if (nrow(db) == 0) {
+      
+      empty_results <-   dplyr::tibble(version = character(),
+                                       location = character(),
+                                       date = Sys.Date(),
+                                       measurement_date = Sys.Date(),
+                                       toxicity = numeric(),
+                                       actual_class = numeric())
+      
+      return(empty_results)
+    }
+    
+    forecast_results <- tbl %>% 
+      dplyr::select(.data$version, 
+                    .data$location, 
+                    .data$date) %>% 
+      dplyr::mutate(measurement_date = as.Date(db$date),
+                    toxicity = db$total_toxicity,
+                    actual_class = db$classification)
+    
+    return(forecast_results)
+    
+  }
+  
+  results <- predictions %>%
+    dplyr::group_by(.data$location, 
+                    date) %>% 
+    dplyr::group_map(find_result, .keep=TRUE) %>% 
+    dplyr::bind_rows() %>% 
+    dplyr::arrange(date)
+  
+  return(results)
 }
 
