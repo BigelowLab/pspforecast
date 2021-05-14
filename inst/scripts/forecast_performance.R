@@ -64,8 +64,8 @@ confusion_matrix <- ggplot2::ggplot(data = cm,
                                high = "blue") +
   ggplot2::labs(x = "Predicted Classifications", 
                 y = "Actual Classifications", 
-                title=paste("Forecast Results as of 5 May 2021"),
-                subtitle=paste("Accuracy: 78.8%"),
+                title=paste("Forecast Results as of 14 May 2021"),
+                subtitle=paste("Accuracy: 82.1%"),
                 caption=paste(Sys.Date())) +
   ggplot2::theme_linedraw() +
   ggplot2::theme(axis.text=  ggplot2::element_text(size=14),
