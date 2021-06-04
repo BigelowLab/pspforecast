@@ -1,8 +1,6 @@
 
 library(dplyr)
 
-predictions <- pspforecast::read_forecast()
-
 #' After making predictions the week prior, add the actual toxicity classification to assess
 #' 
 #' @param predictions table of predictions (from pspforecast::read_forecast())
@@ -59,46 +57,82 @@ add_forecast_results <- function(predictions,
 }
 
 
-total_predictions <- nrow(forecast_w_results)
 
-correct <- forecast_w_results %>% 
-  dplyr::filter(predicted_class == actual_class) %>% 
-  nrow()
+#' Make a confusion matrix for predictions made during experimental forecast season
+#' 
+#' @param results a list of predictions from the season matched with actual measurements
+#' @return confusion matrix
+#' 
+#' 
+plot_season <- function(results) {
+  
+  total_predictions <- nrow(results)
+  
+  correct <- results %>% 
+    dplyr::filter(predicted_class == actual_class) %>% 
+    nrow()
+  
+  accuracy <- round(correct/total_predictions, digits=3) *100
+  
+  closures <- results %>% 
+    dplyr::filter(actual_class == 3) %>% 
+    nrow()
+  
+  correct_closures <- results %>% 
+    dplyr::filter(predicted_class == 3 & actual_class == 3) %>% 
+    nrow()
+  
+  fn <- results %>% 
+    dplyr::filter(actual_class !=3 & predicted_class == 3) %>% 
+    nrow()
+  
+  fp <- results %>% 
+    dplyr::filter(actual_class == 3 & predicted_class != 3) %>% 
+    nrow()
+  
+  tp <- correct_closures
+  
+  tn <- results %>% 
+    dplyr::filter(actual_class != 3 & predicted_class != 3) %>% 
+    nrow()
+  
+  sensitivity <- tp/tp+fn
+  
+  specificity <- tn/tn+fp
+  
+  closure_accuracy <- (tp+tn)/(tp+tn+fp+fn)
+  
+  num_levels <- 4
+  levels <- seq(from=0, to=(num_levels-1))
+  
+  cm <- as.data.frame(table(predicted = factor(results$predicted_class, levels), actual = factor(results$actual_class, levels)))
+  
+  confusion_matrix <- ggplot2::ggplot(data = cm,
+                                      mapping = ggplot2::aes(x = .data$predicted, y = .data$actual)) +
+    ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
+    ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), vjust = 1, size=8) +
+    ggplot2::scale_fill_gradient(low = "white", 
+                                 high = "blue") +
+    ggplot2::labs(x = "Predicted Classifications", 
+                  y = "Actual Classifications", 
+                  title=paste("2021 PSP Forecast Performance"),
+                  subtitle=paste("Accuracy:", accuracy, "%", sep = " "),
+                  caption=paste(Sys.Date())) +
+    ggplot2::theme_linedraw() +
+    ggplot2::theme(axis.text=  ggplot2::element_text(size=14),
+                   axis.title= ggplot2::element_text(size=14,face="bold"),
+                   title =     ggplot2::element_text(size = 14, face = "bold"),
+                   legend.position = "none") 
+  
+  return(confusion_matrix)
+}
 
-accuracy <- round(correct/total_predictions, digits=3) *100
 
-closures <- forecast_w_results %>% 
-  dplyr::filter(actual_class == 3) %>% 
-  nrow()
 
-correct_closures <- forecast_w_results %>% 
-  dplyr::filter(predicted_class == 3 & actual_class == 3) %>% 
-  nrow()
+predictions <- pspforecast::read_forecast()
 
-closure_accuracy <- round(correct_closures/closures, digits=3) *100
+results <- add_forecast_results(predictions)
 
-num_levels <- 4
-levels <- seq(from=0, to=(num_levels-1))
-
-cm <- as.data.frame(table(predicted = factor(forecast_w_results$predicted_class, levels), actual = factor(forecast_w_results$actual_class, levels)))
-
-confusion_matrix <- ggplot2::ggplot(data = cm,
-                                    mapping = ggplot2::aes(x = .data$predicted, y = .data$actual)) +
-  ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
-  ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), vjust = 1, size=8) +
-  ggplot2::scale_fill_gradient(low = "white", 
-                               high = "blue") +
-  ggplot2::labs(x = "Predicted Classifications", 
-                y = "Actual Classifications", 
-                title=paste("2021 PSP Forecast Performance"),
-                subtitle=paste("Accuracy:", accuracy, "%", "Closure-level Accuracy:", closure_accuracy, "%", sep = " "),
-                caption=paste(Sys.Date())) +
-  ggplot2::theme_linedraw() +
-  ggplot2::theme(axis.text=  ggplot2::element_text(size=14),
-                 axis.title= ggplot2::element_text(size=14,face="bold"),
-                 title =     ggplot2::element_text(size = 14, face = "bold"),
-                 legend.position = "none") 
+confusion_matrix <- plot_season(results)
 
 confusion_matrix
-
-
