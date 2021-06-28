@@ -20,7 +20,8 @@ read_forecast <- function(new_only=FALSE) {
       dplyr::arrange(.data$date) %>% 
       dplyr::group_by(.data$location) %>% 
       dplyr::group_map(get_newest, .keep=TRUE) %>% 
-      dplyr::bind_rows()
+      dplyr::bind_rows() %>% 
+      dplyr::filter(.data$forecast_end_date > as.Date(Sys.Date()))
     
   } else {
     forecast <- suppressMessages(readr::read_csv(file))
@@ -38,7 +39,7 @@ write_forecast <- function(predictions) {
   
   file <- file.path("inst/forecastdb/psp_forecast_2021.csv.gz")
   
-  predictions %>% suppressMessages(readr::write_csv(file, append=TRUE))
+  forecast_list %>% readr::write_csv(file, append=TRUE)
   
 }
 
