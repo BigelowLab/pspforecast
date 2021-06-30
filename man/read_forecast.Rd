@@ -4,9 +4,11 @@
 \alias{read_forecast}
 \title{Reads forecast database}
 \usage{
-read_forecast(new_only = FALSE)
+read_forecast(format = FALSE, new_only = FALSE)
 }
 \arguments{
+\item{format}{logical, if true the forecast report will be formatted for stakeholders with rounded probabilities and 0 probabilities being changed to <1}
+
 \item{new_only}{logical, if true then only the newest observations from each station will be served}
 }
 \value{
