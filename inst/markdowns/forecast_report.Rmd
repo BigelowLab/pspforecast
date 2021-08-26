@@ -1,0 +1,53 @@
+---
+title: "Coastal Maine Paralytic Shellfish Poison Forecast"
+author: "Johnathan Evanilla"
+date: "26 August 2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, echo=FALSE, message=FALSE}
+
+library(dplyr)
+library(knitr)
+
+```
+
+```{r read forecast, echo=FALSE}
+
+forecast <- pspforecast::read_forecast(format=TRUE) %>% 
+  dplyr::arrange(date, prob_0) %>% 
+  knitr::kable()
+
+forecast
+
+```
+
+
+# Forecast Explainer
+
+Each week, DMR conducts their shellfish sampling across the coast of Maine. These samples all make their way to Bigelow Analytic Services where they are analyzed for total toxicity. By Friday, we get all of the results back from the week and are able to run the new data through our model and make predictions for the following week.
+
+Our forecast is site-specific, so each row you are seeing in the table represents a unique sampling location. Sampling takes place on a roughly weekly basis, however, this varies and can really be anywhere in the 4-10 day window. Therefore, each of our predictions has a start and end date, which will be 4-10 days from the last time each site was sampled. 
+
+The model outputs probabilities of each of the four toxicity classifications we are using. These classes are as follows:
+
+| Class       |  Toxicity Range | Description      |
+| ----------- | --------------- | -----------      |
+| 0           | 0-10            |   Low            | 
+| 1           | 10-30           |   Medium         |
+| 2           | 30-80           |   High           | 
+| 3           | >80             |   Closure Level  | 
+
+The information in the “prob_3” column reports the probability of a class 3 — i.e. closure-level toxicity at that site.
+
+### Reminder: The forecast is in an experimental phase and should not be the basis for decision making at this point.
+
+
+Thanks,
+Johnathan and Nick
