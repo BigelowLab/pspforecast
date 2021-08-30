@@ -1,10 +1,11 @@
 ---
 title: "Coastal Maine Paralytic Shellfish Poison Forecast"
-author: "Johnathan Evanilla"
-date: "26 August 2021"
+author: "Bigelow Laboratory for Ocean Sciences"
+date: "27 August 2021"
+geometry: margin=1cm
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -15,18 +16,66 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(dplyr)
 library(knitr)
+library(sf)
+library(rnaturalearth)
+library(maps)
+library(ggplot2)
 
 ```
+
+Our forecast has high confidence of low toxicity at all sites included this week.
 
 ```{r read forecast, echo=FALSE}
 
-forecast <- pspforecast::read_forecast(format=TRUE) %>% 
+forecast <- pspforecast::read_forecast(format=TRUE, new_only=TRUE) %>% 
   dplyr::arrange(date, prob_0) %>% 
+  dplyr::mutate(n = seq(1, length(.data$location)), .before=location) %>%
+  dplyr::select(-date) %>% 
+  dplyr::rename(start_date = forecast_start_date,
+                end_date = forecast_end_date,
+                class = predicted_class) 
+
+forecast_table <- forecast %>% 
   knitr::kable()
 
-forecast
+forecast_table
 
 ```
+
+# Prediction Map
+
+```{r plot predictions, echo=FALSE}
+
+states <- st_as_sf(map("state", plot = FALSE, fill = TRUE))
+
+maine <- states %>% 
+  dplyr::filter(ID == 'maine')
+
+ggplot(data = maine) +
+  geom_sf(fill = "cornsilk") +
+  geom_sf(data=maine) +
+  geom_point(data=forecast, aes(x=lon, y=lat),
+             size=4,
+             fill="darkgreen",
+             shape=23) +
+  geom_text(data = forecast, 
+            aes(x = lon, y = lat, label=n), 
+            size = 5,
+            vjust=-0.3,
+            hjust=-0.3) +
+  theme_void() + 
+  theme(panel.grid.major = element_line(colour = gray(0.5), 
+                                        linetype = "dashed", 
+                                        size = 0.5), 
+        panel.background = element_rect(fill = "aliceblue"), 
+        panel.border = element_rect(fill = NA))
+
+
+
+```
+
+
+\newpage
 
 
 # Forecast Explainer
