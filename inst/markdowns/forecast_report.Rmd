@@ -74,6 +74,7 @@ ggplot(data = maine) +
                          pad_x = unit(0.75, "in"), 
                          pad_y = unit(0.5, "in"),
                          style = north_arrow_fancy_orienteering)
+  
 
 
 ```

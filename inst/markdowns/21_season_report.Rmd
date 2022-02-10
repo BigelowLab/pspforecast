@@ -1,0 +1,376 @@
+---
+title: "PSP Forecast 2021 Report"
+author: "Johnathan Evanilla"
+date: "2/9/2022"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE, echo=FALSE}
+library(pspforecast)
+library(dplyr)
+library(yardstick)
+library(pspanalysis)
+```
+
+
+```{r, echo=FALSE}
+phytodb <- phytodata::read_phyto_data()
+
+toxindb <- pspdata::read_psp_data() %>% 
+  dplyr::mutate(year = as.numeric(format(date, format="%Y")),
+                doy = as.numeric(format(date, format="%j")),
+                week = as.numeric(format(date, format="%U")))
+
+mousedb <- pspdata::read_mouse_data()
+
+all_psp <- pspdata::read_all_psp_data() %>% 
+  dplyr::mutate(year = as.numeric(format(date, format="%Y"))) %>% 
+  dplyr::filter(year >= 1975)
+
+```
+
+
+
+## Read in predictions made during the 2021 season
+
+```{r}
+predictions <- pspforecast::read_forecast()
+
+summary(predictions)
+```
+```{r, echo=FALSE, eval=FALSE}
+head(predictions)
+```
+
+
+```{r, echo=FALSE}
+#' After making predictions the week prior, add the actual toxicity classification to assess
+#' 
+#' @param predictions table of predictions (from pspforecast::read_forecast())
+#' @param tox_levels vector of toxicity classification bins
+#' @return table of predictions with the closest matching toxicity measurement
+#' 
+add_forecast_results <- function(predictions, 
+                                 tox_levels = c(0,10,30,80)) {
+  
+  toxin_measurements <- pspdata::read_psp_data(model_ready=TRUE) %>% 
+    dplyr::mutate(classification = psptools::recode_classification(.data$total_toxicity, tox_levels)) %>% 
+    dplyr::filter(date >= min(predictions$forecast_start_date))
+  
+  
+  find_result <- function(tbl, key, tox=NULL) {
+    
+    db <- tox %>% 
+      dplyr::filter(location_id == key$location[1]) %>% #add break
+      dplyr::filter(dplyr::between(date, tbl$forecast_start_date, tbl$forecast_end_date))
+    
+    if (nrow(db) == 0) {
+      
+      today=Sys.Date()
+      
+      empty_results <-   dplyr::tibble(version = character(),
+                                       location = character(),
+                                       date = today,
+                                       measurement_date = today,
+                                       toxicity = numeric(),
+                                       actual_class = numeric())
+      
+      return(empty_results)
+    }
+    
+    forecast_results <- tbl %>% 
+      dplyr::select(version, location, date) %>% 
+      dplyr::mutate(measurement_date = as.Date(db$date),
+                    toxicity = db$total_toxicity,
+                    actual_class = db$classification)
+    
+    return(forecast_results)
+  }
+  
+  results <- predictions %>%
+    dplyr::group_by(location, date) %>% 
+    dplyr::group_map(find_result, .keep=TRUE, tox=toxin_measurements) %>% 
+    dplyr::bind_rows() %>% 
+    dplyr::arrange(date)
+  
+  forecast_w_results <- dplyr::full_join(predictions, results, by=c("version", "location", "date")) %>% 
+    tidyr::drop_na(.data$actual_class)
+  
+  return(forecast_w_results)
+}
+
+```
+
+
+```{r, echo=FALSE}
+pred_w_results <- add_forecast_results(predictions)
+
+#pred_w_results
+```
+
+### Correct Class 3 Predictions
+
+```{r}
+closures <- pred_w_results %>% 
+  filter(actual_class == 3)
+
+closures
+```
+### Class 3 Predictions (correct and wrong)
+
+```{r, echo=FALSE}
+closure_predictions <- pred_w_results %>% 
+  filter(predicted_class == 3) %>% 
+  select(-lat, -lon, -class_bins)
+
+closure_predictions
+```
+
+\newpage
+
+# Overall Model Performance
+
+```{r, echo=FALSE}
+num_levels <- 4
+levels <- seq(from=0, to=(num_levels-1))
+
+
+cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, levels), actual = factor(pred_w_results$actual_class, levels))) %>% 
+  mutate(frac = round(Freq/sum(Freq)*100)) %>% 
+  mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
+  #mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
+
+confusion_matrix <- ggplot2::ggplot(data = cm,
+                                    mapping = ggplot2::aes(x = .data$predicted, y = .data$actual)) +
+  ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
+  ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
+  #ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f%%", .data$frac)), vjust = -1, hjust=1, size=5) +
+  ggplot2::geom_text(ggplot2::aes(label = paste(.data$frac, "%", sep="")), vjust = 3, size=4)+
+  ggplot2::scale_fill_gradient(low = "white", 
+                               high = "blue") +
+  ggplot2::labs(x = "Predicted Classifications", 
+                y = "Actual Classifications", 
+                #title=paste("Confusion Matrix -", cfg$train_test$test, sep=""),
+                #subtitle=paste("Loss:", round(model$metrics[1], 3), "Accuracy:", round(model$metrics[2], 3), "Version:", cfg$configuration, sep=" "),
+                caption=paste(Sys.Date())) +
+  ggplot2::theme_linedraw() +
+  ggplot2::theme(axis.text=  ggplot2::element_text(size=14),
+                 axis.title= ggplot2::element_text(size=14,face="bold"),
+                 title =     ggplot2::element_text(size = 14, face = "bold"),
+                 legend.position = "none") 
+
+confusion_matrix
+
+```
+
+## Overall Accuracy
+
+```{r}
+accuracy(pred_w_results, truth=as.factor(actual_class), estimate=as.factor(predicted_class))
+```
+
+
+## Precision
+
+```{r}
+precision(pred_w_results, as.factor(actual_class), as.factor(predicted_class))
+```
+
+
+\newpage
+
+# Western Maine Performance
+
+```{r echo=FALSE}
+
+western <- pred_w_results %>% 
+  filter(lon < -68.95604)
+
+num_levels <- 4
+levels <- seq(from=0, to=(num_levels-1))
+
+
+cm <- as.data.frame(table(predicted = factor(western$predicted_class, levels), actual = factor(western$actual_class, levels))) %>% 
+  mutate(frac = round(Freq/sum(Freq)*100)) %>% 
+  mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
+  #mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
+
+confusion_matrix <- ggplot2::ggplot(data = cm,
+                                    mapping = ggplot2::aes(x = .data$predicted, y = .data$actual)) +
+  ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
+  ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
+  #ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f%%", .data$frac)), vjust = -1, hjust=1, size=5) +
+  ggplot2::geom_text(ggplot2::aes(label = paste(.data$frac, "%", sep="")), vjust = 3, size=4)+
+  ggplot2::scale_fill_gradient(low = "white", 
+                               high = "blue") +
+  ggplot2::labs(x = "Predicted Classifications", 
+                y = "Actual Classifications", 
+                #title=paste("Confusion Matrix -", cfg$train_test$test, sep=""),
+                #subtitle=paste("Loss:", round(model$metrics[1], 3), "Accuracy:", round(model$metrics[2], 3), "Version:", cfg$configuration, sep=" "),
+                caption=paste(Sys.Date())) +
+  ggplot2::theme_linedraw() +
+  ggplot2::theme(axis.text=  ggplot2::element_text(size=14),
+                 axis.title= ggplot2::element_text(size=14,face="bold"),
+                 title =     ggplot2::element_text(size = 14, face = "bold"),
+                 legend.position = "none") 
+
+confusion_matrix
+
+```
+
+## Western Maine Accuracy
+
+```{r}
+accuracy(western, truth=as.factor(actual_class), estimate=as.factor(predicted_class))
+```
+
+## Precision
+
+```{r}
+precision(western, as.factor(actual_class), as.factor(predicted_class))
+```
+
+
+\newpage
+
+# Eastern Maine Performance
+
+```{r echo=FALSE}
+
+eastern <- pred_w_results %>% 
+  filter(lon > -68.95604)
+
+num_levels <- 4
+levels <- seq(from=0, to=(num_levels-1))
+
+
+cm <- as.data.frame(table(predicted = factor(eastern$predicted_class, levels), actual = factor(eastern$actual_class, levels))) %>% 
+  mutate(frac = round(Freq/sum(Freq)*100)) %>% 
+  mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
+  #mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
+
+confusion_matrix <- ggplot2::ggplot(data = cm,
+                                    mapping = ggplot2::aes(x = .data$predicted, y = .data$actual)) +
+  ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
+  ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
+  #ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f%%", .data$frac)), vjust = -1, hjust=1, size=5) +
+  ggplot2::geom_text(ggplot2::aes(label = paste(.data$frac, "%", sep="")), vjust = 3, size=4)+
+  ggplot2::scale_fill_gradient(low = "white", 
+                               high = "blue") +
+  ggplot2::labs(x = "Predicted Classifications", 
+                y = "Actual Classifications", 
+                #title=paste("Confusion Matrix -", cfg$train_test$test, sep=""),
+                #subtitle=paste("Loss:", round(model$metrics[1], 3), "Accuracy:", round(model$metrics[2], 3), "Version:", cfg$configuration, sep=" "),
+                caption=paste(Sys.Date())) +
+  ggplot2::theme_linedraw() +
+  ggplot2::theme(axis.text=  ggplot2::element_text(size=14),
+                 axis.title= ggplot2::element_text(size=14,face="bold"),
+                 title =     ggplot2::element_text(size = 14, face = "bold"),
+                 legend.position = "none") 
+
+confusion_matrix
+
+```
+
+
+
+\newpage
+
+# Model Versions
+
+| configuration | First Implemented | Description | Reason | 
+| ------------- | ---------------- | ----------- | ------ | --- |
+| v0.1.0 | 12 April | 2 weeks of toxin measurements, 6-10 day step, all 12 toxins | Best performing model going into season. |
+| v0.1.1 | 26 April | 2 weeks of toxin measurements, 6-10 day step, all 12 toxins + sst_cum, doubled size of layers (16 -> 32 nodes) | Adding cumulative sst tuned into bloom seasonality. |
+| v0.1.3 | 3 May | 2 weeks of toxin measurements, 4-10 day step, all 12 toxins + sst_cum | Reduced minimum gap to 4 days in order to include all sites being sampled roughly weekly. |
+| v0.1.4 | 25 May | 2 weeks of toxin measurements, 4-10 day step, all 12 toxins + sst_cum, increased first dropout (0.3 -> 0.4), increased first layer size (32 -> 64 nodes), weighted classes | Weighting classes took away bias toward lowest class and balanced probability distribution. |
+
+
+\newpage
+
+## Toxicity at Sites over time
+
+### Bear Island
+```{r, echo=FALSE}
+toxic_week_heatmap(toxindb, mousedb, station="PSP12.28")
+
+```
+
+### Lumbo's Hole
+```{r, echo=FALSE}
+toxic_week_heatmap(toxindb, mousedb, station="PSP12.13")
+```
+
+### Gurnet
+```{r, echo=FALSE}
+toxic_week_heatmap(toxindb, mousedb, station="PSP12.15")
+
+```
+
+\newpage
+
+## HAB Index Metric Plots
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+hab_i_region <- hab_index_region(all_psp)
+```
+
+### PSP Season Duration
+
+```{r, echo=FALSE}
+plot_toxic_duration_region(hab_i_region)
+```
+
+### Percent stations with measurement >40
+```{r, echo=FALSE}
+plot_percent_toxic_region(hab_i_region)
+```
+
+\newpage
+
+### Western Maine Season Onset and End
+
+Western Maine saw no toxin measurements >40 during 2020.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+plot_toxicity_onset_end(hab_i_region, region="west")
+
+```
+
+\newpage
+
+### Eastern Maine Season Onset and End
+
+Eastern Maine saw no toxin measurements >40 during 2021.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+plot_toxicity_onset_end(hab_i_region, region="east")
+
+```
+
+
+\newpage
+
+## HAB Index for each region
+
+Calculated per methods found in Anderson, 2014
+
+### Western Maine HAB Index
+
+```{r, echo=FALSE}
+plot_hab_index_region(hab_i_region, region="west")
+
+```
+
+### Eastern Maine HAB Index
+```{r, echo=FALSE}
+plot_hab_index_region(hab_i_region, region="east")
+
+```
+
