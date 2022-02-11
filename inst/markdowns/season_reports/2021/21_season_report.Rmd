@@ -374,3 +374,17 @@ plot_hab_index_region(hab_i_region, region="east")
 
 ```
 
+
+
+\newpage
+
+#### Our forecast was able to make predictions for 71% of the toxin measurements made during the 2021 season
+
+```{r}
+nrow(predictions)
+
+nrow(all_psp %>% filter(year==2021))
+
+nrow(predictions)/nrow(all_psp %>% filter(year==2021))*100
+```
+
