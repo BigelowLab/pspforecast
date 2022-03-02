@@ -1,0 +1,213 @@
+---
+title: "paper figures and questions"
+author: "Johnathan Evanilla"
+date: "3/1/2022"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+
+library(pspdata)
+```
+
+```{r echo=FALSE}
+psp <- read_psp_data() %>% 
+  dplyr::mutate(year = as.numeric(format(date, format="%Y")),
+                doy = as.numeric(format(date, format="%j")),
+                week = as.numeric(format(date, format="%U")))
+
+predictions <- pspforecast::read_forecast()
+
+all_psp <- pspdata::read_all_psp_data() %>% 
+  dplyr::mutate(year = as.numeric(format(date, format="%Y"))) %>% 
+  dplyr::filter(year >= 1975)
+```
+
+
+```{r echo=FALSE}
+#' After making predictions the week prior, add the actual toxicity classification to assess
+#' 
+#' @param predictions table of predictions (from pspforecast::read_forecast())
+#' @param tox_levels vector of toxicity classification bins
+#' @return table of predictions with the closest matching toxicity measurement
+#' 
+add_forecast_results <- function(predictions, 
+                                 tox_levels = c(0,10,30,80)) {
+  
+  toxin_measurements <- pspdata::read_psp_data(model_ready=TRUE) %>% 
+    dplyr::mutate(classification = psptools::recode_classification(.data$total_toxicity, tox_levels)) %>% 
+    dplyr::filter(date >= min(predictions$forecast_start_date))
+  
+  
+  find_result <- function(tbl, key, tox=NULL) {
+    
+    db <- tox %>% 
+      dplyr::filter(location_id == key$location[1]) %>% #add break
+      dplyr::filter(dplyr::between(date, tbl$forecast_start_date, tbl$forecast_end_date))
+    
+    if (nrow(db) == 0) {
+      
+      today=Sys.Date()
+      
+      empty_results <-   dplyr::tibble(version = character(),
+                                       location = character(),
+                                       date = today,
+                                       measurement_date = today,
+                                       toxicity = numeric(),
+                                       actual_class = numeric())
+      
+      return(empty_results)
+    }
+    
+    forecast_results <- tbl %>% 
+      dplyr::select(version, location, date) %>% 
+      dplyr::mutate(measurement_date = as.Date(db$date),
+                    toxicity = db$total_toxicity,
+                    actual_class = db$classification)
+    
+    return(forecast_results)
+  }
+  
+  results <- predictions %>%
+    dplyr::group_by(location, date) %>% 
+    dplyr::group_map(find_result, .keep=TRUE, tox=toxin_measurements) %>% 
+    dplyr::bind_rows() %>% 
+    dplyr::arrange(date)
+  
+  forecast_w_results <- dplyr::full_join(predictions, results, by=c("version", "location", "date")) %>% 
+    tidyr::drop_na(.data$actual_class)
+  
+  return(forecast_w_results)
+}
+
+```
+
+
+
+```{r echo=FALSE}
+pred_w_results <- add_forecast_results(predictions)
+
+#pred_w_results
+```
+
+
+```{r echo=FALSE}
+zz <- ggscatter(data=pred_w_results,
+                x="prob_3",
+                y="actual_class",
+                xlab = "Probability of Closure Level Toxicity",
+                ylab="Actual Classification (Outcome)")
+
+zz
+```
+
+```{r echo=FALSE}
+z2 <- ggscatter(data=pred_w_results,
+                x="prob_3",
+                y="toxicity",
+                xlab = "Probability of Closure Level Toxicity",
+                ylab="Actual Toxicity (Outcome )")
+
+z2
+
+```
+
+
+\newpage
+
+### closure-level toxicity predictions
+
+```{r echo=FALSE}
+pred_w_results %>% 
+  filter(predicted_class==3) %>% 
+  select(location, date, predicted_class, prob_3, actual_class)
+```
+
+\newpage
+
+### closure-level toxicity measurements in HPLC data
+
+```{r echo=FALSE}
+closure_lev_tox <- psp %>% 
+  filter(total_toxicity > 80) %>% 
+  select(-sample_id, -lat, -lon)
+
+summary(closure_lev_tox)
+```
+
+\newpage
+
+### species breakdown of closure-level toxicity measurements
+```{r echo=FALSE}
+closure_lev_tox %>% 
+  count(species) %>% 
+  arrange(desc(n))
+```
+
+\newpage
+
+### Seasonal perspective of closure-level (toxic) samples in HPLC data
+
+```{r echo=FALSE, warning=FALSE}
+
+check_year <- function(tbl, key) {
+  
+  toxic <- tbl %>% 
+    filter(total_toxicity > 80)
+  
+  toxic_stations <- toxic %>% 
+    count(location_id) %>% 
+    nrow()
+  
+  z <- tibble(year = key$year[1],
+              toxic_samples = nrow(toxic),
+              toxic_stations = toxic_stations,
+              highest_sample = max(toxic$total_toxicity))
+}
+
+annual_closures <- psp %>% 
+  group_by(year) %>% 
+  group_map(check_year) %>% 
+  bind_rows()
+
+annual_closures
+```
+
+\newpage
+
+### Seasonal perspective of closure-level (toxic) samples in all PSP data (HPLC and mouse)
+
+```{r echo=FALSE, warning=FALSE}
+check_year <- function(tbl, key) {
+  
+  toxic <- tbl %>% 
+    filter(total_toxicity > 80)
+  
+  toxic_stations <- toxic %>% 
+    count(location_id) %>% 
+    nrow()
+  
+  z <- tibble(year = key$year[1],
+              toxic_samples = nrow(toxic),
+              toxic_stations = toxic_stations,
+              highest_sample = max(toxic$total_toxicity))
+}
+
+all_annual_closures <- all_psp %>% 
+  group_by(year) %>% 
+  group_map(check_year) %>% 
+  bind_rows()
+
+print.data.frame(all_annual_closures)
+```
+
