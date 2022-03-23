@@ -8,7 +8,8 @@ Depends:
 Imports:
   rlang,
   dplyr,
-  readr
+  readr,
+  tidyr
 Maintainer: Johnathan Evanilla <jevanilla@bigelow.org>
 Author: Johnathan Evanilla <jevanilla@bigelow.org>
 License: MIT + file LICENSE

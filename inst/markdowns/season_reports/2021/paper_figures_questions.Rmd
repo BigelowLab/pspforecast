@@ -110,6 +110,7 @@ zz <- ggscatter(data=pred_w_results,
 
 zz
 ```
+\newpage
 
 ```{r echo=FALSE}
 z2 <- ggscatter(data=pred_w_results,
