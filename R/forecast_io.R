@@ -28,7 +28,7 @@ format_probs <- function(probs) {
 read_forecast <- function(format = FALSE, 
                           new_only=FALSE) {
   
-  file <- system.file("forecastdb/psp_forecast_2021.csv.gz", package="pspforecast")
+  file <- system.file("forecastdb/psp_forecast_2022.csv.gz", package="pspforecast")
   
   if (new_only == TRUE) {
     all_forecast <- suppressMessages(readr::read_csv(file))
@@ -51,12 +51,17 @@ read_forecast <- function(format = FALSE,
   
   if (format==TRUE) {
     forecast <- forecast %>% 
-      dplyr::mutate(prob_0 = format_probs(.data$prob_0),
-                    prob_1 = format_probs(.data$prob_1),
-                    prob_2 = format_probs(.data$prob_2),
-                    prob_3 = format_probs(.data$prob_3)) %>% 
+      dplyr::mutate(prob_0 = format_probs(.data$p_0),
+                    prob_1 = format_probs(.data$p_1),
+                    prob_2 = format_probs(.data$p_2),
+                    prob_3 = format_probs(.data$p_3)) %>% 
       dplyr::select(-.data$version,
-                    -.data$class_bins)
+                    -.data$class_bins,
+                    -.data$ensemble_n,
+                    -.data$p_0,
+                    -.data$p_1,
+                    -.data$p_2,
+                    -.data$p_3)
     
     return(forecast)
   } else {

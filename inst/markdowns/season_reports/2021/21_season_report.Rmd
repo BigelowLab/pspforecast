@@ -155,10 +155,7 @@ confusion_matrix <- ggplot2::ggplot(data = cm,
   ggplot2::scale_fill_gradient(low = "white", 
                                high = "blue") +
   ggplot2::labs(x = "Predicted Classifications", 
-                y = "Actual Classifications", 
-                #title=paste("Confusion Matrix -", cfg$train_test$test, sep=""),
-                #subtitle=paste("Loss:", round(model$metrics[1], 3), "Accuracy:", round(model$metrics[2], 3), "Version:", cfg$configuration, sep=" "),
-                caption=paste(Sys.Date())) +
+                y = "Actual Classifications") +
   ggplot2::theme_linedraw() +
   ggplot2::theme(axis.text=  ggplot2::element_text(size=14),
                  axis.title= ggplot2::element_text(size=14,face="bold"),

@@ -1,0 +1,93 @@
+---
+title: "Forecast Season Overview"
+author: "Johnathan Evanilla"
+date: "4/8/2022"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(pspforecast)
+library(pspdata)
+```
+
+
+## Only Sites Included in Forecast
+
+- Circles (open) = The site had mussel tissue sampled for PSP on this date
+- Squares (shaded) = Forecast start date of a prediction made for this site 
+
+
+```{r echo=FALSE}
+pred <- pspforecast::read_forecast() %>% 
+  dplyr::mutate(week = format(date, format="%V"),
+                id = paste(location, week, sep="_"))
+
+psp <- pspdata::read_psp_data(model_ready=TRUE) %>% 
+  dplyr::filter(location_id %in% pred$location,
+                date > as.Date("2021-01-01"),
+                date < as.Date("2021-12-31")) %>% 
+  dplyr::mutate(week = format(date, format="%V"),
+                id = paste(location_id, week, sep="_")) 
+```
+
+
+```{r echo=FALSE}
+plot <- ggplot2::ggplot() +
+  ggplot2::geom_point(data = psp, shape=1, ggplot2::aes(x=date, y=location_id)) +
+  ggplot2::geom_point(data= pred, shape=15, ggplot2::aes(x=forecast_start_date, y=location)) +
+  ggplot2::labs(x = "Date",
+                y = "PSP Sampling Station")
+
+plot
+
+```
+
+
+```{r echo=FALSE}
+plot <- ggplot2::ggplot() +
+  ggplot2::geom_point(data = psp, shape=1, ggplot2::aes(x=date, y=location_id)) +
+  ggplot2::geom_point(data= pred, shape=15, ggplot2::aes(x=forecast_start_date, y=location)) +
+  ggplot2::labs(x = "Date",
+                y = "PSP Sampling Station")
+
+plot
+
+```
+
+
+\newpage
+
+
+## All Sites
+
+###Including Sites that were sampled and never received a prediction
+
+
+```{r echo=FALSE}
+psp <- pspdata::read_psp_data() %>% 
+  dplyr::filter(dplyr::between(date, as.Date("2021-01-01"), as.Date("2021-12-31")),
+                species == "mytilus") %>% 
+  dplyr::mutate(week = format(date, format="%V"),
+                id = paste(location_id, week, sep="_")) 
+
+```
+
+
+
+```{r echo=FALSE}
+plot <- ggplot2::ggplot() +
+  ggplot2::geom_point(data = psp, shape=1, ggplot2::aes(x=date, y=location_id)) +
+  ggplot2::geom_point(data= pred, shape=15, ggplot2::aes(x=forecast_start_date, y=location)) +
+  ggplot2::labs(x = "Date",
+                y = "PSP Sampling Station")
+
+plot
+
+```
+
