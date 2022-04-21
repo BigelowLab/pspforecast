@@ -34,7 +34,8 @@ read_forecast <- function(file = system.file("forecastdb/psp_forecast_2022.csv.g
     all_forecast <- suppressMessages(readr::read_csv(file))
     
     get_newest <- function(tbl, key) {
-      newest <- tbl %>% tail(n=1)
+      newest <- tbl %>% 
+        tail(n=1)
       return(newest)
     }
     
@@ -42,9 +43,8 @@ read_forecast <- function(file = system.file("forecastdb/psp_forecast_2022.csv.g
       dplyr::arrange(.data$date) %>% 
       dplyr::group_by(.data$location) %>% 
       dplyr::group_map(get_newest, .keep=TRUE) %>% 
-      dplyr::bind_rows() %>% 
-      dplyr::filter(.data$forecast_end_date > as.Date(Sys.Date()))
-    
+      dplyr::bind_rows() 
+
   } else {
     forecast <- suppressMessages(readr::read_csv(file))
   }
