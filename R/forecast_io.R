@@ -20,15 +20,15 @@ format_probs <- function(probs) {
 
 #' Reads forecast database
 #' 
+#' @param file path of forecast file to read; default is forecast db installed with package, also can supply link to a csv on github
 #' @param format logical, if true the forecast report will be formatted for stakeholders with rounded probabilities and 0 probabilities being changed to <1
 #' @param new_only logical, if true then only the newest observations from each station will be served
 #' @return tibble of predicted shellfish toxicity classifications along with their metadata
 #' 
 #' @export
-read_forecast <- function(format = FALSE, 
+read_forecast <- function(file = system.file("forecastdb/psp_forecast_2022.csv.gz", package="pspforecast"),
+                          format = FALSE, 
                           new_only=FALSE) {
-  
-  file <- system.file("forecastdb/psp_forecast_2022.csv.gz", package="pspforecast")
   
   if (new_only == TRUE) {
     all_forecast <- suppressMessages(readr::read_csv(file))
