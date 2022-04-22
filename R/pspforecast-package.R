@@ -5,7 +5,7 @@
 #' @docType package
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data
-#' @importFrom utils tail
+#' @importFrom utils tail download.file
 #' @name pspforecast
 #' @aliases pspforecast
 NULL

@@ -4,18 +4,14 @@
 \alias{read_forecast}
 \title{Reads forecast database}
 \usage{
-read_forecast(
-  file = system.file("forecastdb/psp_forecast_2022.csv.gz", package = "pspforecast"),
-  format = FALSE,
-  new_only = FALSE
-)
+read_forecast(format = FALSE, new_only = FALSE, shiny = FALSE)
 }
 \arguments{
-\item{file}{path of forecast file to read; default is forecast db installed with package, also can supply link to a csv on github}
+\item{format}{logical, if true, the forecast report will be formatted for stakeholders with rounded probabilities and 0 probabilities being changed to <1}
 
-\item{format}{logical, if true the forecast report will be formatted for stakeholders with rounded probabilities and 0 probabilities being changed to <1}
+\item{new_only}{logical, if true, then only the newest observations from each station will be served}
 
-\item{new_only}{logical, if true then only the newest observations from each station will be served}
+\item{shiny}{logical, if true, forecast will be read from github csv rather than local; method used for deploying package in shiny app server}
 }
 \value{
 tibble of predicted shellfish toxicity classifications along with their metadata

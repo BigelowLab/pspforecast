@@ -26,7 +26,8 @@ psp <- read_psp_data() %>%
                 doy = as.numeric(format(date, format="%j")),
                 week = as.numeric(format(date, format="%U")))
 
-predictions <- pspforecast::read_forecast()
+#predictions <- pspforecast::read_forecast()
+predictions <- readr::read_csv(system.file("forecastdb/psp_forecast_2021.csv.gz", package="pspforecast"))
 
 all_psp <- pspdata::read_all_psp_data() %>% 
   dplyr::mutate(year = as.numeric(format(date, format="%Y"))) %>% 
@@ -123,6 +124,17 @@ z2 <- ggscatter(data=pred_w_results,
 z2
 
 ```
+
+
+```{r}
+ggplot2::ggplot(data=pred_w_results, aes(x=prob_3, y=toxicity)) +
+  geom_point() +
+  labs(x = "Predicted Probability of Class 3 (Closure-level Toxicity",
+       y = "Actual Measured Toxocity") +
+  theme(axis.line.x = element_line(color="black", size = 1),
+        axis.line.y = element_line(color="black", size=1))
+```
+
 
 
 \newpage

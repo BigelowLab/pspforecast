@@ -20,18 +20,34 @@ format_probs <- function(probs) {
 
 #' Reads forecast database
 #' 
-#' @param file path of forecast file to read; default is forecast db installed with package, also can supply link to a csv on github
-#' @param format logical, if true the forecast report will be formatted for stakeholders with rounded probabilities and 0 probabilities being changed to <1
-#' @param new_only logical, if true then only the newest observations from each station will be served
+#' @param format logical, if true, the forecast report will be formatted for stakeholders with rounded probabilities and 0 probabilities being changed to <1
+#' @param new_only logical, if true, then only the newest observations from each station will be served
+#' @param shiny logical, if true, forecast will be read from github csv rather than local; method used for deploying package in shiny app server
 #' @return tibble of predicted shellfish toxicity classifications along with their metadata
 #' 
 #' @export
-read_forecast <- function(file = system.file("forecastdb/psp_forecast_2022.csv.gz", package="pspforecast"),
-                          format = FALSE, 
-                          new_only=FALSE) {
+read_forecast <- function(format = FALSE, 
+                          new_only=FALSE,
+                          shiny=FALSE) {
   
-  if (new_only == TRUE) {
-    all_forecast <- suppressMessages(readr::read_csv(file))
+  if (shiny) {
+    gh_file <- "https://github.com/BigelowLab/pspforecast/raw/master/inst/forecastdb/psp_forecast_2022.csv.gz"
+    
+    temp_forecast <- tempfile()
+    download.file(gh_file, temp_forecast)
+    
+    forecast <- readr::read_csv(temp_forecast)
+    
+    unlink(temp_forecast)
+  } else {
+    file = system.file("forecastdb/psp_forecast_2022.csv.gz", package="pspforecast")
+    
+    forecast <- suppressMessages(readr::read_csv(file))
+  }
+  
+  
+  if (new_only) {
+    #all_forecast <- suppressMessages(readr::read_csv(file))
     
     get_newest <- function(tbl, key) {
       newest <- tbl %>% 
@@ -39,17 +55,15 @@ read_forecast <- function(file = system.file("forecastdb/psp_forecast_2022.csv.g
       return(newest)
     }
     
-    forecast <- all_forecast %>% 
+    forecast <- forecast %>% 
       dplyr::arrange(.data$date) %>% 
       dplyr::group_by(.data$location) %>% 
       dplyr::group_map(get_newest, .keep=TRUE) %>% 
       dplyr::bind_rows() 
 
-  } else {
-    forecast <- suppressMessages(readr::read_csv(file))
-  }
+  } 
   
-  if (format==TRUE) {
+  if (format) {
     forecast <- forecast %>% 
       dplyr::mutate(prob_0 = format_probs(.data$p_0),
                     prob_1 = format_probs(.data$p_1),
@@ -62,12 +76,8 @@ read_forecast <- function(file = system.file("forecastdb/psp_forecast_2022.csv.g
                     -.data$p_1,
                     -.data$p_2,
                     -.data$p_3)
-    
-    return(forecast)
-  } else {
-    return(forecast)
   }
-  
+  return(forecast)
 }
 
 
