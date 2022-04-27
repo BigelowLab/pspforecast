@@ -1,129 +1,103 @@
+pspforecast readme
+================
+
 # pspforecast
 
 Shellfish toxicity forecast serving package
 
-
 ## Requirements
 
-  + [R v4+](https://www.r-project.org/)
-  
-  + [rlang](https://CRAN.R-project.org/package=rlang)
-  
-  + [dplyr](https://CRAN.R-project.org/package=dplyr)
-  
-  + [readr](https://CRAN.R-project.org/package=readr)
+-   [R v4+](https://www.r-project.org/)
+
+-   [rlang](https://CRAN.R-project.org/package=rlang)
+
+-   [dplyr](https://CRAN.R-project.org/package=dplyr)
+
+-   [readr](https://CRAN.R-project.org/package=readr)
+
+-   [tidyr](https://CRAN.R-project.org/package=tidyr)
 
 ## Installation
 
-```
-remotes::install_github("BigelowLab/pspforecast")
-```
+    remotes::install_github("BigelowLab/pspforecast")
 
-## Reading the forecast database 
-#### (currently a dummy database for the 2020 season is loaded)
+## Reading the forecast database
 
 ### Variables:
- + version - the version/configuration of the model used to make the prediction
- 
- + location - the sampling station the forecast is for
- 
- + date - the date the forecast was made on
- 
- + name - site name
- 
- + lat - latitude
- 
- + lon - longitude
- 
- + class_bins - the bins used to classify shellfish total toxicity (i.e. 0: 0-10, 1: 10-30, 2: 30-80, 3: >80)
- 
- + forecast_date - the date the forecast is valid for (i.e. one week ahead of when it was made)
- 
- + predicted_class - the predicted classification at the location listed on the forecast_date (in this case 0-3)
 
+-   version - the version/configuration of the model used to make the
+    prediction
 
-```
-x <- pspforecast::read_forecast()
+-   ensemble\_n - number of ensemble members used to generate prediction
 
-## A tibble: 407 x 9
-#   version location  date       name                   lat   lon class_bins forecast_date predicted_class
-#   <chr>   <chr>     <date>     <chr>                <dbl> <dbl> <chr>      <date>                  <int>
-# 1 v0.0002 PSP11.110 2020-04-20 CAS BA2 Bangs island  43.7 -70.1 0,10,30,80 2020-04-27                  0
-# 2 v0.0002 PSP11.115 2020-04-20 CAS BASK              43.7 -70.2 0,10,30,80 2020-04-27                  0
-# 3 v0.0002 PSP13.03  2020-04-21 Pinkham Pt.           43.8 -69.9 0,10,30,80 2020-04-28                  0
-# 4 v0.0002 PSP12.11  2020-04-21 Ewin Narrows          43.8 -70.0 0,10,30,80 2020-04-28                  0
-# 5 v0.0002 PSP12.01  2020-04-21 Basin Pt.             43.7 -70.0 0,10,30,80 2020-04-28                  0
-# 6 v0.0002 PSP12.13  2020-04-21 Lumbos Hole           43.8 -69.9 0,10,30,80 2020-04-28                  0
-# 7 v0.0002 PSP16.41  2020-04-21 Port Clyde            43.9 -69.3 0,10,30,80 2020-04-28                  0
-# 8 v0.0002 PSP12.28  2020-04-21 Bear Island           43.8 -69.9 0,10,30,80 2020-04-28                  0
-# 9 v0.0002 PSP12.15  2020-04-21 Gurnet                43.9 -69.9 0,10,30,80 2020-04-28                  0
-#10 v0.0002 PSP10.11  2020-04-21 Ogunquit River        43.3 -70.6 0,10,30,80 2020-04-28                  0
-## … with 397 more rows
-```
+-   location - the sampling station the forecast is for
 
-## Subset the table by sampling station (location)
+-   date - the date the forecast was made on
 
-```
-x %>% dplyr::filter(location == "PSP12.13")
+-   name - site name
 
-## A tibble: 14 x 9
-#   version location date       name          lat   lon class_bins forecast_date predicted_class
-#   <chr>   <chr>    <date>     <chr>       <dbl> <dbl> <chr>      <date>                  <int>
-# 1 v0.0002 PSP12.13 2020-04-21 Lumbos Hole  43.8 -69.9 0,10,30,80 2020-04-28                  0
-# 2 v0.0002 PSP12.13 2020-04-27 Lumbos Hole  43.8 -69.9 0,10,30,80 2020-05-04                  1
-# 3 v0.0002 PSP12.13 2020-05-04 Lumbos Hole  43.8 -69.9 0,10,30,80 2020-05-11                  1
-# 4 v0.0002 PSP12.13 2020-05-11 Lumbos Hole  43.8 -69.9 0,10,30,80 2020-05-18                  1
-# 5 v0.0002 PSP12.13 2020-05-18 Lumbos Hole  43.8 -69.9 0,10,30,80 2020-05-25                  0
-# 6 v0.0002 PSP12.13 2020-05-26 Lumbos Hole  43.8 -69.9 0,10,30,80 2020-06-02                  0
-# 7 v0.0002 PSP12.13 2020-06-01 Lumbos Hole  43.8 -69.9 0,10,30,80 2020-06-08                  0
-# 8 v0.0002 PSP12.13 2020-06-08 Lumbos Hole  43.8 -69.9 0,10,30,80 2020-06-15                  0
-# 9 v0.0002 PSP12.13 2020-06-15 Lumbos Hole  43.8 -69.9 0,10,30,80 2020-06-22                  0
-#10 v0.0002 PSP12.13 2020-06-22 Lumbos Hole  43.8 -69.9 0,10,30,80 2020-06-29                  0
-#11 v0.0002 PSP12.13 2020-06-29 Lumbos Hole  43.8 -69.9 0,10,30,80 2020-07-06                  0
-#12 v0.0002 PSP12.13 2020-07-06 Lumbos Hole  43.8 -69.9 0,10,30,80 2020-07-13                  0
-#13 v0.0002 PSP12.13 2020-07-13 Lumbos Hole  43.8 -69.9 0,10,30,80 2020-07-20                  0
-#14 v0.0002 PSP12.13 2020-07-21 Lumbos Hole  43.8 -69.9 0,10,30,80 2020-07-28                  0
+-   lat - latitude
+
+-   lon - longitude
+
+-   class\_bins - the bins used to classify shellfish total toxicity
+    (i.e. 0: 0-10, 1: 10-30, 2: 30-80, 3: &gt;80)
+
+-   forecast\_date - the date the forecast is valid for (i.e. one week
+    ahead of when it was made)
+
+-   predicted\_class - the predicted classification at the location
+    listed on the forecast\_date (in this case 0-3)
+
+-   p\_0 - class 0 probability
+
+-   p\_1 - class 1 probability
+
+-   p\_2 - class 2 probability
+
+-   p\_3 - class 3 probability
+
+-   p3\_sd - class 3 probability standard deviation
+
+-   p\_3\_min - class 3 minimum probability (from ensemble run)
+
+-   p\_3\_max - class 3 maximum probability (from ensemble run)
+
+-   predicted\_class - the predicted classification
+
+``` r
+predictions <- pspforecast::read_forecast()
+
+glimpse(predictions)
 ```
 
-## Subset the table by a single date
+    ## Rows: 34
+    ## Columns: 18
+    ## $ version             <chr> "v0.1.3", "v0.1.3", "v0.1.3", "v0.1.3", "v0.1.3", …
+    ## $ ensemble_n          <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10…
+    ## $ location            <chr> "PSP19.15", "PSP21.09", "PSP10.11", "PSP10.29", "P…
+    ## $ date                <date> 2022-04-04, 2022-04-04, 2022-04-05, 2022-04-05, 2…
+    ## $ name                <chr> "Stonington", "Bass Hbr.", "Ogunquit River", "Pine…
+    ## $ lat                 <dbl> 44.15419, 44.23824, 43.25030, 43.54459, 43.56632, …
+    ## $ lon                 <dbl> -68.65947, -68.34792, -70.59540, -70.33231, -70.27…
+    ## $ class_bins          <chr> "0,10,30,80", "0,10,30,80", "0,10,30,80", "0,10,30…
+    ## $ forecast_start_date <date> 2022-04-08, 2022-04-08, 2022-04-09, 2022-04-09, 2…
+    ## $ forecast_end_date   <date> 2022-04-14, 2022-04-14, 2022-04-15, 2022-04-15, 2…
+    ## $ p_0                 <dbl> 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 92, 98, 99…
+    ## $ p_1                 <dbl> 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 7, 2, 1, 1, 1, 1, 1,…
+    ## $ p_2                 <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,…
+    ## $ p_3                 <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+    ## $ p3_sd               <dbl> 0.0018874253, 0.0018874253, 0.0018874253, 0.001887…
+    ## $ p_3_min             <dbl> 2.114287e-03, 2.114287e-03, 2.114287e-03, 2.114287…
+    ## $ p_3_max             <dbl> 0.007679009, 0.007679009, 0.007679009, 0.007679009…
+    ## $ predicted_class     <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
 
-```
-x %>% dplyr::filter(date == as.Date("2020-06-01"))
+## 2022 Season Performance
 
-## A tibble: 24 x 9
-#   version location  date       name                lat   lon class_bins forecast_date predicted_class
-#   <chr>   <chr>     <date>     <chr>             <dbl> <dbl> <chr>      <date>                  <int>
-# 1 v0.0002 PSP14.08  2020-06-01 Five Islands       43.8 -69.7 0,10,30,80 2020-06-08                  0
-# 2 v0.0002 PSP10.33  2020-06-01 Spurwink River     43.6 -70.3 0,10,30,80 2020-06-08                  0
-# 3 v0.0002 PSP12.03  2020-06-01 Potts Pt.          43.7 -70.0 0,10,30,80 2020-06-08                  0
-# 4 v0.0002 PSP12.11  2020-06-01 Ewin Narrows       43.8 -70.0 0,10,30,80 2020-06-08                  0
-# 5 v0.0002 PSP12.06  2020-06-01 Wills Gut          43.7 -70.0 0,10,30,80 2020-06-08                  0
-# 6 v0.0002 PSP12.243 2020-06-01 Dingley Starboard  43.8 -69.9 0,10,30,80 2020-06-08                  0
-# 7 v0.0002 PSP14.02  2020-06-01 Indian Pt.         43.8 -69.8 0,10,30,80 2020-06-08                  0
-# 8 v0.0002 PSP12.21  2020-06-01 Fort St. George    43.8 -69.8 0,10,30,80 2020-06-08                  0
-# 9 v0.0002 PSP12.28  2020-06-01 Bear Island        43.8 -69.9 0,10,30,80 2020-06-08                  0
-#10 v0.0002 PSP12.15  2020-06-01 Gurnet             43.9 -69.9 0,10,30,80 2020-06-08                  0
-## … with 14 more rows
-```
+### Confusion Matrix
 
-## Subset by multiple dates
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-```
-dates <- c(as.Date("2020-06-01"), as.Date("2020-06-02"), as.Date("2020-06-03"))
-x %>% dplyr::filter(date %in% dates)
+### Last Updated
 
-## A tibble: 41 x 9
-#   version location  date       name                lat   lon class_bins forecast_date predicted_class
-#   <chr>   <chr>     <date>     <chr>             <dbl> <dbl> <chr>      <date>                  <int>
-# 1 v0.0002 PSP14.08  2020-06-01 Five Islands       43.8 -69.7 0,10,30,80 2020-06-08                  0
-# 2 v0.0002 PSP10.33  2020-06-01 Spurwink River     43.6 -70.3 0,10,30,80 2020-06-08                  0
-# 3 v0.0002 PSP12.03  2020-06-01 Potts Pt.          43.7 -70.0 0,10,30,80 2020-06-08                  0
-# 4 v0.0002 PSP12.11  2020-06-01 Ewin Narrows       43.8 -70.0 0,10,30,80 2020-06-08                  0
-# 5 v0.0002 PSP12.06  2020-06-01 Wills Gut          43.7 -70.0 0,10,30,80 2020-06-08                  0
-# 6 v0.0002 PSP12.243 2020-06-01 Dingley Starboard  43.8 -69.9 0,10,30,80 2020-06-08                  0
-# 7 v0.0002 PSP14.02  2020-06-01 Indian Pt.         43.8 -69.8 0,10,30,80 2020-06-08                  0
-# 8 v0.0002 PSP12.21  2020-06-01 Fort St. George    43.8 -69.8 0,10,30,80 2020-06-08                  0
-# 9 v0.0002 PSP12.28  2020-06-01 Bear Island        43.8 -69.9 0,10,30,80 2020-06-08                  0
-#10 v0.0002 PSP12.15  2020-06-01 Gurnet             43.9 -69.9 0,10,30,80 2020-06-08                  0
-## … with 31 more rows
-```
+    ## [1] "2022-04-27"

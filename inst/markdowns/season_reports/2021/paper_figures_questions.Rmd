@@ -118,7 +118,7 @@ z2 <- ggscatter(data=pred_w_results,
                 x="prob_3",
                 y="toxicity",
                 xlab = "Probability of Closure Level Toxicity",
-                ylab="Actual Toxicity (Outcome )") +
+                ylab="Actual Toxicity") +
   ggplot2::geom_hline(yintercept = 80)
 
 z2

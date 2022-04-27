@@ -160,7 +160,7 @@ confusion_matrix <- ggplot2::ggplot(data = cm,
   ggplot2::theme(axis.text=  ggplot2::element_text(size=14),
                  axis.title= ggplot2::element_text(size=14,face="bold"),
                  title =     ggplot2::element_text(size = 14, face = "bold"),
-                 legend.position = "none") 
+                 legend.position = "none")
 
 confusion_matrix
 
