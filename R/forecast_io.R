@@ -34,9 +34,9 @@ read_forecast <- function(format = FALSE,
     gh_file <- "https://github.com/BigelowLab/pspforecast/raw/master/inst/forecastdb/psp_forecast_2022.csv.gz"
     
     temp_forecast <- tempfile()
-    download.file(gh_file, temp_forecast)
+    download.file(gh_file, temp_forecast, quiet=TRUE)
     
-    forecast <- readr::read_csv(temp_forecast)
+    forecast <- suppressMessages(readr::read_csv(temp_forecast))
     
     unlink(temp_forecast)
   } else {
