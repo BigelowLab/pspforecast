@@ -27,7 +27,8 @@ psp <- read_psp_data() %>%
                 week = as.numeric(format(date, format="%U")))
 
 #predictions <- pspforecast::read_forecast()
-predictions <- readr::read_csv(system.file("forecastdb/psp_forecast_2021.csv.gz", package="pspforecast"))
+#predictions <- readr::read_csv(system.file("forecastdb/psp_forecast_2021.csv.gz", package="pspforecast"))
+predictions <- pspforecast::read_forecast()
 
 all_psp <- pspdata::read_all_psp_data() %>% 
   dplyr::mutate(year = as.numeric(format(date, format="%Y"))) %>% 
@@ -104,10 +105,11 @@ pred_w_results <- add_forecast_results(predictions)
 
 ```{r echo=FALSE}
 zz <- ggscatter(data=pred_w_results,
-                x="prob_3",
+                x="p_3",
                 y="actual_class",
                 xlab = "Probability of Closure Level Toxicity",
-                ylab="Actual Classification (Outcome)")
+                ylab="Actual Classification (Outcome)") %>% 
+  ggpar(xlim=c(0,100))
 
 zz
 ```
@@ -115,11 +117,12 @@ zz
 
 ```{r echo=FALSE}
 z2 <- ggscatter(data=pred_w_results,
-                x="prob_3",
+                x="p_3",
                 y="toxicity",
                 xlab = "Probability of Closure Level Toxicity",
-                ylab="Actual Toxicity") +
-  ggplot2::geom_hline(yintercept = 80)
+                ylab="Actual Toxicity") %>% 
+  ggplot2::geom_hline(yintercept = 80) + 
+  ggpar(xlim=c(0,100))
 
 z2
 
