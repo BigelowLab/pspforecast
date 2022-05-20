@@ -82,7 +82,7 @@ glimpse(predictions)
 
 
 ```{r echo=FALSE}
-pred_w_results <- add_forecast_results(predictions, psp)
+pred_w_results <- add_forecast_results(predictions, toxin_measurements = psp)
 ```
 
 ## 2022 Season Performance
