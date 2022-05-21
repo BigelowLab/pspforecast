@@ -1,0 +1,3 @@
+location,date,name,lat,lon,forecast_start_date,forecast_end_date,p_0,p_1,p_2,p_3,predicted_class,p3_sd,p3_min,p3_max
+PSP11.117,2022-05-18,CAS CF3,43.7119,-70.18787,2022-05-22,2022-05-28,5,16,37,42,3,11,20,56
+PSP11.115,2022-05-18,CAS BASK,43.73316,-70.16358,2022-05-22,2022-05-28,12,22,38,28,2,12,6,50
