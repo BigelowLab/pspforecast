@@ -33,6 +33,16 @@ add_forecast_results <- function(predictions,
                                        class = numeric())
       
       return(empty_results)
+    } else if (nrow(db) > 1) {
+      
+      db <- db %>% 
+        dplyr::filter(.data$total_toxicity == max(.data$total_toxicity))
+      
+      forecast_results <- tbl %>% 
+        dplyr::select(version, .data$location, date) %>% 
+        dplyr::mutate(measurement_date = as.Date(db$date),
+                      toxicity = db$total_toxicity,
+                      class = db$classification)
     }
     
     forecast_results <- tbl %>% 

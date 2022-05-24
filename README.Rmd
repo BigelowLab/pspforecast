@@ -119,6 +119,20 @@ confusion_matrix
 
 ```
 
+### Probability of Closure-level Toxicity vs Measured Toxicity
+
+```{r echo=FALSE}
+
+p3_v_tox <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, y=.data$toxicity)) +
+  ggplot2::geom_point() +
+  ggplot2::labs(x = "Predicted Class 3 Probability",
+                y = "Measured Toxicity") +
+  ggplot2::geom_hline(yintercept=80)
+
+p3_v_tox
+```
+
+
 ### Last Updated
 
 ```{r echo=FALSE}

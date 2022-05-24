@@ -71,7 +71,7 @@ predictions <- pspforecast::read_forecast()
 glimpse(predictions)
 ```
 
-    ## Rows: 74
+    ## Rows: 104
     ## Columns: 18
     ## $ version             <chr> "v0.1.3", "v0.1.3", "v0.1.3", "v0.1.3", "v0.1.3", …
     ## $ ensemble_n          <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10…
@@ -98,6 +98,10 @@ glimpse(predictions)
 
 ![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
+### Probability of Closure-level Toxicity vs Measured Toxicity
+
+![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
 ### Last Updated
 
-    ## [1] "2022-05-14"
+    ## [1] "2022-05-24"
