@@ -124,10 +124,10 @@ confusion_matrix
 ```{r echo=FALSE}
 
 p3_v_tox <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, y=.data$toxicity)) +
-  ggplot2::geom_point() +
-  ggplot2::labs(x = "Predicted Class 3 Probability",
+  ggplot2::geom_point(alpha=0.7, size=3) +
+  ggplot2::labs(x = "Predicted Probability of Closure-level Toxicity",
                 y = "Measured Toxicity") +
-  ggplot2::geom_hline(yintercept=80)
+  ggplot2::geom_hline(yintercept=80, linetype="dashed")
 
 p3_v_tox
 ```
