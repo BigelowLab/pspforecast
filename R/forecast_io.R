@@ -51,7 +51,8 @@ read_forecast <- function(format = FALSE,
     
     get_newest <- function(tbl, key) {
       newest <- tbl %>% 
-        tail(n=1)
+        tail(n=1) %>% 
+        dplyr::filter(.data$forecast_end_date > Sys.Date()-3)
       return(newest)
     }
     
