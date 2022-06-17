@@ -71,7 +71,7 @@ predictions <- read_forecast()
 glimpse(predictions)
 ```
 
-    ## Rows: 258
+    ## Rows: 318
     ## Columns: 18
     ## $ version             <chr> "v0.1.3", "v0.1.3", "v0.1.3", "v0.1.3", "v0.1.3", …
     ## $ ensemble_n          <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10…
@@ -104,4 +104,4 @@ glimpse(predictions)
 
 ### Last Updated
 
-    ## [1] "2022-06-10"
+    ## [1] "2022-06-17"
