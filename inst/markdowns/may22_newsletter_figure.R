@@ -5,7 +5,7 @@ library(pspdata)
 library(pspforecast)
 library(readr)
 
-predictions22 <- read_forecast()
+predictions22 <- read_forecast() #|> filter(lat <= 43.6)
 predictions21 <- read_csv("inst/forecastdb/psp_forecast_2021.csv.gz")
 
 psp <- read_psp_data()
@@ -21,6 +21,8 @@ p21 <- p21 %>%
   rename(p_3 = prob_3)
 
 plot_data <- bind_rows(p21, p22)
+
+#plot_data <- p22
 
 
 plot <- ggplot(data=plot_data, aes(x=p_3, y=toxicity)) +
