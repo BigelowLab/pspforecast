@@ -96,11 +96,11 @@ glimpse(predictions)
 
 ### Confusion Matrix
 
-![](README_files/figure-gfm/cm-1.png)<!-- -->
+![](README_files/figure-gfm/cm1-1.png)<!-- -->
 
 ### Probability of Closure-level Toxicity vs Measured Toxicity
 
-![](README_files/figure-gfm/scatter-1.png)<!-- -->
+![](README_files/figure-gfm/scatter1-1.png)<!-- -->
 
 ### Last Updated
 

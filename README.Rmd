@@ -89,7 +89,7 @@ pred_w_results <- add_forecast_results(predictions, toxin_measurements = psp)
 
 ### Confusion Matrix
 
-```{r cm, echo=FALSE, cahce=FALSE}
+```{r cm1, echo=FALSE, cahce=FALSE}
 num_levels <- 4
 levels <- seq(from=0, to=(num_levels-1))
 
@@ -121,7 +121,7 @@ confusion_matrix
 
 ### Probability of Closure-level Toxicity vs Measured Toxicity
 
-```{r scatter, echo=FALSE, cache=FALSE}
+```{r scatter1, echo=FALSE, cache=FALSE}
 
 p3_v_tox <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, y=.data$toxicity)) +
   ggplot2::geom_point(alpha=0.7, size=3) +
