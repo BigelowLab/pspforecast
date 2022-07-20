@@ -132,6 +132,35 @@ p3_v_tox <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, y=.
 p3_v_tox
 ```
 
+### Forecast Skill (2022 Season)
+
+## Metrics:
+
+ + overall_acc - Accuracy of all predictions made that were measured the following week
+ + closure_level_acc - Accuracy of all closure-level (class 3) predictions that were measured the following week
+ 
+ 
+
+```{r echo=FALSE}
+
+correct <- pred_w_results |>
+  filter(predicted_class == class) |>
+  nrow()
+
+c3_predictions <- pred_w_results |>
+  filter(predicted_class == 3) |>
+  nrow()
+
+c3_correct <- pred_w_results |>
+  filter(predicted_class == 3 & class == 3) |>
+  nrow()
+
+metrics <- tibble(overall_acc = correct/nrow(pred_w_results),
+                  closure_level_acc = c3_correct/c3_predictions)
+
+metrics
+```
+
 
 ### Last Updated
 

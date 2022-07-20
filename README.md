@@ -102,6 +102,22 @@ glimpse(predictions)
 
 ![](README_files/figure-gfm/scatter1-1.png)<!-- -->
 
+### Forecast Skill (2022 Season)
+
+## Metrics:
+
+-   overall\_acc - Accuracy of all predictions made that were measured
+    the following week
+-   closure\_level\_acc - Accuracy of all closure-level (class 3)
+    predictions that were measured the following week
+
+<!-- -->
+
+    ## # A tibble: 1 × 2
+    ##   overall_acc closure_level_acc
+    ##         <dbl>             <dbl>
+    ## 1       0.783             0.444
+
 ### Last Updated
 
-    ## [1] "2022-07-15"
+    ## [1] "2022-07-20"
