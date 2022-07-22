@@ -71,7 +71,7 @@ predictions <- read_forecast()
 glimpse(predictions)
 ```
 
-    ## Rows: 571
+    ## Rows: 622
     ## Columns: 18
     ## $ version             <chr> "v0.1.3", "v0.1.3", "v0.1.3", "v0.1.3", "v0.1.3", …
     ## $ ensemble_n          <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10…
@@ -108,16 +108,16 @@ glimpse(predictions)
 
 -   overall\_acc - Accuracy of all predictions made that were measured
     the following week
--   closure\_level\_acc - Accuracy of all closure-level (class 3)
-    predictions that were measured the following week
+-   closure\_level\_acc - Accuracy of correctly predicted closure-level
+    (class 3) measurements
 
 <!-- -->
 
     ## # A tibble: 1 × 2
     ##   overall_acc closure_level_acc
     ##         <dbl>             <dbl>
-    ## 1       0.783             0.444
+    ## 1       0.785             0.593
 
 ### Last Updated
 
-    ## [1] "2022-07-20"
+    ## [1] "2022-07-22"
