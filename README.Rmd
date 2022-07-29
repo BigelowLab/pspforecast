@@ -137,7 +137,13 @@ p3_v_tox
 ## Metrics:
 
  + overall_acc - Accuracy of all predictions made that were measured the following week
- + closure_level_acc - Accuracy of correctly predicted closure-level (class 3) measurements
+ + tp - The model predicted class 3 and the following week's measurement was class 3
+ + fp - The model predicted class 3 and the following week's measurement was not class 3
+ + tn - The model predicted class 0,1,2 and the following week's measurement was in class 0,1,2
+ + fn - The model predicted class 0,1,2 and the following week's measurement was in class 0,1,2
+ + precision - TP/TP+FP
+ + sensitivity - TP/TP+FN
+ + specificity - TN/TN+FP
  
  
 
@@ -147,16 +153,42 @@ correct <- pred_w_results |>
   filter(predicted_class == class) |>
   nrow()
 
-c3_measurements <- pred_w_results |>
-  filter(class == 3) |>
+tn <- pred_w_results |>
+  filter(predicted_class == class & class != 3) |>
   nrow()
 
-c3_correct <- pred_w_results |>
-  filter(predicted_class == 3 & class == 3) |>
+tp <- pred_w_results %>% 
+  dplyr::filter(.data$predicted_class == 3 & .data$class == 3) %>% 
   nrow()
+  
+fp <- pred_w_results %>% 
+  dplyr::filter(.data$predicted_class == 3 & .data$class != 3) %>% 
+  nrow()
+  
+precision = tp/(tp+fp)
+  
+fn = pred_w_results %>% 
+  dplyr::filter(.data$predicted_class != 3 & .data$class != .data$predicted_class) %>% 
+  nrow()
+  
+recall = tp/(tp+fn)
+  
+f_1 = (2)*(precision*recall)/(precision+recall)
+
+sensitivity = tp/(tp+fn)
+
+specificity = tn/(tn+fp)
+
 
 metrics <- tibble(overall_acc = correct/nrow(pred_w_results),
-                  closure_level_acc = c3_correct/c3_measurements)
+                  tp = tp,
+                  fp = fp,
+                  tn = tn,
+                  fn = fn,
+                  precision = precision,
+                  #recall = recall,
+                  sensitivity = sensitivity,
+                  specificity = specificity)
 
 metrics
 ```

@@ -108,15 +108,24 @@ glimpse(predictions)
 
 -   overall\_acc - Accuracy of all predictions made that were measured
     the following week
--   closure\_level\_acc - Accuracy of correctly predicted closure-level
-    (class 3) measurements
+-   tp - The model predicted class 3 and the following week’s
+    measurement was class 3
+-   fp - The model predicted class 3 and the following week’s
+    measurement was not class 3
+-   tn - The model predicted class 0,1,2 and the following week’s
+    measurement was in class 0,1,2
+-   fn - The model predicted class 0,1,2 and the following week’s
+    measurement was in class 0,1,2
+-   precision - TP/TP+FP
+-   sensitivity - TP/TP+FN
+-   specificity - TN/TN+FP
 
 <!-- -->
 
-    ## # A tibble: 1 × 2
-    ##   overall_acc closure_level_acc
-    ##         <dbl>             <dbl>
-    ## 1       0.782             0.571
+    ## # A tibble: 1 × 8
+    ##   overall_acc    tp    fp    tn    fn precision sensitivity specificity
+    ##         <dbl> <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
+    ## 1       0.782    16    20   432   105     0.444       0.132       0.956
 
 ### Last Updated
 
