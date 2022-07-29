@@ -71,7 +71,7 @@ predictions <- read_forecast()
 glimpse(predictions)
 ```
 
-    ## Rows: 622
+    ## Rows: 654
     ## Columns: 18
     ## $ version             <chr> "v0.1.3", "v0.1.3", "v0.1.3", "v0.1.3", "v0.1.3", …
     ## $ ensemble_n          <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10…
@@ -116,8 +116,8 @@ glimpse(predictions)
     ## # A tibble: 1 × 2
     ##   overall_acc closure_level_acc
     ##         <dbl>             <dbl>
-    ## 1       0.785             0.593
+    ## 1       0.782             0.571
 
 ### Last Updated
 
-    ## [1] "2022-07-22"
+    ## [1] "2022-07-29"
