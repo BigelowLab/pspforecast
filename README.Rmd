@@ -154,7 +154,7 @@ correct <- pred_w_results |>
   nrow()
 
 tn <- pred_w_results |>
-  filter(predicted_class == class & class != 3) |>
+  filter(predicted_class != 3 & class != 3) |>
   nrow()
 
 tp <- pred_w_results %>% 

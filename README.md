@@ -125,7 +125,7 @@ glimpse(predictions)
     ## # A tibble: 1 × 8
     ##   overall_acc    tp    fp    tn    fn precision sensitivity specificity
     ##         <dbl> <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
-    ## 1       0.784    16    20   456    12     0.444       0.571       0.958
+    ## 1       0.784    16    20   554    12     0.444       0.571       0.965
 
 ### Last Updated
 
