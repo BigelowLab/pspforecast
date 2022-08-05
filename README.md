@@ -115,17 +115,17 @@ glimpse(predictions)
 -   tn - The model predicted class 0,1,2 and the following week’s
     measurement was in class 0,1,2
 -   fn - The model predicted class 0,1,2 and the following week’s
-    measurement was in class 0,1,2
--   precision - TP/TP+FP
--   sensitivity - TP/TP+FN
--   specificity - TN/TN+FP
+    measurement was class 3
+-   precision - TP/(TP+FP)
+-   sensitivity - TP/(TP+FN)
+-   specificity - TN/(TN+FP)
 
 <!-- -->
 
     ## # A tibble: 1 × 8
     ##   overall_acc    tp    fp    tn    fn precision sensitivity specificity
     ##         <dbl> <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
-    ## 1       0.784    16    20   456   110     0.444       0.127       0.958
+    ## 1       0.784    16    20   456    12     0.444       0.571       0.958
 
 ### Last Updated
 
