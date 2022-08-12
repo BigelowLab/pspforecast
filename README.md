@@ -71,7 +71,7 @@ predictions <- read_forecast()
 glimpse(predictions)
 ```
 
-    ## Rows: 683
+    ## Rows: 707
     ## Columns: 18
     ## $ version             <chr> "v0.1.3", "v0.1.3", "v0.1.3", "v0.1.3", "v0.1.3", …
     ## $ ensemble_n          <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10…
@@ -102,12 +102,22 @@ glimpse(predictions)
 
 ![](README_files/figure-gfm/scatter1-1.png)<!-- -->
 
-### Forecast Skill (2022 Season)
+## Forecast Skill (2022 Season)
 
-## Metrics:
+#### Overall Metrics:
 
--   overall\_acc - Accuracy of all predictions made that were measured
-    the following week
+-   -   Accuracy of all predictions made that were measured the
+        following week
+
+<!-- -->
+
+    ## # A tibble: 1 × 1
+    ##   accuracy
+    ##      <dbl>
+    ## 1    0.789
+
+### Closure-level (Class 3) Prediction Metrics
+
 -   tp - The model predicted class 3 and the following week’s
     measurement was class 3
 -   fp - The model predicted class 3 and the following week’s
@@ -122,11 +132,11 @@ glimpse(predictions)
 
 <!-- -->
 
-    ## # A tibble: 1 × 8
-    ##   overall_acc    tp    fp    tn    fn precision sensitivity specificity
-    ##         <dbl> <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
-    ## 1       0.784    16    20   554    12     0.444       0.571       0.965
+    ## # A tibble: 1 × 7
+    ##      tp    fp    tn    fn precision sensitivity specificity
+    ##   <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
+    ## 1    16    20   578    12     0.444       0.571       0.967
 
 ### Last Updated
 
-    ## [1] "2022-08-05"
+    ## [1] "2022-08-12"
