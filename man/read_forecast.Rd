@@ -4,7 +4,12 @@
 \alias{read_forecast}
 \title{Reads forecast database}
 \usage{
-read_forecast(format = FALSE, new_only = FALSE, shiny = FALSE)
+read_forecast(
+  format = FALSE,
+  new_only = FALSE,
+  shiny = FALSE,
+  season = c("2021", "2022")[2]
+)
 }
 \arguments{
 \item{format}{logical, if true, the forecast report will be formatted for stakeholders with rounded probabilities and 0 probabilities being changed to <1}
@@ -12,6 +17,8 @@ read_forecast(format = FALSE, new_only = FALSE, shiny = FALSE)
 \item{new_only}{logical, if true, then only the newest observations from each station will be served}
 
 \item{shiny}{logical, if true, forecast will be read from github csv rather than local; method used for deploying package in shiny app server}
+
+\item{season}{character string selecting which season's predictions to read}
 }
 \value{
 tibble of predicted shellfish toxicity classifications along with their metadata

@@ -55,6 +55,19 @@ add_forecast_results <- function(predictions,
     return(forecast_results)
   }
   
+  
+  is_correct <- function(x, y) {
+    
+    if (x$predicted_class == x$class) {
+      x <- x %>% 
+        dplyr::mutate(correct = TRUE)
+    } else {
+      x <- x %>% 
+        dplyr::mutate(correct=FALSE)
+    }
+  }
+    
+  
   results <- predictions %>%
     dplyr::group_by(.data$location, .data$date) %>% 
     dplyr::group_map(find_result, .keep=TRUE, tox=toxin_measurements) %>% 
@@ -62,7 +75,11 @@ add_forecast_results <- function(predictions,
     dplyr::arrange(date)
   
   forecast_w_results <- dplyr::full_join(predictions, results, by=c("version", "location", "date")) %>% 
-    tidyr::drop_na(.data$class)
+    tidyr::drop_na(.data$class) %>% 
+    dplyr::rowwise() %>% 
+    dplyr::group_map(is_correct, .keep=TRUE) %>% 
+    dplyr::bind_rows()
   
   return(forecast_w_results)
 }
+

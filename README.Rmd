@@ -1,6 +1,7 @@
 ---
 title: "pspforecast readme"
 output: github_document
+always_allow_html: true
 ---
 
 
@@ -30,6 +31,7 @@ remotes::install_github("BigelowLab/pspforecast")
 ```{r message=FALSE, warning=FALSE, echo=FALSE}
 library(dplyr)
 library(ggplot2)
+library(plotly)
 
 library(pspdata)
 library(pspforecast)
@@ -131,6 +133,7 @@ p3_v_tox <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, y=.
 
 p3_v_tox
 ```
+
 
 ## Forecast Skill (2022 Season)
 

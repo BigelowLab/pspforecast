@@ -23,15 +23,21 @@ format_probs <- function(probs) {
 #' @param format logical, if true, the forecast report will be formatted for stakeholders with rounded probabilities and 0 probabilities being changed to <1
 #' @param new_only logical, if true, then only the newest observations from each station will be served
 #' @param shiny logical, if true, forecast will be read from github csv rather than local; method used for deploying package in shiny app server
+#' @param season character string selecting which season's predictions to read
 #' @return tibble of predicted shellfish toxicity classifications along with their metadata
 #' 
 #' @export
 read_forecast <- function(format = FALSE, 
                           new_only=FALSE,
-                          shiny=FALSE) {
+                          shiny=FALSE,
+                          season=c("2021", "2022")[2]) {
   
   if (shiny) {
-    gh_file <- "https://github.com/BigelowLab/pspforecast/raw/master/inst/forecastdb/psp_forecast_2022.csv.gz"
+    #gh_file <- "https://github.com/BigelowLab/pspforecast/raw/master/inst/forecastdb/psp_forecast_2022.csv.gz"
+    gh_file <- sprintf("%s%s%s",
+                       "https://github.com/BigelowLab/pspforecast/raw/master/inst/forecastdb/psp_forecast_",
+                       season,
+                       ".csv.gz")
     
     temp_forecast <- tempfile()
     download.file(gh_file, temp_forecast, quiet=TRUE)
@@ -40,7 +46,12 @@ read_forecast <- function(format = FALSE,
     
     unlink(temp_forecast)
   } else {
-    file = system.file("forecastdb/psp_forecast_2022.csv.gz", package="pspforecast")
+    file_end <- sprintf("%s%s%s",
+                        "forecastdb/psp_forecast_",
+                        season,
+                        ".csv.gz")
+    
+    file = system.file(file_end, package="pspforecast")
     
     forecast <- suppressMessages(readr::read_csv(file))
   }

@@ -1,0 +1,102 @@
+---
+title: "PSP Forecast Interactive Results"
+author: "Johnathan Evanilla"
+date: "8/30/2022"
+output: html_document
+---
+
+
+
+
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+library(dplyr)
+library(ggplot2)
+library(plotly)
+
+library(pspdata)
+library(pspforecast)
+```
+
+
+```{r echo=FALSE}
+psp <- read_psp_data() %>% 
+  dplyr::mutate(year = as.numeric(format(date, format="%Y")),
+                doy = as.numeric(format(date, format="%j")),
+                week = as.numeric(format(date, format="%U")))
+```
+
+
+## 2021 Season 
+
+
+```{r echo=FALSE}
+predictions <- read_forecast(season="2021")
+```
+
+```{r echo=FALSE}
+pred_w_results <- add_forecast_results(predictions, toxin_measurements = psp)
+```
+
+```{r echo=FALSE}
+pal <- c("red", "blue")
+```
+
+```{r echo=FALSE}
+hline <- function(y = 0, color = "black") {
+  list(
+    type = "line",
+    x0 = 0,
+    x1 = 1,
+    xref = "paper",
+    y0 = y,
+    y1 = y,
+    line = list(color = color, dash="dot")
+  )
+}
+```
+
+
+```{r echo=FALSE}
+plot_ly(data=pred_w_results, 
+        x=~prob_3, 
+        y=~toxicity,
+        color=~correct,
+        colors = pal,
+        type="scatter",
+        mode="markers",
+        text=~paste("Location:", location, "<br>", "Date:", date, "<br>", "Predicted Class:", predicted_class, "<br>", "Actual Class", class)) %>% 
+  layout(shapes=hline(80),
+         legend=list(title=list(text='<b> Prediction was correct </b>')),
+         xaxis = list(title = list(text ='Predicted Probability of Closure-level Toxicity (%)')),
+         yaxis = list(title = list(text ='Toxocity Measured During Forecast Period (units)')))
+```
+
+
+## 2022 Season 
+
+
+```{r echo=FALSE}
+predictions <- read_forecast(season="2022")
+```
+
+```{r echo=FALSE}
+pred_w_results <- add_forecast_results(predictions, toxin_measurements = psp)
+```
+
+
+```{r echo=FALSE}
+plot_ly(data=pred_w_results, 
+        x=~p_3, 
+        y=~toxicity,
+        color=~correct,
+        colors = pal,
+        type="scatter",
+        mode="markers",
+        text=~paste("Location:", location, "<br>", "Date:", date, "<br>", "Predicted Class:", predicted_class, "<br>", "Actual Class", class)) %>% 
+  layout(shapes=hline(80),
+         legend=list(title=list(text='<b> Prediction was correct </b>')),
+         xaxis = list(title = list(text ='Predicted Probability of Closure-level Toxicity (%)')),
+         yaxis = list(title = list(text ='Toxocity Measured During Forecast Period (units)')))
+```
+
+
