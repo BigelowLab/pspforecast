@@ -71,7 +71,7 @@ predictions <- read_forecast()
 glimpse(predictions)
 ```
 
-    ## Rows: 727
+    ## Rows: 734
     ## Columns: 18
     ## $ version             <chr> "v0.1.3", "v0.1.3", "v0.1.3", "v0.1.3", "v0.1.3", …
     ## $ ensemble_n          <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10…
@@ -114,7 +114,7 @@ glimpse(predictions)
     ## # A tibble: 1 × 1
     ##   accuracy
     ##      <dbl>
-    ## 1    0.795
+    ## 1    0.797
 
 ### Closure-level (Class 3) Prediction Metrics
 
@@ -135,8 +135,8 @@ glimpse(predictions)
     ## # A tibble: 1 × 7
     ##      tp    fp    tn    fn precision sensitivity specificity
     ##   <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
-    ## 1    16    20   596    12     0.444       0.571       0.968
+    ## 1    16    20   603    12     0.444       0.571       0.968
 
 ### Last Updated
 
-    ## [1] "2022-08-30"
+    ## [1] "2022-09-02"
