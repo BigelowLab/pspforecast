@@ -7,6 +7,7 @@ library(leaflet)
 library(dplyr)
 library(plotly)
 
+
 library(pspforecast)
 
 
@@ -33,38 +34,118 @@ results22 <- add_forecast_results(predictions22, psp) |>
 
 predictions <- bind_rows(results21, results22)
 
-#confusion_matrix <- plot_season(results)
+n_predictions <- c(nrow(predictions21), nrow(predictions22))
 
+current_forecast <- read_forecast(season="2022", new_only = TRUE)
 
 ### Shiny App ###
+
 ui <- fluidPage(
     titlePanel("Interactive PSP Forecast Results Explorer"),
-
-    sidebarLayout(
-        position="right",
-        sidebarPanel(
-            h3("Select a week and season"),
-            selectInput("season",
-                        "Season:",
-                        c("2021", "2022")),
-            sliderInput("week",
-                        "Week of Season:",
-                        min = 1,
-                        max = 22,
-                        value = 1)
+    tabsetPanel(
+        tabPanel("Seasonal",
+                 titlePanel("Seasonal Results"),
+                 sidebarLayout(
+                     position="right",
+                     sidebarPanel(
+                         h3("Select a season"),
+                         selectInput("season",
+                                     "Season:",
+                                     c("2021", "2022"))
+                     ),
+                 mainPanel(verticalLayout(
+                     htmlOutput("season_predictions"),
+                     h3("Closure risk vs measured toxicity"),
+                     plotlyOutput("seasonalScatter"),
+                     h3("Confusion Matrix"),
+                     plotOutput("seasonalConfusion",
+                                width="80%"))
+                 ))
         ),
-        mainPanel(verticalLayout(
-            leafletOutput("forecast_map"),
-            h3("Closure risk vs measured toxicity"),
-            plotlyOutput("scatter"),
-            h3("Confusion Matrix"),
-            plotOutput("confusion_matrix",
-                       width="80%"))
-        )
-    )
-)
+        tabPanel("Weekly",
+                 titlePanel("Weekly Results"),
+                 
+                 sidebarLayout(
+                     position="right",
+                     sidebarPanel(
+                         h3("Select a week and season"),
+                         selectInput("season",
+                                     "Season:",
+                                     c("2021", "2022")),
+                         sliderInput("week",
+                                     "Week of Season:",
+                                     min = 1,
+                                     max = 22,
+                                     value = 1)
+                     ),
+                     mainPanel(verticalLayout(
+                         leafletOutput("forecast_map"),
+                         h3("Closure risk vs measured toxicity"),
+                         plotlyOutput("scatter"),
+                         h3("Confusion Matrix"),
+                         plotOutput("confusion_matrix",
+                                    width="80%"))
+                     )
+                 )
+        ),
+        tabPanel("Current Forecast")
+))
 
 server <- function(input, output) {
+    
+    output$season_predictions <- renderUI({
+        
+        results <- predictions |>
+            filter(season == input$season)
+        
+        a <- paste("Total predictions made:", n_predictions[as.numeric(input$season)-2020], sep=" ")
+        b <- paste("Measurable predictions:", nrow(results), sep=" ")
+        HTML(paste(a, b, sep="<br/>"))
+    })
+    
+    output$seasonalScatter <- renderPlotly({
+        results <- predictions |>
+            filter(season == input$season)
+        
+        pal <- c("red", "blue")
+        
+        plot_ly(data=results, 
+                x=~prob_3, 
+                y=~toxicity,
+                color=~correct,
+                colors = pal,
+                type="scatter",
+                mode="markers",
+                text=~paste("Location:", location, "<br>", "Date:", date, "<br>", "Predicted Class:", predicted_class, "<br>", "Actual Class", class)) |>
+            layout(#shapes=hline(80),
+                legend=list(title=list(text='<b> Prediction was correct </b>')),
+                xaxis = list(title = list(text ='Predicted Probability of Closure-level Toxicity (%)')),
+                yaxis = list(title = list(text ='Toxocity Measured During Forecast Period (units)')))
+    })
+    
+    output$seasonalConfusion <- renderPlot({
+        results <- predictions |>
+            filter(season == input$season)
+        
+        num_levels <- 4
+        levels <- seq(from=0, to=(num_levels-1))
+        
+        cm <- as.data.frame(table(predicted = factor(results$predicted_class, levels), actual = factor(results$class, levels)))
+        
+        ggplot2::ggplot(data = cm,
+                        mapping = ggplot2::aes(x = .data$predicted, y = .data$actual)) +
+            ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
+            ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), vjust = 1, size=8) +
+            ggplot2::scale_fill_gradient(low = "white", 
+                                         high = "blue") +
+            ggplot2::labs(x = "Predicted Classifications", 
+                          y = "Actual Classifications") +
+            ggplot2::theme_linedraw() +
+            ggplot2::theme(axis.text=  ggplot2::element_text(size=14),
+                           axis.title= ggplot2::element_text(size=14,face="bold"),
+                           title =     ggplot2::element_text(size = 14, face = "bold"),
+                           legend.position = "none") 
+    })
     
     output$forecast_map <- renderLeaflet({
         results <- predictions |>
@@ -138,6 +219,7 @@ server <- function(input, output) {
                            title =     ggplot2::element_text(size = 14, face = "bold"),
                            legend.position = "none") 
     })
+    
 }
 
 # Run the application 
