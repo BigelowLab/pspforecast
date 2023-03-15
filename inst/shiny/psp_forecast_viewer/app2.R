@@ -6,6 +6,7 @@ library(leaflet)
 
 library(dplyr)
 library(plotly)
+library(ggplot2)
 
 
 library(pspforecast)
@@ -37,6 +38,10 @@ predictions <- bind_rows(results21, results22)
 n_predictions <- c(nrow(predictions21), nrow(predictions22))
 
 current_forecast <- read_forecast(season="2022", new_only = TRUE)
+
+
+dummy <- read_forecast(season="2022", shiny=TRUE) |> 
+    filter(between(date, as.Date("2022-05-22"), as.Date("2022-05-25")))
 
 ### Shiny App ###
 
@@ -88,8 +93,14 @@ ui <- fluidPage(
                      )
                  )
         ),
-        tabPanel("Current Forecast")
-))
+        tabPanel("Current Forecast",
+                 titlePanel("Experimental Coastal Maine Shellfish PSP Toxicity 4-10 Day Forecast"),
+                 mainPanel(
+                     verticalLayout(
+                         leafletOutput("current_forecast")))
+                 )
+    )
+)
 
 server <- function(input, output) {
     
@@ -112,15 +123,16 @@ server <- function(input, output) {
         plot_ly(data=results, 
                 x=~prob_3, 
                 y=~toxicity,
-                color=~correct,
-                colors = pal,
+                #color=~correct,
+                #colors = pal,
                 type="scatter",
                 mode="markers",
                 text=~paste("Location:", location, "<br>", "Date:", date, "<br>", "Predicted Class:", predicted_class, "<br>", "Actual Class", class)) |>
-            layout(#shapes=hline(80),
-                legend=list(title=list(text='<b> Prediction was correct </b>')),
-                xaxis = list(title = list(text ='Predicted Probability of Closure-level Toxicity (%)')),
-                yaxis = list(title = list(text ='Toxocity Measured During Forecast Period (units)')))
+          add_lines(y=80) |>
+            layout(#shapes=add_line(80),
+                #legend=list(title=list(text='<b> Prediction was correct </b>')),
+                xaxis = list(title = list(text ='<b>Predicted Probability of Closure-level Toxicity (%)</b>')),
+                yaxis = list(title = list(text ='<b>Toxicity Measured During Forecast Period (units)</b>')))
     })
     
     output$seasonalConfusion <- renderPlot({
@@ -156,7 +168,8 @@ server <- function(input, output) {
         
         leaflet() |>
             setView(lng=-68.5,lat = 44, zoom = 7) |>
-            addTiles(group= "Default Background") |>
+            #addTiles(group= "Default Background") |>
+            addProviderTiles("Esri.NatGeoWorldMap") |>
             addCircleMarkers(data=results,
                              lng = ~lon,
                              lat = ~lat,
@@ -218,6 +231,29 @@ server <- function(input, output) {
                            axis.title= ggplot2::element_text(size=14,face="bold"),
                            title =     ggplot2::element_text(size = 14, face = "bold"),
                            legend.position = "none") 
+    })
+    
+    output$current_forecast <- renderLeaflet({
+        pal <- colorNumeric(c("dimgray","gold", "orange", "red"), 0:3)
+        
+        leaflet() |>
+            setView(lng=-68.5,lat = 44, zoom = 7) |>
+            #addTiles(group= "Default Background") |>
+            addProviderTiles("Thunderforest.Landscape") |>
+            addCircleMarkers(data=dummy,
+                             lng = ~lon,
+                             lat = ~lat,
+                             popup = paste(sep= "<br>",
+                                           paste("<b> Location: <b>", dummy$name),
+                                           paste("<b> Location ID: <b>", dummy$location),
+                                           paste("<b> Forecast Window Start Date: <b>", dummy$forecast_start_date),
+                                           paste("<b> Forecast Window End Date: <b>", dummy$forecast_end_date),
+                                           paste("<b> Probability of Closure-level Toxicity: <b>", dummy$p_3)),
+                             color = ~pal(predicted_class)) |>
+            addLegend(position = "bottomright", 
+                      title = "Predicted Toxicity Class",
+                      colors = c("dimgray", "gold", "orange", "red"), 
+                      labels = c("Low", "Medium", "High", "Closure-level"))
     })
     
 }
