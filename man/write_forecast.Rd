@@ -4,10 +4,12 @@
 \alias{write_forecast}
 \title{Adds a new forecast file of predictions/data to the database}
 \usage{
-write_forecast(predictions)
+write_forecast(new_predictions, user_config)
 }
 \arguments{
-\item{predictions}{tibble of new shellfish toxicity classification predictions}
+\item{new_predictions}{list with two tibbles of new shellfish toxicity predictions}
+
+\item{user_config}{character}
 }
 \description{
 Adds a new forecast file of predictions/data to the database

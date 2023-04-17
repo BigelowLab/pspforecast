@@ -1,28 +1,9 @@
-#' Takes a column of probabilities and formats them for stakeholder delivery (rounds to integer and adds percent symbol)
-#' 
-#' @param probs vector of probabilities
-#' @return formatted vector of probabilities
-#' 
-#' @export
-format_probs <- function(probs) {
-  
-  rounded <- sapply(probs, round)
-  
-  to_char <- sapply(rounded, as.character)
-  
-  no_zero <- sapply(to_char, function(x) if (x == "0") {x = "<1"} else {x})
-  
-  r <- sapply(no_zero, function(x) {return(paste(x, "%", sep=""))})
-  
-  return(r)
-}
-
-
 #' Reads forecast database
 #' 
 #' @param format logical, if true, the forecast report will be formatted for stakeholders with rounded probabilities and 0 probabilities being changed to <1
 #' @param new_only logical, if true, then only the newest observations from each station will be served
 #' @param shiny logical, if true, forecast will be read from github csv rather than local; method used for deploying package in shiny app server
+#' @param id logical if true the tibble of predictions returned will have an f_id column that is the location and date pasted together
 #' @param season character string selecting which season's predictions to read
 #' @return tibble of predicted shellfish toxicity classifications along with their metadata
 #' 
@@ -30,7 +11,8 @@ format_probs <- function(probs) {
 read_forecast <- function(format = FALSE, 
                           new_only=FALSE,
                           shiny=FALSE,
-                          season=c("2021", "2022")[2]) {
+                          id = FALSE,
+                          season=c("2021", "2022", "2023")[3]) {
   
   if (shiny) {
     #gh_file <- "https://github.com/BigelowLab/pspforecast/raw/master/inst/forecastdb/psp_forecast_2022.csv.gz"
@@ -61,26 +43,26 @@ read_forecast <- function(format = FALSE,
     #all_forecast <- suppressMessages(readr::read_csv(file))
     
     get_newest <- function(tbl, key) {
-      newest <- tbl %>% 
-        tail(n=1) %>% 
+      newest <- tbl |> 
+        tail(n=1) |> 
         dplyr::filter(.data$forecast_end_date > Sys.Date()-3)
       return(newest)
     }
     
-    forecast <- forecast %>% 
-      dplyr::arrange(.data$date) %>% 
-      dplyr::group_by(.data$location) %>% 
-      dplyr::group_map(get_newest, .keep=TRUE) %>% 
+    forecast <- forecast |> 
+      dplyr::arrange(.data$date) |> 
+      dplyr::group_by(.data$location) |> 
+      dplyr::group_map(get_newest, .keep=TRUE) |> 
       dplyr::bind_rows() 
 
   } 
   
   if (format) {
-    forecast <- forecast %>% 
+    forecast <- forecast |> 
       dplyr::mutate(prob_0 = format_probs(.data$p_0),
                     prob_1 = format_probs(.data$p_1),
                     prob_2 = format_probs(.data$p_2),
-                    prob_3 = format_probs(.data$p_3)) %>% 
+                    prob_3 = format_probs(.data$p_3)) |> 
       dplyr::select(-.data$version,
                     -.data$class_bins,
                     -.data$ensemble_n,
@@ -89,35 +71,27 @@ read_forecast <- function(format = FALSE,
                     -.data$p_2,
                     -.data$p_3)
   }
+  
+  if (id) {
+    forecast <- forecast |>
+      dplyr::mutate(f_id = paste(.data$location, .data$date, sep="_"))
+  }
+  
   return(forecast)
 }
 
 
 #' Adds a new forecast file of predictions/data to the database 
 #'
-#' @param predictions tibble of new shellfish toxicity classification predictions
+#' @param new_predictions list with two tibbles of new shellfish toxicity predictions
+#' @param user_config character
+#' @return NULL
 #' 
-write_forecast <- function(predictions) {
+#' @export
+write_forecast <- function(new_predictions, user_config) {
   
-  file <- file.path("inst/forecastdb/psp_forecast_2021.csv.gz")
+  suppressMessages(readr::write_csv(new_predictions$ensemble_forecast, file.path(user_config$output$ensemble_path)))
   
-  predictions %>% readr::write_csv(file, append=TRUE)
+  suppressMessages(readr::write_csv(new_predictions$ensemble_runs, file.path(user_config$output$all_path)))
   
 }
-
-
-#' Adds new forecast data to the database
-#' 
-#' @param predictions tibble of new shellfish toxicity classification predictions
-#' 
-append_forecast <- function(predictions) {
-  
-  file <- file.path("inst/forecastdb/test_forecast_db.csv.gz")
-  
-  forecast_db <- read_forecast() %>% 
-    rbind(predictions) %>% 
-    dplyr::distinct() %>% 
-    suppressMessages(readr::write_csv(file))
-  
-}
-
