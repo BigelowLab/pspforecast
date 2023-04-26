@@ -2,7 +2,7 @@
 % Please edit documentation in R/forecast_io.R
 \name{write_forecast}
 \alias{write_forecast}
-\title{Adds a new forecast file of predictions/data to the database}
+\title{Adds or appends a new forecast file of predictions/data to the database}
 \usage{
 write_forecast(new_predictions, user_config)
 }
@@ -12,5 +12,5 @@ write_forecast(new_predictions, user_config)
 \item{user_config}{character}
 }
 \description{
-Adds a new forecast file of predictions/data to the database
+Adds or appends a new forecast file of predictions/data to the database
 }

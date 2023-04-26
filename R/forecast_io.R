@@ -81,7 +81,7 @@ read_forecast <- function(format = FALSE,
 }
 
 
-#' Adds a new forecast file of predictions/data to the database 
+#' Adds or appends a new forecast file of predictions/data to the database 
 #'
 #' @param new_predictions list with two tibbles of new shellfish toxicity predictions
 #' @param user_config character
@@ -90,8 +90,8 @@ read_forecast <- function(format = FALSE,
 #' @export
 write_forecast <- function(new_predictions, user_config) {
   
-  suppressMessages(readr::write_csv(new_predictions$ensemble_forecast, file.path(user_config$output$ensemble_path)))
+  suppressMessages(readr::write_csv(new_predictions$ensemble_forecast, file.path(user_config$output$ensemble_path), append=TRUE))
   
-  suppressMessages(readr::write_csv(new_predictions$ensemble_runs, file.path(user_config$output$all_path)))
+  suppressMessages(readr::write_csv(new_predictions$ensemble_runs, file.path(user_config$output$all_path), append=TRUE))
   
 }
