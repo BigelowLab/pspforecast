@@ -4,7 +4,7 @@
 #' @param new_only logical, if true, then only the newest observations from each station will be served
 #' @param shiny logical, if true, forecast will be read from github csv rather than local; method used for deploying package in shiny app server
 #' @param id logical if true the tibble of predictions returned will have an f_id column that is the location and date pasted together
-#' @param season character string selecting which season's predictions to read
+#' @param year character string selecting which year's predictions to read
 #' @return tibble of predicted shellfish toxicity classifications along with their metadata
 #' 
 #' @export
@@ -12,13 +12,13 @@ read_forecast <- function(format = FALSE,
                           new_only=FALSE,
                           shiny=FALSE,
                           id = FALSE,
-                          season=c("2021", "2022", "2023")[3]) {
+                          year=c("2021", "2022", "2023")[3]) {
   
   if (shiny) {
     #gh_file <- "https://github.com/BigelowLab/pspforecast/raw/master/inst/forecastdb/psp_forecast_2022.csv.gz"
     gh_file <- sprintf("%s%s%s",
                        "https://github.com/BigelowLab/pspforecast/raw/master/inst/forecastdb/psp_forecast_",
-                       season,
+                       year,
                        ".csv.gz")
     
     temp_forecast <- tempfile()
@@ -30,7 +30,7 @@ read_forecast <- function(format = FALSE,
   } else {
     file_end <- sprintf("%s%s%s",
                         "forecastdb/psp_forecast_",
-                        season,
+                        year,
                         ".csv.gz")
     
     file = system.file(file_end, package="pspforecast")

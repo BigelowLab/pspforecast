@@ -1,11 +1,9 @@
 ---
-title: "pspforecast readme"
+title: "pspforecast"
 output: github_document
 always_allow_html: true
 ---
 
-
-# pspforecast
 
 Shellfish toxicity forecast serving package
 
@@ -77,7 +75,7 @@ psp <- read_psp_data() %>%
 
 
 ```{r}
-predictions <- read_forecast()
+predictions <- read_forecast(year = "2022")
 
 glimpse(predictions)
 ```

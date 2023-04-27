@@ -9,7 +9,7 @@ read_forecast(
   new_only = FALSE,
   shiny = FALSE,
   id = FALSE,
-  season = c("2021", "2022", "2023")[3]
+  year = c("2021", "2022", "2023")[3]
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ read_forecast(
 
 \item{id}{logical if true the tibble of predictions returned will have an f_id column that is the location and date pasted together}
 
-\item{season}{character string selecting which season's predictions to read}
+\item{year}{character string selecting which year's predictions to read}
 }
 \value{
 tibble of predicted shellfish toxicity classifications along with their metadata

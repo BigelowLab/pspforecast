@@ -1,21 +1,19 @@
-pspforecast readme
+pspforecast
 ================
-
-# pspforecast
 
 Shellfish toxicity forecast serving package
 
 ## Requirements
 
--   [R v4+](https://www.r-project.org/)
+- [R v4+](https://www.r-project.org/)
 
--   [rlang](https://CRAN.R-project.org/package=rlang)
+- [rlang](https://CRAN.R-project.org/package=rlang)
 
--   [dplyr](https://CRAN.R-project.org/package=dplyr)
+- [dplyr](https://CRAN.R-project.org/package=dplyr)
 
--   [readr](https://CRAN.R-project.org/package=readr)
+- [readr](https://CRAN.R-project.org/package=readr)
 
--   [tidyr](https://CRAN.R-project.org/package=tidyr)
+- [tidyr](https://CRAN.R-project.org/package=tidyr)
 
 ## Installation
 
@@ -25,48 +23,48 @@ Shellfish toxicity forecast serving package
 
 ### Variables:
 
--   version - the version/configuration of the model used to make the
-    prediction
+- version - the version/configuration of the model used to make the
+  prediction
 
--   ensemble\_n - number of ensemble members used to generate prediction
+- ensemble_n - number of ensemble members used to generate prediction
 
--   location - the sampling station the forecast is for
+- location - the sampling station the forecast is for
 
--   date - the date the forecast was made on
+- date - the date the forecast was made on
 
--   name - site name
+- name - site name
 
--   lat - latitude
+- lat - latitude
 
--   lon - longitude
+- lon - longitude
 
--   class\_bins - the bins used to classify shellfish total toxicity
-    (i.e. 0: 0-10, 1: 10-30, 2: 30-80, 3: &gt;80)
+- class_bins - the bins used to classify shellfish total toxicity
+  (i.e. 0: 0-10, 1: 10-30, 2: 30-80, 3: \>80)
 
--   forecast\_date - the date the forecast is valid for (i.e. one week
-    ahead of when it was made)
+- forecast_date - the date the forecast is valid for (i.e. one week
+  ahead of when it was made)
 
--   predicted\_class - the predicted classification at the location
-    listed on the forecast\_date (in this case 0-3)
+- predicted_class - the predicted classification at the location listed
+  on the forecast_date (in this case 0-3)
 
--   p\_0 - class 0 probability
+- p_0 - class 0 probability
 
--   p\_1 - class 1 probability
+- p_1 - class 1 probability
 
--   p\_2 - class 2 probability
+- p_2 - class 2 probability
 
--   p\_3 - class 3 probability
+- p_3 - class 3 probability
 
--   p3\_sd - class 3 probability standard deviation
+- p3_sd - class 3 probability standard deviation
 
--   p\_3\_min - class 3 minimum probability (from ensemble run)
+- p_3\_min - class 3 minimum probability (from ensemble run)
 
--   p\_3\_max - class 3 maximum probability (from ensemble run)
+- p_3\_max - class 3 maximum probability (from ensemble run)
 
--   predicted\_class - the predicted classification
+- predicted_class - the predicted classification
 
 ``` r
-predictions <- read_forecast()
+predictions <- read_forecast(year = "2022")
 
 glimpse(predictions)
 ```
@@ -106,8 +104,8 @@ glimpse(predictions)
 
 #### Overall Metrics:
 
--   -   Accuracy of all predictions made that were measured the
-        following week
+- - Accuracy of all predictions made that were measured the following
+    week
 
 <!-- -->
 
@@ -118,17 +116,17 @@ glimpse(predictions)
 
 ### Closure-level (Class 3) Prediction Metrics
 
--   tp - The model predicted class 3 and the following week’s
-    measurement was class 3
--   fp - The model predicted class 3 and the following week’s
-    measurement was not class 3
--   tn - The model predicted class 0,1,2 and the following week’s
-    measurement was in class 0,1,2
--   fn - The model predicted class 0,1,2 and the following week’s
-    measurement was class 3
--   precision - TP/(TP+FP)
--   sensitivity - TP/(TP+FN)
--   specificity - TN/(TN+FP)
+- tp - The model predicted class 3 and the following week’s measurement
+  was class 3
+- fp - The model predicted class 3 and the following week’s measurement
+  was not class 3
+- tn - The model predicted class 0,1,2 and the following week’s
+  measurement was in class 0,1,2
+- fn - The model predicted class 0,1,2 and the following week’s
+  measurement was class 3
+- precision - TP/(TP+FP)
+- sensitivity - TP/(TP+FN)
+- specificity - TN/(TN+FP)
 
 <!-- -->
 
@@ -139,4 +137,4 @@ glimpse(predictions)
 
 ### Last Updated
 
-    ## [1] "2022-09-02"
+    ## [1] "2023-04-27"
