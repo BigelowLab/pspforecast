@@ -2,6 +2,7 @@
 
 export(add_forecast_results)
 export(format_probs)
+export(get_recent_year)
 export(read_forecast)
 export(recode_classification)
 export(write_forecast)
