@@ -10,15 +10,15 @@ add_forecast_results <- function(predictions,
                                  toxin_measurements,
                                  tox_levels = c(0,10,30,80)) {
   
-  toxin_measurements <- toxin_measurements %>% 
-    dplyr::mutate(classification = recode_classification(.data$total_toxicity, tox_levels)) %>% 
+  toxin_measurements <- toxin_measurements |> 
+    dplyr::mutate(classification = recode_classification(.data$total_toxicity, tox_levels)) |> 
     dplyr::filter(date >= min(predictions$forecast_start_date))
   
   
   find_result <- function(tbl, key, tox=NULL) {
     
-    db <- tox %>% 
-      dplyr::filter(.data$location_id == key$location[1]) %>% #add break
+    db <- tox |> 
+      dplyr::filter(.data$location_id == key$location[1]) |> #add break
       dplyr::filter(dplyr::between(date, tbl$forecast_start_date, tbl$forecast_end_date))
     
     if (nrow(db) == 0) {
@@ -35,19 +35,19 @@ add_forecast_results <- function(predictions,
       return(empty_results)
     } else if (nrow(db) > 1) {
       
-      db <- db %>% 
-        dplyr::filter(.data$total_toxicity == max(.data$total_toxicity)) %>% 
+      db <- db |> 
+        dplyr::filter(.data$total_toxicity == max(.data$total_toxicity)) |> 
         head(n=1)
       
-      forecast_results <- tbl %>% 
-        dplyr::select(version, .data$location, date) %>% 
+      forecast_results <- tbl |> 
+        dplyr::select(version, .data$location, date) |> 
         dplyr::mutate(measurement_date = as.Date(db$date),
                       toxicity = db$total_toxicity,
                       class = db$classification)
     } 
     
-    forecast_results <- tbl %>% 
-      dplyr::select(version, .data$location, date) %>% 
+    forecast_results <- tbl |> 
+      dplyr::select(version, .data$location, date) |> 
       dplyr::mutate(measurement_date = as.Date(db$date),
                     toxicity = db$total_toxicity,
                     class = db$classification)
@@ -59,25 +59,25 @@ add_forecast_results <- function(predictions,
   is_correct <- function(x, y) {
     
     if (x$predicted_class == x$class) {
-      x <- x %>% 
+      x <- x |> 
         dplyr::mutate(correct = TRUE)
     } else {
-      x <- x %>% 
+      x <- x |> 
         dplyr::mutate(correct=FALSE)
     }
   }
     
   
-  results <- predictions %>%
-    dplyr::group_by(.data$location, .data$date) %>% 
-    dplyr::group_map(find_result, .keep=TRUE, tox=toxin_measurements) %>% 
-    dplyr::bind_rows() %>% 
+  results <- predictions |>
+    dplyr::group_by(.data$location, .data$date) |> 
+    dplyr::group_map(find_result, .keep=TRUE, tox=toxin_measurements) |> 
+    dplyr::bind_rows() |> 
     dplyr::arrange(date)
   
-  forecast_w_results <- dplyr::full_join(predictions, results, by=c("version", "location", "date")) %>% 
-    tidyr::drop_na(.data$class) %>% 
-    dplyr::rowwise() %>% 
-    dplyr::group_map(is_correct, .keep=TRUE) %>% 
+  forecast_w_results <- dplyr::full_join(predictions, results, by=c("version", "location", "date")) |> 
+    tidyr::drop_na(.data$class) |> 
+    dplyr::rowwise() |> 
+    dplyr::group_map(is_correct, .keep=TRUE) |> 
     dplyr::bind_rows()
   
   return(forecast_w_results)
