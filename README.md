@@ -135,6 +135,10 @@ glimpse(predictions)
     ##   <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
     ## 1    16    20   603    12     0.444       0.571       0.968
 
+## Timing of clusre-level predictions
+
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
 ### Last Updated
 
-    ## [1] "2023-04-27"
+    ## [1] "2023-05-16"

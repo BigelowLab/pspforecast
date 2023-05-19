@@ -202,6 +202,22 @@ metrics_c3
 ```
 
 
+## Timing of closure-level predictions
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+closures <- find_closures(psp, predictions)
+```
+
+
+```{r echo=FALSE, warning=FALSE, message = FALSE}
+ggplot(closures, aes(x = predicted_week, y = actual_week)) +
+  geom_point() +
+  geom_abline(intercept = 0, linetype="dashed") +
+  labs(x = "First predicted closure-level toxicity (week of year)",
+       y = "First measured closure-level toxicity (week of year)")
+```
+
+
 ### Last Updated
 
 ```{r echo=FALSE}
