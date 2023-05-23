@@ -75,21 +75,21 @@ psp <- read_psp_data() %>%
 
 
 ```{r}
-predictions <- read_forecast(year = "2022")
+predictions <- read_forecast(year = "2023") |>
+  unique()
 
 glimpse(predictions)
 ```
 
+## 2023 Season Results
 
 ```{r echo=FALSE}
 pred_w_results <- add_forecast_results(predictions, toxin_measurements = psp)
 ```
 
-## 2022 Season Performance
-
 ### Confusion Matrix
 
-```{r cm1, echo=FALSE, cahce=FALSE}
+```{r cm23, echo=FALSE, cahce=FALSE}
 num_levels <- 4
 levels <- seq(from=0, to=(num_levels-1))
 
@@ -121,7 +121,7 @@ confusion_matrix
 
 ### Probability of Closure-level Toxicity vs Measured Toxicity
 
-```{r scatter1, echo=FALSE, cache=FALSE}
+```{r scatter23, echo=FALSE, cache=FALSE}
 
 p3_v_tox <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, y=.data$toxicity)) +
   ggplot2::geom_point(alpha=0.7, size=3) +
@@ -132,12 +132,9 @@ p3_v_tox <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, y=.
 p3_v_tox
 ```
 
+### Metrics 
 
-## Forecast Skill (2022 Season)
-
-#### Overall Metrics:
-
- +  - Accuracy of all predictions made that were measured the following week
+#### Season Accuracy:
  
 
 ```{r echo=FALSE}
@@ -151,7 +148,8 @@ metrics <- tibble(accuracy = correct/nrow(pred_w_results))
 metrics
 ```
 
-### Closure-level (Class 3) Prediction Metrics
+#### Closure-level (Class 3) Predictions
+
  + tp - The model predicted class 3 and the following week's measurement was class 3
  + fp - The model predicted class 3 and the following week's measurement was not class 3
  + tn - The model predicted class 0,1,2 and the following week's measurement was in class 0,1,2
@@ -202,7 +200,270 @@ metrics_c3
 ```
 
 
-## Timing of closure-level predictions
+
+## 2022 Season Results
+
+
+```{r echo=FALSE}
+predictions <- read_forecast(year = "2022")
+```
+
+
+```{r echo=FALSE}
+pred_w_results <- add_forecast_results(predictions, toxin_measurements = psp)
+```
+
+### Confusion Matrix
+
+```{r cm22, echo=FALSE, cahce=FALSE}
+num_levels <- 4
+levels <- seq(from=0, to=(num_levels-1))
+
+
+cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, levels), actual = factor(pred_w_results$class, levels))) %>% 
+  mutate(frac = round(Freq/sum(Freq)*100)) %>% 
+  mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
+  #mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
+
+confusion_matrix <- ggplot2::ggplot(data = cm,
+                                    mapping = ggplot2::aes(x = .data$predicted, y = .data$actual)) +
+  ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
+  ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
+  #ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f%%", .data$frac)), vjust = -1, hjust=1, size=5) +
+  ggplot2::geom_text(ggplot2::aes(label = paste(.data$frac, "%", sep="")), vjust = 3, size=4)+
+  ggplot2::scale_fill_gradient(low = "white", 
+                               high = "blue") +
+  ggplot2::labs(x = "Predicted Classifications", 
+                y = "Actual Classifications") +
+  ggplot2::theme_linedraw() +
+  ggplot2::theme(axis.text=  ggplot2::element_text(size=14),
+                 axis.title= ggplot2::element_text(size=14,face="bold"),
+                 title =     ggplot2::element_text(size = 14, face = "bold"),
+                 legend.position = "none")
+
+confusion_matrix
+
+```
+
+### Probability of Closure-level Toxicity vs Measured Toxicity
+
+```{r scatter22, echo=FALSE, cache=FALSE}
+
+p3_v_tox <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, y=.data$toxicity)) +
+  ggplot2::geom_point(alpha=0.7, size=3) +
+  ggplot2::labs(x = "Predicted Probability of Closure-level Toxicity",
+                y = "Measured Toxicity") +
+  ggplot2::geom_hline(yintercept=80, linetype="dashed")
+
+p3_v_tox
+```
+
+### Metrics 
+
+#### Season Accuracy:
+
+```{r acc22, echo=FALSE}
+
+correct <- pred_w_results |>
+  filter(predicted_class == class) |>
+  nrow()
+
+metrics <- tibble(accuracy = correct/nrow(pred_w_results))
+
+metrics
+```
+
+#### Closure-level (Class 3) Predictions
+ + tp - The model predicted class 3 and the following week's measurement was class 3
+ + fp - The model predicted class 3 and the following week's measurement was not class 3
+ + tn - The model predicted class 0,1,2 and the following week's measurement was in class 0,1,2
+ + fn - The model predicted class 0,1,2 and the following week's measurement was class 3
+ + precision - TP/(TP+FP)
+ + sensitivity - TP/(TP+FN)
+ + specificity - TN/(TN+FP)
+
+
+```{r metrics22, echo=FALSE}
+tn <- pred_w_results |>
+  filter(predicted_class != 3 & class != 3) |>
+  nrow()
+
+tp <- pred_w_results %>% 
+  dplyr::filter(.data$predicted_class == 3 & .data$class == 3) %>% 
+  nrow()
+  
+fp <- pred_w_results %>% 
+  dplyr::filter(.data$predicted_class == 3 & .data$class != 3) %>% 
+  nrow()
+  
+precision = tp/(tp+fp)
+  
+fn = pred_w_results %>% 
+  dplyr::filter(.data$predicted_class != 3 & .data$class == 3) %>% 
+  nrow()
+  
+recall = tp/(tp+fn)
+  
+f_1 = (2)*(precision*recall)/(precision+recall)
+
+sensitivity = tp/(tp+fn)
+
+specificity = tn/(tn+fp)
+
+
+metrics_c3 <- tibble(tp = tp,
+                     fp = fp,
+                     tn = tn,
+                     fn = fn,
+                     precision = precision,
+                     #recall = recall,
+                     sensitivity = sensitivity,
+                     specificity = specificity)
+
+metrics_c3
+```
+
+
+### Timing of initial closure-level predictions
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+closures <- find_closures(psp, predictions)
+```
+
+
+```{r echo=FALSE, warning=FALSE, message = FALSE}
+ggplot(closures, aes(x = predicted_week, y = actual_week)) +
+  geom_point() +
+  geom_abline(intercept = 0, linetype="dashed") +
+  labs(x = "First predicted closure-level toxicity (week of year)",
+       y = "First measured closure-level toxicity (week of year)")
+```
+
+
+
+## 2021 Season Results
+
+```{r echo=FALSE}
+predictions <- read_forecast(year = "2021")
+```
+
+
+```{r echo=FALSE}
+pred_w_results <- add_forecast_results(predictions, toxin_measurements = psp)
+```
+
+### Confusion Matrix
+
+```{r cm21, echo=FALSE, cahce=FALSE}
+num_levels <- 4
+levels <- seq(from=0, to=(num_levels-1))
+
+
+cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, levels), actual = factor(pred_w_results$class, levels))) %>% 
+  mutate(frac = round(Freq/sum(Freq)*100)) %>% 
+  mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
+  #mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
+
+confusion_matrix <- ggplot2::ggplot(data = cm,
+                                    mapping = ggplot2::aes(x = .data$predicted, y = .data$actual)) +
+  ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
+  ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
+  #ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f%%", .data$frac)), vjust = -1, hjust=1, size=5) +
+  ggplot2::geom_text(ggplot2::aes(label = paste(.data$frac, "%", sep="")), vjust = 3, size=4)+
+  ggplot2::scale_fill_gradient(low = "white", 
+                               high = "blue") +
+  ggplot2::labs(x = "Predicted Classifications", 
+                y = "Actual Classifications") +
+  ggplot2::theme_linedraw() +
+  ggplot2::theme(axis.text=  ggplot2::element_text(size=14),
+                 axis.title= ggplot2::element_text(size=14,face="bold"),
+                 title =     ggplot2::element_text(size = 14, face = "bold"),
+                 legend.position = "none")
+
+confusion_matrix
+
+```
+
+### Probability of Closure-level Toxicity vs Measured Toxicity
+
+```{r scatter21, echo=FALSE, cache=FALSE}
+
+p3_v_tox <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$prob_3, y=.data$toxicity)) +
+  ggplot2::geom_point(alpha=0.7, size=3) +
+  ggplot2::labs(x = "Predicted Probability of Closure-level Toxicity",
+                y = "Measured Toxicity") +
+  ggplot2::geom_hline(yintercept=80, linetype="dashed")
+
+p3_v_tox
+```
+
+### Metrics 
+
+#### Season Accuracy:
+
+```{r acc21, echo=FALSE}
+
+correct <- pred_w_results |>
+  filter(predicted_class == class) |>
+  nrow()
+
+metrics <- tibble(accuracy = correct/nrow(pred_w_results))
+
+metrics
+```
+
+#### Closure-level (Class 3) Predictions
+ + tp - The model predicted class 3 and the following week's measurement was class 3
+ + fp - The model predicted class 3 and the following week's measurement was not class 3
+ + tn - The model predicted class 0,1,2 and the following week's measurement was in class 0,1,2
+ + fn - The model predicted class 0,1,2 and the following week's measurement was class 3
+ + precision - TP/(TP+FP)
+ + sensitivity - TP/(TP+FN)
+ + specificity - TN/(TN+FP)
+
+
+```{r metrics21, echo=FALSE}
+tn <- pred_w_results |>
+  filter(predicted_class != 3 & class != 3) |>
+  nrow()
+
+tp <- pred_w_results %>% 
+  dplyr::filter(.data$predicted_class == 3 & .data$class == 3) %>% 
+  nrow()
+  
+fp <- pred_w_results %>% 
+  dplyr::filter(.data$predicted_class == 3 & .data$class != 3) %>% 
+  nrow()
+  
+precision = tp/(tp+fp)
+  
+fn = pred_w_results %>% 
+  dplyr::filter(.data$predicted_class != 3 & .data$class == 3) %>% 
+  nrow()
+  
+recall = tp/(tp+fn)
+  
+f_1 = (2)*(precision*recall)/(precision+recall)
+
+sensitivity = tp/(tp+fn)
+
+specificity = tn/(tn+fp)
+
+
+metrics_c3 <- tibble(tp = tp,
+                     fp = fp,
+                     tn = tn,
+                     fn = fn,
+                     precision = precision,
+                     #recall = recall,
+                     sensitivity = sensitivity,
+                     specificity = specificity)
+
+metrics_c3
+```
+
+
+### Timing of initial closure-level predictions
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 closures <- find_closures(psp, predictions)
