@@ -463,6 +463,9 @@ metrics_c3
 ```
 
 
+### Closure-level accuracy
+
+
 ### Timing of initial closure-level predictions
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}

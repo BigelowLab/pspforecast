@@ -70,7 +70,7 @@ predictions <- read_forecast(year = "2023") |>
 glimpse(predictions)
 ```
 
-    ## Rows: 84
+    ## Rows: 204
     ## Columns: 19
     ## $ version             <chr> "v0.2.0", "v0.2.0", "v0.2.0", "v0.2.0", "v0.2.0", …
     ## $ ensemble_n          <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10…
@@ -130,7 +130,7 @@ glimpse(predictions)
     ## # A tibble: 1 × 7
     ##      tp    fp    tn    fn precision sensitivity specificity
     ##   <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
-    ## 1     0     0    41     0       NaN         NaN           1
+    ## 1     0     0   198     0       NaN         NaN           1
 
 ## 2022 Season Results
 
@@ -216,10 +216,12 @@ glimpse(predictions)
     ##   <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
     ## 1     2     3   463     0       0.4           1       0.994
 
+### Closure-level accuracy
+
 ### Timing of initial closure-level predictions
 
 ![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 ### Last Updated
 
-    ## [1] "2023-05-23"
+    ## [1] "2023-06-16"
