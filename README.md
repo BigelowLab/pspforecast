@@ -65,12 +65,12 @@ Shellfish toxicity forecast serving package
 
 ``` r
 predictions <- read_forecast(year = "2023") |>
-  unique()
+  distinct()
 
 glimpse(predictions)
 ```
 
-    ## Rows: 320
+    ## Rows: 359
     ## Columns: 19
     ## $ version             <chr> "v0.2.0", "v0.2.0", "v0.2.0", "v0.2.0", "v0.2.0", …
     ## $ ensemble_n          <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10…
@@ -109,7 +109,7 @@ glimpse(predictions)
     ## # A tibble: 1 × 1
     ##   accuracy
     ##      <dbl>
-    ## 1    0.996
+    ## 1    0.997
 
 #### Closure-level (Class 3) Predictions
 
@@ -130,7 +130,7 @@ glimpse(predictions)
     ## # A tibble: 1 × 7
     ##      tp    fp    tn    fn precision sensitivity specificity
     ##   <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
-    ## 1     0     0   271     0       NaN         NaN           1
+    ## 1     0     0   344     0       NaN         NaN           1
 
 ## 2022 Season Results
 
@@ -149,7 +149,7 @@ glimpse(predictions)
     ## # A tibble: 1 × 1
     ##   accuracy
     ##      <dbl>
-    ## 1    0.797
+    ## 1    0.799
 
 #### Closure-level (Class 3) Predictions
 
@@ -222,6 +222,14 @@ glimpse(predictions)
 
 ![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
+### Possible manuscript plot
+
+``` r
+(confusion_matrix_21 + confusion_matrix_22 + confusion_matrix_23) / (p3_v_tox_21 + p3_v_tox_22 + p3_v_tox_23)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
 ### Last Updated
 
-    ## [1] "2023-06-30"
+    ## [1] "2023-07-26"

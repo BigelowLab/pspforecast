@@ -33,6 +33,8 @@ library(plotly)
 
 library(pspdata)
 library(pspforecast)
+
+library(patchwork)
 ```
 
 ## Reading the forecast database 
@@ -66,17 +68,19 @@ library(pspforecast)
  + predicted_class - the predicted classification
 
 
-```{r echo=FALSE}
-psp <- read_psp_data() %>% 
-  dplyr::mutate(year = as.numeric(format(date, format="%Y")),
-                doy = as.numeric(format(date, format="%j")),
-                week = as.numeric(format(date, format="%U")))
-```
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+user_config <- get_user_config()
 
+psp <- read_sslabims(base_url = user_config$pspdata$base_url, 
+                     data_url = user_config$pspdata$data_url, 
+                     login = user_config$pspdata$login, 
+                     password = user_config$pspdata$password,
+                     model_ready=TRUE)
+```
 
 ```{r}
 predictions <- read_forecast(year = "2023") |>
-  unique()
+  distinct()
 
 glimpse(predictions)
 ```
@@ -94,12 +98,12 @@ num_levels <- 4
 levels <- seq(from=0, to=(num_levels-1))
 
 
-cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, levels), actual = factor(pred_w_results$class, levels))) %>% 
-  mutate(frac = round(Freq/sum(Freq)*100)) %>% 
+cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, levels), actual = factor(pred_w_results$class, levels))) |> 
+  mutate(frac = round(Freq/sum(Freq)*100)) |> 
   mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
   #mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
 
-confusion_matrix <- ggplot2::ggplot(data = cm,
+confusion_matrix_23 <- ggplot2::ggplot(data = cm,
                                     mapping = ggplot2::aes(x = .data$predicted, y = .data$actual)) +
   ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
   ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
@@ -115,7 +119,7 @@ confusion_matrix <- ggplot2::ggplot(data = cm,
                  title =     ggplot2::element_text(size = 14, face = "bold"),
                  legend.position = "none")
 
-confusion_matrix
+confusion_matrix_23
 
 ```
 
@@ -123,13 +127,13 @@ confusion_matrix
 
 ```{r scatter_23, echo=FALSE, cache=FALSE}
 
-p3_v_tox <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, y=.data$toxicity)) +
+p3_v_tox_23 <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, y=.data$toxicity)) +
   ggplot2::geom_point(alpha=0.7, size=3) +
   ggplot2::labs(x = "Predicted Probability of Closure-level Toxicity",
                 y = "Measured Toxicity") +
   ggplot2::geom_hline(yintercept=80, linetype="dashed")
 
-p3_v_tox
+p3_v_tox_23
 ```
 
 ### Metrics 
@@ -164,18 +168,18 @@ tn <- pred_w_results |>
   filter(predicted_class != 3 & class != 3) |>
   nrow()
 
-tp <- pred_w_results %>% 
-  dplyr::filter(.data$predicted_class == 3 & .data$class == 3) %>% 
+tp <- pred_w_results |> 
+  dplyr::filter(.data$predicted_class == 3 & .data$class == 3) |> 
   nrow()
   
-fp <- pred_w_results %>% 
-  dplyr::filter(.data$predicted_class == 3 & .data$class != 3) %>% 
+fp <- pred_w_results |> 
+  dplyr::filter(.data$predicted_class == 3 & .data$class != 3) |> 
   nrow()
   
 precision = tp/(tp+fp)
   
-fn = pred_w_results %>% 
-  dplyr::filter(.data$predicted_class != 3 & .data$class == 3) %>% 
+fn = pred_w_results |> 
+  dplyr::filter(.data$predicted_class != 3 & .data$class == 3) |> 
   nrow()
   
 recall = tp/(tp+fn)
@@ -220,12 +224,12 @@ num_levels <- 4
 levels <- seq(from=0, to=(num_levels-1))
 
 
-cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, levels), actual = factor(pred_w_results$class, levels))) %>% 
-  mutate(frac = round(Freq/sum(Freq)*100)) %>% 
+cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, levels), actual = factor(pred_w_results$class, levels))) |> 
+  mutate(frac = round(Freq/sum(Freq)*100)) |> 
   mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
   #mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
 
-confusion_matrix <- ggplot2::ggplot(data = cm,
+confusion_matrix_22 <- ggplot2::ggplot(data = cm,
                                     mapping = ggplot2::aes(x = .data$predicted, y = .data$actual)) +
   ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
   ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
@@ -241,21 +245,20 @@ confusion_matrix <- ggplot2::ggplot(data = cm,
                  title =     ggplot2::element_text(size = 14, face = "bold"),
                  legend.position = "none")
 
-confusion_matrix
-
+confusion_matrix_22
 ```
 
 ### Probability of Closure-level Toxicity vs Measured Toxicity
 
 ```{r scatter22, echo=FALSE, cache=FALSE}
 
-p3_v_tox <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, y=.data$toxicity)) +
+p3_v_tox_22 <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, y=.data$toxicity)) +
   ggplot2::geom_point(alpha=0.7, size=3) +
   ggplot2::labs(x = "Predicted Probability of Closure-level Toxicity",
                 y = "Measured Toxicity") +
   ggplot2::geom_hline(yintercept=80, linetype="dashed")
 
-p3_v_tox
+p3_v_tox_22
 ```
 
 ### Metrics 
@@ -288,18 +291,18 @@ tn <- pred_w_results |>
   filter(predicted_class != 3 & class != 3) |>
   nrow()
 
-tp <- pred_w_results %>% 
-  dplyr::filter(.data$predicted_class == 3 & .data$class == 3) %>% 
+tp <- pred_w_results |> 
+  dplyr::filter(.data$predicted_class == 3 & .data$class == 3) |> 
   nrow()
   
-fp <- pred_w_results %>% 
-  dplyr::filter(.data$predicted_class == 3 & .data$class != 3) %>% 
+fp <- pred_w_results |> 
+  dplyr::filter(.data$predicted_class == 3 & .data$class != 3) |> 
   nrow()
   
 precision = tp/(tp+fp)
   
-fn = pred_w_results %>% 
-  dplyr::filter(.data$predicted_class != 3 & .data$class == 3) %>% 
+fn = pred_w_results |> 
+  dplyr::filter(.data$predicted_class != 3 & .data$class == 3) |> 
   nrow()
   
 recall = tp/(tp+fn)
@@ -359,12 +362,12 @@ num_levels <- 4
 levels <- seq(from=0, to=(num_levels-1))
 
 
-cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, levels), actual = factor(pred_w_results$class, levels))) %>% 
-  mutate(frac = round(Freq/sum(Freq)*100)) %>% 
+cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, levels), actual = factor(pred_w_results$class, levels))) |> 
+  mutate(frac = round(Freq/sum(Freq)*100)) |> 
   mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
   #mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
 
-confusion_matrix <- ggplot2::ggplot(data = cm,
+confusion_matrix_21 <- ggplot2::ggplot(data = cm,
                                     mapping = ggplot2::aes(x = .data$predicted, y = .data$actual)) +
   ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
   ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
@@ -380,21 +383,20 @@ confusion_matrix <- ggplot2::ggplot(data = cm,
                  title =     ggplot2::element_text(size = 14, face = "bold"),
                  legend.position = "none")
 
-confusion_matrix
-
+confusion_matrix_21
 ```
 
 ### Probability of Closure-level Toxicity vs Measured Toxicity
 
 ```{r scatter21, echo=FALSE, cache=FALSE}
 
-p3_v_tox <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$prob_3, y=.data$toxicity)) +
+p3_v_tox_21 <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$prob_3, y=.data$toxicity)) +
   ggplot2::geom_point(alpha=0.7, size=3) +
   ggplot2::labs(x = "Predicted Probability of Closure-level Toxicity",
                 y = "Measured Toxicity") +
   ggplot2::geom_hline(yintercept=80, linetype="dashed")
 
-p3_v_tox
+p3_v_tox_21
 ```
 
 ### Metrics 
@@ -427,18 +429,18 @@ tn <- pred_w_results |>
   filter(predicted_class != 3 & class != 3) |>
   nrow()
 
-tp <- pred_w_results %>% 
-  dplyr::filter(.data$predicted_class == 3 & .data$class == 3) %>% 
+tp <- pred_w_results |> 
+  dplyr::filter(.data$predicted_class == 3 & .data$class == 3) |> 
   nrow()
   
-fp <- pred_w_results %>% 
-  dplyr::filter(.data$predicted_class == 3 & .data$class != 3) %>% 
+fp <- pred_w_results |> 
+  dplyr::filter(.data$predicted_class == 3 & .data$class != 3) |> 
   nrow()
   
 precision = tp/(tp+fp)
   
-fn = pred_w_results %>% 
-  dplyr::filter(.data$predicted_class != 3 & .data$class == 3) %>% 
+fn = pred_w_results |> 
+  dplyr::filter(.data$predicted_class != 3 & .data$class == 3) |> 
   nrow()
   
 recall = tp/(tp+fn)
@@ -479,6 +481,13 @@ ggplot(closures, aes(x = predicted_week, y = actual_week)) +
   geom_abline(intercept = 0, linetype="dashed") +
   labs(x = "First predicted closure-level toxicity (week of year)",
        y = "First measured closure-level toxicity (week of year)")
+```
+
+
+### Possible manuscript plot
+
+```{r}
+(confusion_matrix_21 + confusion_matrix_22 + confusion_matrix_23) / (p3_v_tox_21 + p3_v_tox_22 + p3_v_tox_23)
 ```
 
 
