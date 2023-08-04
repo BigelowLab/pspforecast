@@ -6,3 +6,15 @@ INFO [2023-07-31 11:23:06] Date of last measurement: 2023-07-26
 INFO [2023-07-31 11:38:16] New predictions made: 19
 INFO [2023-07-31 11:38:16] New predictions are valid 2023-07-30 through 2023-08-05
 INFO [2023-07-31 11:38:16] New predictions wrote to pspforecast
+INFO [2023-07-31 11:38:16] Now adding files to be commited to pspforecast:
+INFO [2023-07-31 11:38:16] c(".psptoolslog", "inst/forecastdb/psp_forecast_2023.csv.gz", "inst/forecastdb/psp_forecast_all_predictions_2023.csv.gz")
+INFO [2023-07-31 11:38:18] pspforecast repository updated
+INFO [2023-07-31 11:38:19] script is finished
+INFO [2023-08-04 16:08:46] User JEM is running the forecast script using v0.2.0 configuration
+INFO [2023-08-04 16:08:46] Predictions made this season so far: 481
+INFO [2023-08-04 16:08:46] The last prediction date was: 2023-07-20
+INFO [2023-08-04 16:08:49] Input data table lenght: 10981
+INFO [2023-08-04 16:08:49] Date of last measurement: 2023-08-02
+INFO [2023-08-04 16:23:47] New predictions made: 21
+INFO [2023-08-04 16:23:47] New predictions are valid 2023-08-06 through 2023-08-12
+INFO [2023-08-04 16:23:47] New predictions wrote to pspforecast
