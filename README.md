@@ -15,6 +15,8 @@ Shellfish toxicity forecast serving package
 
 - [tidyr](https://CRAN.R-project.org/package=tidyr)
 
+- [httr](https://CRAN.R-project.org/package=httr)
+
 ## Installation
 
     remotes::install_github("BigelowLab/pspforecast")
@@ -70,7 +72,7 @@ predictions <- read_forecast(year = "2023") |>
 glimpse(predictions)
 ```
 
-    ## Rows: 359
+    ## Rows: 474
     ## Columns: 19
     ## $ version             <chr> "v0.2.0", "v0.2.0", "v0.2.0", "v0.2.0", "v0.2.0", …
     ## $ ensemble_n          <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10…
@@ -109,7 +111,7 @@ glimpse(predictions)
     ## # A tibble: 1 × 1
     ##   accuracy
     ##      <dbl>
-    ## 1    0.997
+    ## 1     0.99
 
 #### Closure-level (Class 3) Predictions
 
@@ -130,7 +132,7 @@ glimpse(predictions)
     ## # A tibble: 1 × 7
     ##      tp    fp    tn    fn precision sensitivity specificity
     ##   <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
-    ## 1     0     0   344     0       NaN         NaN           1
+    ## 1     0     0   400     0       NaN         NaN           1
 
 ## 2022 Season Results
 
@@ -232,4 +234,4 @@ glimpse(predictions)
 
 ### Last Updated
 
-    ## [1] "2023-07-26"
+    ## [1] "2023-08-18"

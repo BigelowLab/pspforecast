@@ -19,7 +19,7 @@ add_forecast_results <- function(predictions,
     
     db <- tox |> 
       dplyr::filter(.data$location_id == key$location[1]) |> #add break
-      dplyr::filter(dplyr::between(date, tbl$forecast_start_date, tbl$forecast_end_date))
+      dplyr::filter(dplyr::between(date, tbl$forecast_start_date[1], tbl$forecast_end_date[1]))
     
     if (nrow(db) == 0) {
       
@@ -75,7 +75,7 @@ add_forecast_results <- function(predictions,
     dplyr::arrange(date)
   
   forecast_w_results <- dplyr::full_join(predictions, results, by=c("version", "location", "date")) |> 
-    tidyr::drop_na(.data$class) |> 
+    tidyr::drop_na("class") |> 
     dplyr::rowwise() |> 
     dplyr::group_map(is_correct, .keep=TRUE) |> 
     dplyr::bind_rows()
