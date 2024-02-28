@@ -12,27 +12,33 @@ psp <- read_psp_data() |>
                 week = as.numeric(format(date, format="%U")))
 
 
-
 ## 2021 Season
 
 
-predictions21 <- read_forecast(season = "2021")
-
+predictions21 <- read_forecast(year = "2021")
 x <- add_forecast_results(predictions21, toxin_measurements = psp) 
 
 summary(x)
 
 x |>
-  write_csv("psp_forecast_results_2021.csv.gz")
+  write_csv("inst/forecastdb/seasonal_results/psp_forecast_results_2021.csv.gz")
 
 ## 2022 Season
 
-predictions22 <- read_forecast(season = "2022")
-
-
+predictions22 <- read_forecast(year = "2022")
 xx <- add_forecast_results(predictions22, toxin_measurements = psp) 
 
 summary(xx)
 
 xx |>
-  write_csv("psp_forecast_results_2022.csv.gz")
+  write_csv("inst/forecastdb/seasonal_results/psp_forecast_results_2022.csv.gz")
+
+## 2023
+
+predictions23 <- read_forecast(year=2023)
+xx <- add_forecast_results(predictions23, toxin_measurements = psp) 
+
+summary(xx)
+
+xx |>
+  write_csv("inst/forecastdb/seasonal_results/psp_forecast_results_2023.csv.gz")
