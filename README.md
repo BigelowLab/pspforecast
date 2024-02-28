@@ -59,9 +59,9 @@ Shellfish toxicity forecast serving package
 
 - p3_sd - class 3 probability standard deviation
 
-- p_3\_min - class 3 minimum probability (from ensemble run)
+- p_3_min - class 3 minimum probability (from ensemble run)
 
-- p_3\_max - class 3 maximum probability (from ensemble run)
+- p_3_max - class 3 maximum probability (from ensemble run)
 
 - predicted_class - the predicted classification
 
@@ -111,7 +111,7 @@ glimpse(predictions)
     ## # A tibble: 1 × 1
     ##   accuracy
     ##      <dbl>
-    ## 1     0.99
+    ## 1    0.990
 
 #### Closure-level (Class 3) Predictions
 
@@ -132,7 +132,7 @@ glimpse(predictions)
     ## # A tibble: 1 × 7
     ##      tp    fp    tn    fn precision sensitivity specificity
     ##   <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
-    ## 1     0     0   400     0       NaN         NaN           1
+    ## 1     0     0   404     0       NaN         NaN           1
 
 ## 2022 Season Results
 
@@ -226,12 +226,10 @@ glimpse(predictions)
 
 ### Possible manuscript plot
 
-``` r
-(confusion_matrix_21 + confusion_matrix_22 + confusion_matrix_23) / (p3_v_tox_21 + p3_v_tox_22 + p3_v_tox_23)
-```
-
 ![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 ### Last Updated
 
-    ## [1] "2023-08-18"
+    ## [1] "2024-02-28"
