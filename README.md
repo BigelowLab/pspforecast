@@ -224,7 +224,7 @@ glimpse(predictions)
 
 ![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
-### Possible manuscript plot
+### Possible manuscript plot(s)
 
 ![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
@@ -232,4 +232,4 @@ glimpse(predictions)
 
 ### Last Updated
 
-    ## [1] "2024-02-28"
+    ## [1] "2024-03-08"

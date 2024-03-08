@@ -490,7 +490,7 @@ ggplot(closures, aes(x = predicted_week, y = actual_week)) +
 ```
 
 
-### Possible manuscript plot
+### Possible manuscript plot(s)
 
 ```{r echo=FALSE}
 pred_w_results <- read_all_results()

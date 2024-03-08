@@ -37,7 +37,6 @@ read_forecast <- function(format = FALSE,
     forecast <- suppressMessages(readr::read_csv(file))
   }
   
-  
   if (new_only) {
     #all_forecast <- suppressMessages(readr::read_csv(file))
     
@@ -77,6 +76,33 @@ read_forecast <- function(format = FALSE,
   }
   
   return(forecast)
+}
+
+
+#' Reads all predictions from all years into one tibble
+#' @param years numeric vector of years
+#' @returns tibble with all predictions made
+#' @export
+read_all_predictions <- function(years=2021:2023) {
+  
+  all_predictions <- dplyr::tibble()
+  for (year in years) {
+    r <- read_forecast(year=year)
+    
+    if ("p_0" %in% colnames(r)) {
+      r <- r |>
+        dplyr::rename(prob_0 = .data$p_0,
+                      prob_1 = .data$p_1,
+                      prob_2 = .data$p_2,
+                      prob_3 = .data$p_3)
+    }
+    
+    all_predictions <- all_predictions |>
+      dplyr::bind_rows(r) |>
+      dplyr::mutate(year = as.numeric(format(date, format="%Y")))
+  }
+  return(all_predictions)
+  
 }
 
 
