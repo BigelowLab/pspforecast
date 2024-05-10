@@ -115,6 +115,8 @@ read_all_predictions <- function(years=2021:2023) {
 #' @export
 write_forecast <- function(new_predictions, user_config) {
   
+  suppressMessages(readr::write_csv(new_predictions$ensemble_forecast, file.path(user_config$output$current_forecast)))
+  
   suppressMessages(readr::write_csv(new_predictions$ensemble_forecast, file.path(user_config$output$ensemble_path), append=TRUE))
   
   suppressMessages(readr::write_csv(new_predictions$ensemble_runs, file.path(user_config$output$all_path), append=TRUE))
