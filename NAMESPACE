@@ -3,6 +3,7 @@
 export(add_forecast_results)
 export(find_closures)
 export(format_probs)
+export(format_webpage_table)
 export(get_recent_year)
 export(read_all_predictions)
 export(read_all_results)
