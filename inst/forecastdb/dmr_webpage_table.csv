@@ -1,0 +1,14 @@
+DMR Station ID,Forecast Initialized Date,Location,Forecast Start Date,Forecast End Date,Closure-level PSP Probability,Predicted Class
+PSP10.11,2024-05-06,Ogunquit River,2024-05-10,2024-05-16,0%,Low
+PSP10.33,2024-05-06,Spurwink River,2024-05-10,2024-05-16,0%,Low
+PSP12.01,2024-05-08,Basin Pt.,2024-05-12,2024-05-18,0%,Low
+PSP12.03,2024-05-08,Potts Pt.,2024-05-12,2024-05-18,0%,Low
+PSP12.13,2024-05-08,Lumbos Hole,2024-05-12,2024-05-18,7%,Medium
+PSP12.28,2024-05-06,Bear Island,2024-05-10,2024-05-16,42%,High
+PSP12.34,2024-05-06,Head Beach,2024-05-10,2024-05-16,0%,Low
+PSP15.25,2024-05-06,Christmas Cove Town Landing,2024-05-10,2024-05-16,0%,Low
+PSP16.41,2024-05-06,Port Clyde,2024-05-10,2024-05-16,0%,Low
+PSP19.15,2024-05-06,Stonington,2024-05-10,2024-05-16,0%,Low
+PSP21.09,2024-05-06,Bass Hbr.,2024-05-10,2024-05-16,0%,Low
+PSP27.05,2024-05-07,Gove Pt.,2024-05-11,2024-05-17,0%,Low
+PSP27.46,2024-05-07,Gleason Cove,2024-05-11,2024-05-17,0%,Low
