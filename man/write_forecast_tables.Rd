@@ -5,11 +5,9 @@
 \title{Writes two table containing the current forecast. One is formatted for the Interactive Shellfish Closure 
 Map and the other has all columns and no formatting.}
 \usage{
-write_forecast_tables(new_predictions, user_config)
+write_forecast_tables(user_config)
 }
 \arguments{
-\item{new_predictions}{list with two tibbles of new shellfish toxicity predictions}
-
 \item{user_config}{list of pspforecast user configuration containing paths to users local copies of both tables}
 }
 \description{

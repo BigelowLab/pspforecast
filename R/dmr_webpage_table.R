@@ -27,21 +27,20 @@ format_webpage_table <- function(f) {
 #' Writes two table containing the current forecast. One is formatted for the Interactive Shellfish Closure 
 #' Map and the other has all columns and no formatting.
 #' 
-#' @param new_predictions list with two tibbles of new shellfish toxicity predictions
 #' @param user_config list of pspforecast user configuration containing paths to users local copies of both tables
 #' @returns NULL
 #' @export
-write_forecast_tables <- function(new_predictions, user_config) {
+write_forecast_tables <- function(user_config) {
   
   t_1 <- read_forecast(new_only=TRUE, id=FALSE) |> 
     dplyr::arrange(dplyr::desc(.data$p_3))
   
-  suppressMessages(readr::write_csv(new_predictions$ensemble_forecast, file.path(user_config$output$current_forecast)))
+  suppressMessages(readr::write_csv(t_1, file.path(user_config$output$current_forecast)))
   
   t_2 <- read_forecast(new_only=TRUE, id=FALSE) |> 
     dplyr::arrange(dplyr::desc(.data$p_3)) |>
     format_webpage_table()
   
-  suppressMessages(readr::write_csv(format_webpage_table(new_predictions$ensemble_forecast), file.path(user_config$output$dmr_webpage_table)))
+  suppressMessages(readr::write_csv(t_2, file.path(user_config$output$dmr_webpage_table)))
   
 }
