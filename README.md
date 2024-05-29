@@ -66,43 +66,39 @@ Shellfish toxicity forecast serving package
 - predicted_class - the predicted classification
 
 ``` r
-predictions <- read_forecast(year = "2023") |>
+predictions <- read_forecast(year = "2024") |>
   distinct()
 
 glimpse(predictions)
 ```
 
-    ## Rows: 474
+    ## Rows: 61
     ## Columns: 19
-    ## $ version             <chr> "v0.2.0", "v0.2.0", "v0.2.0", "v0.2.0", "v0.2.0", …
+    ## $ version             <chr> "v0.3.0", "v0.3.0", "v0.3.0", "v0.3.0", "v0.3.0", …
     ## $ ensemble_n          <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10…
-    ## $ location            <chr> "PSP12.13", "PSP10.11", "PSP10.33", "PSP12.01", "P…
-    ## $ date                <date> 2023-04-11, 2023-05-02, 2023-05-03, 2023-05-01, 2…
-    ## $ name                <chr> "Lumbos Hole", "Ogunquit River", "Spurwink River",…
-    ## $ lat                 <dbl> 43.79553, 43.25030, 43.56632, 43.73848, 43.73064, …
-    ## $ lon                 <dbl> -69.94557, -70.59540, -70.27305, -70.04343, -70.02…
+    ## $ location            <chr> "PSP10.11", "PSP10.33", "PSP12.01", "PSP12.03", "P…
+    ## $ date                <date> 2024-05-06, 2024-05-06, 2024-05-08, 2024-05-08, 2…
+    ## $ name                <chr> "Ogunquit River", "Spurwink River", "Basin Pt.", "…
+    ## $ lat                 <dbl> 43.25030, 43.56632, 43.73848, 43.73064, 43.79553, …
+    ## $ lon                 <dbl> -70.59540, -70.27305, -70.04343, -70.02556, -69.94…
     ## $ class_bins          <chr> "0,10,30,80", "0,10,30,80", "0,10,30,80", "0,10,30…
-    ## $ forecast_start_date <date> 2023-04-15, 2023-05-06, 2023-05-07, 2023-05-05, 2…
-    ## $ forecast_end_date   <date> 2023-04-21, 2023-05-12, 2023-05-13, 2023-05-11, 2…
-    ## $ p_0                 <dbl> 89, 98, 99, 97, 98, 96, 94, 98, 99, 99, 99, 99, 99…
-    ## $ p_1                 <dbl> 9, 2, 1, 3, 2, 4, 5, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
-    ## $ p_2                 <dbl> 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
-    ## $ p_3                 <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
-    ## $ p3_sd               <dbl> 4.849940e-02, 4.066616e-05, 4.983161e-06, 8.274184…
-    ## $ p_3_min             <dbl> 1.354318e-01, 3.799968e-05, 2.470616e-06, 1.027468…
-    ## $ p_3_max             <dbl> 2.972137e-01, 1.736575e-04, 1.842741e-05, 3.850234…
-    ## $ predicted_class     <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
-    ## $ f_id                <chr> "PSP12.13_2023-04-11", "PSP10.11_2023-05-02", "PSP…
+    ## $ forecast_start_date <date> 2024-05-10, 2024-05-10, 2024-05-12, 2024-05-12, 2…
+    ## $ forecast_end_date   <date> 2024-05-16, 2024-05-16, 2024-05-18, 2024-05-18, 2…
+    ## $ p_0                 <dbl> 93, 100, 100, 99, 31, 3, 95, 94, 95, 95, 100, 99, …
+    ## $ p_1                 <dbl> 6, 0, 0, 1, 44, 13, 4, 5, 4, 5, 0, 1, 0, 42, 9, 40…
+    ## $ p_2                 <dbl> 1, 0, 0, 0, 18, 43, 0, 1, 0, 0, 0, 0, 0, 2, 0, 17,…
+    ## $ p_3                 <dbl> 0, 0, 0, 0, 7, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 3…
+    ## $ p3_sd               <dbl> 2.537746e-02, 1.702311e-04, 5.835063e-07, 3.170006…
+    ## $ p_3_min             <dbl> 2.803591e-02, 1.613240e-06, 4.298889e-09, 3.494154…
+    ## $ p_3_max             <dbl> 1.114067e-01, 5.424280e-04, 1.839769e-06, 9.452227…
+    ## $ predicted_class     <dbl> 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,…
+    ## $ f_id                <chr> "PSP10.11_2024-05-06", "PSP10.33_2024-05-06", "PSP…
 
-## 2023 Season Results
+## 2024 Season Results
 
-### Confusion Matrix
+![](README_files/figure-gfm/cm24-1.png)<!-- -->
 
-![](README_files/figure-gfm/cm23-1.png)<!-- -->
-
-### Probability of Closure-level Toxicity vs Measured Toxicity
-
-![](README_files/figure-gfm/scatter23-1.png)<!-- -->
+![](README_files/figure-gfm/scatter24-1.png)<!-- -->
 
 ### Metrics
 
@@ -111,7 +107,7 @@ glimpse(predictions)
     ## # A tibble: 1 × 1
     ##   accuracy
     ##      <dbl>
-    ## 1    0.990
+    ## 1    0.559
 
 #### Closure-level (Class 3) Predictions
 
@@ -132,7 +128,51 @@ glimpse(predictions)
     ## # A tibble: 1 × 7
     ##      tp    fp    tn    fn precision sensitivity specificity
     ##   <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
-    ## 1     0     0   404     0       NaN         NaN           1
+    ## 1     1     0    32     1         1         0.5           1
+
+## 2023 Season Results
+
+``` r
+predictions <- read_forecast(year = "2023")
+```
+
+### Confusion Matrix
+
+![](README_files/figure-gfm/cm23-1.png)<!-- -->
+
+### Probability of Closure-level Toxicity vs Measured Toxicity
+
+![](README_files/figure-gfm/scatter23-1.png)<!-- -->
+
+### Metrics
+
+#### Season Accuracy:
+
+    ## # A tibble: 1 × 1
+    ##   accuracy
+    ##      <dbl>
+    ## 1    0.993
+
+#### Closure-level (Class 3) Predictions
+
+- tp - The model predicted class 3 and the following week’s measurement
+  was class 3
+- fp - The model predicted class 3 and the following week’s measurement
+  was not class 3
+- tn - The model predicted class 0,1,2 and the following week’s
+  measurement was in class 0,1,2
+- fn - The model predicted class 0,1,2 and the following week’s
+  measurement was class 3
+- precision - TP/(TP+FP)
+- sensitivity - TP/(TP+FN)
+- specificity - TN/(TN+FP)
+
+<!-- -->
+
+    ## # A tibble: 1 × 7
+    ##      tp    fp    tn    fn precision sensitivity specificity
+    ##   <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
+    ## 1     0     0   554     0       NaN         NaN           1
 
 ## 2022 Season Results
 
@@ -176,7 +216,7 @@ glimpse(predictions)
 
 ### Timing of initial closure-level predictions
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 ## 2021 Season Results
 
@@ -222,14 +262,14 @@ glimpse(predictions)
 
 ### Timing of initial closure-level predictions
 
-![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 ### Possible manuscript plot(s)
 
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
-![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
 ### Last Updated
 
-    ## [1] "2024-03-08"
+    ## [1] "2024-05-29"

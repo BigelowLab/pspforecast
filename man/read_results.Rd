@@ -4,7 +4,7 @@
 \alias{read_results}
 \title{Reads experimental predictions matched with their outcome for one year}
 \usage{
-read_results(year = c(2021, 2022, 2023)[1])
+read_results(year = c(2021, 2022, 2023, 2024)[1])
 }
 \arguments{
 \item{year}{integer year to read}
