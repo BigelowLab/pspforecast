@@ -72,7 +72,7 @@ predictions <- read_forecast(year = "2024") |>
 glimpse(predictions)
 ```
 
-    ## Rows: 61
+    ## Rows: 90
     ## Columns: 19
     ## $ version             <chr> "v0.3.0", "v0.3.0", "v0.3.0", "v0.3.0", "v0.3.0", …
     ## $ ensemble_n          <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10…
@@ -107,7 +107,7 @@ glimpse(predictions)
     ## # A tibble: 1 × 1
     ##   accuracy
     ##      <dbl>
-    ## 1    0.559
+    ## 1    0.673
 
 #### Closure-level (Class 3) Predictions
 
@@ -128,7 +128,7 @@ glimpse(predictions)
     ## # A tibble: 1 × 7
     ##      tp    fp    tn    fn precision sensitivity specificity
     ##   <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
-    ## 1     1     0    32     1         1         0.5           1
+    ## 1     1     0    52     2         1       0.333           1
 
 ## 2023 Season Results
 
@@ -272,4 +272,4 @@ predictions <- read_forecast(year = "2023")
 
 ### Last Updated
 
-    ## [1] "2024-05-29"
+    ## [1] "2024-05-31"
