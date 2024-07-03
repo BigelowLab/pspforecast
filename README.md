@@ -72,7 +72,7 @@ predictions <- read_forecast(year = "2024") |>
 glimpse(predictions)
 ```
 
-    ## Rows: 228
+    ## Rows: 258
     ## Columns: 19
     ## $ version             <chr> "v0.3.0", "v0.3.0", "v0.3.0", "v0.3.0", "v0.3.0", …
     ## $ ensemble_n          <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10…
@@ -107,7 +107,7 @@ glimpse(predictions)
     ## # A tibble: 1 × 1
     ##   accuracy
     ##      <dbl>
-    ## 1    0.726
+    ## 1    0.691
 
 #### Closure-level (Class 3) Predictions
 
@@ -125,10 +125,10 @@ glimpse(predictions)
 
 <!-- -->
 
-    ## # A tibble: 1 × 7
-    ##      tp    fp    tn    fn precision sensitivity specificity
-    ##   <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
-    ## 1     2     4   168     5     0.333       0.286       0.977
+    ## # A tibble: 1 × 8
+    ##      tp    fp    tn    fn cl_accuracy precision sensitivity specificity
+    ##   <int> <int> <int> <int>       <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1     2     4   196     5       0.957     0.333       0.286        0.98
 
 ## 2023 Season Results
 
@@ -169,10 +169,10 @@ predictions <- read_forecast(year = "2023")
 
 <!-- -->
 
-    ## # A tibble: 1 × 7
-    ##      tp    fp    tn    fn precision sensitivity specificity
-    ##   <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
-    ## 1     0     0   554     0       NaN         NaN           1
+    ## # A tibble: 1 × 8
+    ##      tp    fp    tn    fn cl_accuracy precision sensitivity specificity
+    ##   <int> <int> <int> <int>       <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1     0     0   554     0           1       NaN         NaN           1
 
 ## 2022 Season Results
 
@@ -209,10 +209,10 @@ predictions <- read_forecast(year = "2023")
 
 <!-- -->
 
-    ## # A tibble: 1 × 7
-    ##      tp    fp    tn    fn precision sensitivity specificity
-    ##   <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
-    ## 1    16    20   603    12     0.444       0.571       0.968
+    ## # A tibble: 1 × 8
+    ##      tp    fp    tn    fn cl_accuracy precision sensitivity specificity
+    ##   <int> <int> <int> <int>       <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1    16    20   603    12       0.951     0.444       0.571       0.968
 
 ### Timing of initial closure-level predictions
 
@@ -253,10 +253,10 @@ predictions <- read_forecast(year = "2023")
 
 <!-- -->
 
-    ## # A tibble: 1 × 7
-    ##      tp    fp    tn    fn precision sensitivity specificity
-    ##   <int> <int> <int> <int>     <dbl>       <dbl>       <dbl>
-    ## 1     2     3   463     0       0.4           1       0.994
+    ## # A tibble: 1 × 8
+    ##      tp    fp    tn    fn cl_accuracy precision sensitivity specificity
+    ##   <int> <int> <int> <int>       <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1     2     3   463     0       0.994       0.4           1       0.994
 
 ### Closure-level accuracy
 
@@ -272,4 +272,4 @@ predictions <- read_forecast(year = "2023")
 
 ### Last Updated
 
-    ## [1] "2024-06-28"
+    ## [1] "2024-07-03"

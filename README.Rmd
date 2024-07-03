@@ -188,11 +188,13 @@ sensitivity = tp/(tp+fn)
 
 specificity = tn/(tn+fp)
 
+cl_accuracy = (tn+tp)/nrow(pred_w_results)
 
 metrics_c3 <- tibble(tp = tp,
                      fp = fp,
                      tn = tn,
                      fn = fn,
+                     cl_accuracy = cl_accuracy,
                      precision = precision,
                      #recall = recall,
                      sensitivity = sensitivity,
@@ -314,11 +316,13 @@ sensitivity = tp/(tp+fn)
 
 specificity = tn/(tn+fp)
 
+cl_accuracy = (tn+tp)/nrow(pred_w_results)
 
 metrics_c3 <- tibble(tp = tp,
                      fp = fp,
                      tn = tn,
                      fn = fn,
+                     cl_accuracy = cl_accuracy,
                      precision = precision,
                      #recall = recall,
                      sensitivity = sensitivity,
@@ -437,11 +441,13 @@ sensitivity = tp/(tp+fn)
 
 specificity = tn/(tn+fp)
 
+cl_accuracy = (tn+tp)/nrow(pred_w_results)
 
 metrics_c3 <- tibble(tp = tp,
                      fp = fp,
                      tn = tn,
                      fn = fn,
+                     cl_accuracy = cl_accuracy,
                      precision = precision,
                      #recall = recall,
                      sensitivity = sensitivity,
@@ -576,11 +582,13 @@ sensitivity = tp/(tp+fn)
 
 specificity = tn/(tn+fp)
 
+cl_accuracy = (tn+tp)/nrow(pred_w_results)
 
 metrics_c3 <- tibble(tp = tp,
                      fp = fp,
                      tn = tn,
                      fn = fn,
+                     cl_accuracy = cl_accuracy,
                      precision = precision,
                      #recall = recall,
                      sensitivity = sensitivity,
