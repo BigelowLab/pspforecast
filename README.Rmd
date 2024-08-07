@@ -72,7 +72,7 @@ library(patchwork)
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-psp <- read_plone()
+psp <- read_psp_data()
 ```
 
 
