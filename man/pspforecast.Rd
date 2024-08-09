@@ -2,8 +2,16 @@
 % Please edit documentation in R/pspforecast-package.R
 \docType{package}
 \name{pspforecast}
+\alias{pspforecast-package}
 \alias{pspforecast}
 \title{pspforecast: Stores shellfish toxicity forecasts in table form}
 \description{
 Tools for reading and writing shellfish toxicity forecasts
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/BigelowLab/pspforecast}
+}
+
 }
