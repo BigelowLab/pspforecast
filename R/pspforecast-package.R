@@ -2,7 +2,7 @@
 #'
 #' Tools for reading and writing shellfish toxicity forecasts
 #'
-#' @docType package
+#' "_PACKAGE"
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data
 #' @importFrom utils tail download.file head

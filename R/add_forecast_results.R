@@ -79,7 +79,7 @@ add_forecast_results <- function(predictions,
     dplyr::rowwise() |> 
     dplyr::group_map(is_correct, .keep=TRUE) |> 
     dplyr::bind_rows()
-  
+
   return(forecast_w_results)
 }
 

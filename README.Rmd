@@ -86,7 +86,7 @@ glimpse(predictions)
 ## 2024 Season Results
 
 ```{r echo=FALSE}
-pred_w_results <- add_forecast_results(predictions, toxin_measurements = psp)
+pred_w_results <- add_forecast_results(predictions, toxin_measurements = psp) 
 ```
 
 ```{r cm24, echo=FALSE, cahce=FALSE}
@@ -140,7 +140,6 @@ p3_v_tox_24
  
 
 ```{r echo=FALSE}
-
 correct <- pred_w_results |>
   filter(predicted_class == class) |>
   nrow()
@@ -202,6 +201,7 @@ metrics_c3 <- tibble(tp = tp,
 
 metrics_c3
 ```
+
 
 ## 2023 Season Results
 
@@ -268,7 +268,6 @@ p3_v_tox_23
  
 
 ```{r echo=FALSE}
-
 correct <- pred_w_results |>
   filter(predicted_class == class) |>
   nrow()
@@ -279,15 +278,6 @@ metrics
 ```
 
 #### Closure-level (Class 3) Predictions
-
- + tp - The model predicted class 3 and the following week's measurement was class 3
- + fp - The model predicted class 3 and the following week's measurement was not class 3
- + tn - The model predicted class 0,1,2 and the following week's measurement was in class 0,1,2
- + fn - The model predicted class 0,1,2 and the following week's measurement was class 3
- + precision - TP/(TP+FP)
- + sensitivity - TP/(TP+FN)
- + specificity - TN/(TN+FP)
-
 
 ```{r echo=FALSE}
 tn <- pred_w_results |>
@@ -405,14 +395,6 @@ metrics
 ```
 
 #### Closure-level (Class 3) Predictions
- + tp - The model predicted class 3 and the following week's measurement was class 3
- + fp - The model predicted class 3 and the following week's measurement was not class 3
- + tn - The model predicted class 0,1,2 and the following week's measurement was in class 0,1,2
- + fn - The model predicted class 0,1,2 and the following week's measurement was class 3
- + precision - TP/(TP+FP)
- + sensitivity - TP/(TP+FN)
- + specificity - TN/(TN+FP)
-
 
 ```{r metrics22, echo=FALSE}
 tn <- pred_w_results |>
@@ -546,14 +528,6 @@ metrics
 ```
 
 #### Closure-level (Class 3) Predictions
- + tp - The model predicted class 3 and the following week's measurement was class 3
- + fp - The model predicted class 3 and the following week's measurement was not class 3
- + tn - The model predicted class 0,1,2 and the following week's measurement was in class 0,1,2
- + fn - The model predicted class 0,1,2 and the following week's measurement was class 3
- + precision - TP/(TP+FP)
- + sensitivity - TP/(TP+FN)
- + specificity - TN/(TN+FP)
-
 
 ```{r metrics21, echo=FALSE}
 tn <- pred_w_results |>
