@@ -14,7 +14,7 @@ format_probs <- function(probs) {
   
   no_hundred <- sapply(no_zero, function(x) if (x == "100") {x = ">99"} else {x})
   
-  r <- sapply(no_zero, function(x) {return(paste(x, "%", sep=""))})
+  r <- sapply(no_hundred, function(x) {return(paste(x, "%", sep=""))})
   
   return(r)
 }

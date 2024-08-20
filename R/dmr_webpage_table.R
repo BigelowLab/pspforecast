@@ -8,8 +8,7 @@ format_webpage_table <- function(f) {
   
   r <- f |>
     dplyr::select(-dplyr::all_of(c("version", "ensemble_n", "class_bins", "p_0", "p_1", "p_2", "p3_sd", "p_3_min", "p_3_max", "f_id"))) |>
-    dplyr::mutate(p_3 = paste(.data$p_3, "%", sep=""),
-                  predicted_class = levels[.data$predicted_class+1]) |>
+    dplyr::mutate(predicted_class = levels[.data$predicted_class+1]) |>
     dplyr::rename(Location = .data$name,
                   `DMR Station ID` = .data$location,
                   `Predicted Class` = .data$predicted_class,
