@@ -57,17 +57,10 @@ read_forecast <- function(format = FALSE,
   
   if (format) {
     forecast <- forecast |> 
-      dplyr::mutate(prob_0 = format_probs(.data$p_0),
-                    prob_1 = format_probs(.data$p_1),
-                    prob_2 = format_probs(.data$p_2),
-                    prob_3 = format_probs(.data$p_3)) |> 
-      dplyr::select(-.data$version,
-                    -.data$class_bins,
-                    -.data$ensemble_n,
-                    -.data$p_0,
-                    -.data$p_1,
-                    -.data$p_2,
-                    -.data$p_3)
+      dplyr::mutate(p_0 = format_probs(.data$p_0),
+                    p_1 = format_probs(.data$p_1),
+                    p_2 = format_probs(.data$p_2),
+                    p_3 = format_probs(.data$p_3)) 
   }
   
   if (id) {

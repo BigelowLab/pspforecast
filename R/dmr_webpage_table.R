@@ -37,7 +37,7 @@ write_forecast_tables <- function(user_config) {
   
   suppressMessages(readr::write_csv(t_1, file.path(user_config$output$current_forecast)))
   
-  t_2 <- read_forecast(new_only=TRUE, id=FALSE) |> 
+  t_2 <- read_forecast(new_only=TRUE, id=FALSE, format=TRUE) |> 
     dplyr::arrange(dplyr::desc(.data$p_3)) |>
     format_webpage_table()
   
