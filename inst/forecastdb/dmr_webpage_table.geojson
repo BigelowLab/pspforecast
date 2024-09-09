@@ -3,13 +3,6 @@
 "name": "dmr_webpage_table",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
 "features": [
-{ "type": "Feature", "properties": { "DMR Station ID": "PSP19.15", "Forecast Initialized Date": "2024-08-28", "Location": "Stonington", "Forecast Start Date": "2024-09-01", "Forecast End Date": "2024-09-07", "Closure-level PSP Probability": "<1%", "Predicted Class": "Low" }, "geometry": { "type": "Point", "coordinates": [ -68.65947, 44.15419 ] } },
-{ "type": "Feature", "properties": { "DMR Station ID": "PSP21.09", "Forecast Initialized Date": "2024-08-28", "Location": "Bass Hbr.", "Forecast Start Date": "2024-09-01", "Forecast End Date": "2024-09-07", "Closure-level PSP Probability": "<1%", "Predicted Class": "Low" }, "geometry": { "type": "Point", "coordinates": [ -68.34792, 44.23824 ] } },
-{ "type": "Feature", "properties": { "DMR Station ID": "PSP23.07", "Forecast Initialized Date": "2024-08-25", "Location": "Corea Hbr.", "Forecast Start Date": "2024-08-29", "Forecast End Date": "2024-09-04", "Closure-level PSP Probability": "<1%", "Predicted Class": "Low" }, "geometry": { "type": "Point", "coordinates": [ -67.97628, 44.39319 ] } },
-{ "type": "Feature", "properties": { "DMR Station ID": "PSP24.08", "Forecast Initialized Date": "2024-08-25", "Location": "Ripley Pt.", "Forecast Start Date": "2024-08-29", "Forecast End Date": "2024-09-04", "Closure-level PSP Probability": "<1%", "Predicted Class": "Low" }, "geometry": { "type": "Point", "coordinates": [ -67.79233, 44.52198 ] } },
-{ "type": "Feature", "properties": { "DMR Station ID": "PSP25.06", "Forecast Initialized Date": "2024-08-19", "Location": "Kelley Pt.", "Forecast Start Date": "2024-08-23", "Forecast End Date": "2024-08-29", "Closure-level PSP Probability": "<1%", "Predicted Class": "Low" }, "geometry": { "type": "Point", "coordinates": [ -67.5655, 44.53205 ] } },
-{ "type": "Feature", "properties": { "DMR Station ID": "PSP26.07", "Forecast Initialized Date": "2024-08-26", "Location": "Cutler Hbr.", "Forecast Start Date": "2024-08-30", "Forecast End Date": "2024-09-05", "Closure-level PSP Probability": "<1%", "Predicted Class": "Low" }, "geometry": { "type": "Point", "coordinates": [ -67.20525, 44.65701 ] } },
-{ "type": "Feature", "properties": { "DMR Station ID": "PSP27.05", "Forecast Initialized Date": "2024-08-26", "Location": "Gove Pt.", "Forecast Start Date": "2024-08-30", "Forecast End Date": "2024-09-05", "Closure-level PSP Probability": "<1%", "Predicted Class": "Low" }, "geometry": { "type": "Point", "coordinates": [ -67.05621, 44.90545 ] } },
-{ "type": "Feature", "properties": { "DMR Station ID": "PSP27.46", "Forecast Initialized Date": "2024-08-26", "Location": "Gleason Cove", "Forecast Start Date": "2024-08-30", "Forecast End Date": "2024-09-05", "Closure-level PSP Probability": "<1%", "Predicted Class": "Low" }, "geometry": { "type": "Point", "coordinates": [ -67.05254, 44.97084 ] } }
+
 ]
 }
