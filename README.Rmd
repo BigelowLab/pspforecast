@@ -1,7 +1,6 @@
 ---
 title: "pspforecast"
 output: github_document
-always_allow_html: true
 ---
 
 
@@ -29,14 +28,16 @@ remotes::install_github("BigelowLab/pspforecast")
 ```
 
 ```{r message=FALSE, warning=FALSE, echo=FALSE}
-library(dplyr)
-library(ggplot2)
-library(plotly)
-
-library(pspdata)
-library(pspforecast)
-
-library(patchwork)
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(ggplot2)
+  library(plotly)
+  
+  library(pspdata)
+  library(pspforecast)
+  
+  library(patchwork)
+})
 ```
 
 ## Reading the forecast database 

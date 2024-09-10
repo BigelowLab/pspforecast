@@ -42,3 +42,14 @@ summary(xx)
 
 xx |>
   write_csv("inst/forecastdb/seasonal_results/psp_forecast_results_2023.csv.gz")
+
+## 2024
+
+predictions24 <- read_forecast(year=2024)
+xx <- add_forecast_results(predictions24, toxin_measurements = psp) 
+
+summary(xx)
+
+xx |>
+  write_csv("inst/forecastdb/seasonal_results/psp_forecast_results_2024.csv.gz")
+

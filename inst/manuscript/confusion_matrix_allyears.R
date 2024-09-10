@@ -10,11 +10,13 @@ num_levels <- 4
 levels <- seq(from=0, to=(num_levels-1))
 
 
-cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, levels), actual = factor(pred_w_results$class, levels), year=factor(pred_w_results$year, levels=2021:2023))) |> 
+cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, levels), 
+                          actual = factor(pred_w_results$class, levels), 
+                          year=factor(pred_w_results$year, levels=2021:2024))) |> 
   dplyr::mutate(frac = round(Freq/sum(Freq)*100)) |> 
   dplyr::mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
 
-ggplot2::ggplot(data = cm, ggplot2::aes(x = .data$predicted, y = .data$actual)) +
+plot1 <- ggplot2::ggplot(data = cm, ggplot2::aes(x=.data$predicted, y=.data$actual)) +
   ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
   ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
   ggplot2::facet_grid(cols=vars(.data$year)) +
@@ -30,5 +32,7 @@ ggplot2::ggplot(data = cm, ggplot2::aes(x = .data$predicted, y = .data$actual)) 
                  legend.position = "none") +
   ggplot2::geom_rect(aes(xmin=0.5, xmax=3.5, ymin=0.5, ymax=3.5), alpha=0) +
   ggplot2::geom_rect(aes(xmin=3.5, xmax=4.5, ymin=3.5, ymax=4.5), alpha=0)
+
+ggsave(filename = "inst/manuscript/cm_allyears.jpeg", plot=plot1, width=12, height=8)
 
 
