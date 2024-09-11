@@ -8,7 +8,7 @@ find_station_metrics <- function(results = read_all_results()) {
     dplyr::tibble(location = key$location[1],
                   lat = tbl$lat[1],
                   lon = tbl$lon[1],
-                  accuracy = accuracy_vec(truth = factor(tbl$class, levels = c(0,1,2,3)), estimate=factor(tbl$predicted_class, , levels = c(0,1,2,3))),
+                  accuracy = yardstick::accuracy_vec(truth = factor(tbl$class, levels = c(0,1,2,3)), estimate=factor(tbl$predicted_class, , levels = c(0,1,2,3))),
                   predictions = nrow(tbl))
   }
   
@@ -41,7 +41,8 @@ plot_station_metrics <- function(st_metrics) {
     ggplot2::geom_point(data = st_metrics, 
                         ggplot2::aes(x = .data$lon, y = .data$lat, colour=.data$accuracy),
                         size=1) +
-    ggplot2::scale_color_gradient(low="black", high="red")
+    #ggplot2::scale_color_gradient(low="black", high="red") + 
+    ggplot2::scale_color_viridis_b()
   
   p
 }
@@ -49,4 +50,9 @@ plot_station_metrics <- function(st_metrics) {
 
 st_metrics <- find_station_metrics()
 
-plot_station_metrics(st_metrics)
+plot3 <- plot_station_metrics(st_metrics)
+
+
+# Save plot
+
+ggsave(filename = "inst/manuscript/station_metrics_allyears.jpeg", plot=plot3, width=6, height=4)

@@ -33,6 +33,10 @@ plot1 <- ggplot2::ggplot(data = cm, ggplot2::aes(x=.data$predicted, y=.data$actu
   ggplot2::geom_rect(aes(xmin=0.5, xmax=3.5, ymin=0.5, ymax=3.5), alpha=0) +
   ggplot2::geom_rect(aes(xmin=3.5, xmax=4.5, ymin=3.5, ymax=4.5), alpha=0)
 
+plot1
+
+# Save plot
+
 ggsave(filename = "inst/manuscript/cm_allyears.jpeg", plot=plot1, width=12, height=8)
 
 

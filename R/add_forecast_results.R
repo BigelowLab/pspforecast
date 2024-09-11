@@ -57,13 +57,23 @@ add_forecast_results <- function(predictions,
   
   
   is_correct <- function(x, y) {
-    
     if (x$predicted_class == x$class) {
       x <- x |> 
         dplyr::mutate(correct = TRUE)
     } else {
       x <- x |> 
         dplyr::mutate(correct=FALSE)
+    }
+  }
+  
+  
+  is_cl_correct <- function(x,y) {
+    if ((x$predicted_class == 3 & x$class == 3) || (x$predicted_class != 3 & x$class != 3)) {
+      x <- x |> 
+        dplyr::mutate(cl_correct = TRUE)
+    } else {
+      x <- x |> 
+        dplyr::mutate(cl_correct=FALSE)
     }
   }
     
@@ -78,6 +88,9 @@ add_forecast_results <- function(predictions,
     tidyr::drop_na("class") |> 
     dplyr::rowwise() |> 
     dplyr::group_map(is_correct, .keep=TRUE) |> 
+    dplyr::bind_rows() |>
+    dplyr::rowwise() |> 
+    dplyr::group_map(is_cl_correct, .keep=TRUE) |> 
     dplyr::bind_rows()
 
   return(forecast_w_results)
