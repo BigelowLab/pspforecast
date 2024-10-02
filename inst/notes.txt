@@ -1,0 +1,9 @@
+pspforecast Notes
+
+2 October 2024
+
+Added forecast_metrics() for finding all metrics of experimental predictions 
+
+11 September 2024
+
+Updated results tables to indicate correctness of both categorical and closure level decisions

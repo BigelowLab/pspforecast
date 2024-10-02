@@ -102,15 +102,6 @@ glimpse(predictions)
 
 ### Metrics
 
-#### Season Accuracy:
-
-    ## # A tibble: 1 × 1
-    ##   accuracy
-    ##      <dbl>
-    ## 1    0.717
-
-#### Closure-level (Class 3) Predictions
-
 - tp - The model predicted class 3 and the following week’s measurement
   was class 3
 - fp - The model predicted class 3 and the following week’s measurement
@@ -119,16 +110,21 @@ glimpse(predictions)
   measurement was in class 0,1,2
 - fn - The model predicted class 0,1,2 and the following week’s
   measurement was class 3
+- accuracy - Measure of how many correct classifications were predicted
+- cl_accuracy - Considering predictions are those that correctly
+  predicted toxicity above or below the closure limit or not
 - precision - TP/(TP+FP)
 - sensitivity - TP/(TP+FN)
 - specificity - TN/(TN+FP)
+- f_1
 
 <!-- -->
 
-    ## # A tibble: 1 × 8
-    ##      tp    fp    tn    fn cl_accuracy precision sensitivity specificity
-    ##   <int> <int> <int> <int>       <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1     2     4   397     7       0.973     0.333       0.222       0.990
+    ## # A tibble: 1 × 10
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
+    ## 1     2     4   397     7    0.717       0.973 0.267     0.333       0.222
+    ## # ℹ 1 more variable: specificity <dbl>
 
 ## 2023 Season Results
 
@@ -146,19 +142,11 @@ predictions <- read_forecast(year = "2023")
 
 ### Metrics
 
-#### Season Accuracy:
-
-    ## # A tibble: 1 × 1
-    ##   accuracy
-    ##      <dbl>
-    ## 1    0.993
-
-#### Closure-level (Class 3) Predictions
-
-    ## # A tibble: 1 × 8
-    ##      tp    fp    tn    fn cl_accuracy precision sensitivity specificity
-    ##   <int> <int> <int> <int>       <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1     0     0   554     0           1       NaN         NaN           1
+    ## # A tibble: 1 × 10
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
+    ## 1     0     0   550     0    0.993           1   NaN       NaN         NaN
+    ## # ℹ 1 more variable: specificity <dbl>
 
 ## 2022 Season Results
 
@@ -172,23 +160,15 @@ predictions <- read_forecast(year = "2023")
 
 ### Metrics
 
-#### Season Accuracy:
-
-    ## # A tibble: 1 × 1
-    ##   accuracy
-    ##      <dbl>
-    ## 1    0.799
-
-#### Closure-level (Class 3) Predictions
-
-    ## # A tibble: 1 × 8
-    ##      tp    fp    tn    fn cl_accuracy precision sensitivity specificity
-    ##   <int> <int> <int> <int>       <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1    16    20   603    12       0.951     0.444       0.571       0.968
+    ## # A tibble: 1 × 10
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
+    ## 1    16    20   603    12    0.799       0.951   0.5     0.444       0.571
+    ## # ℹ 1 more variable: specificity <dbl>
 
 ### Timing of initial closure-level predictions
 
-![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ## 2021 Season Results
 
@@ -202,32 +182,24 @@ predictions <- read_forecast(year = "2023")
 
 ### Metrics
 
-#### Season Accuracy:
-
-    ## # A tibble: 1 × 1
-    ##   accuracy
-    ##      <dbl>
-    ## 1    0.938
-
-#### Closure-level (Class 3) Predictions
-
-    ## # A tibble: 1 × 8
-    ##      tp    fp    tn    fn cl_accuracy precision sensitivity specificity
-    ##   <int> <int> <int> <int>       <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1     2     3   463     0       0.994       0.4           1       0.994
+    ## # A tibble: 1 × 10
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
+    ## 1     2     3   463     0    0.938       0.994 0.571       0.4           1
+    ## # ℹ 1 more variable: specificity <dbl>
 
 ### Closure-level accuracy
 
 ### Timing of initial closure-level predictions
 
-![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 ### Possible manuscript plot(s)
 
-![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
-![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 ### Last Updated
 
-    ## [1] "2024-09-10"
+    ## [1] "2024-10-02"

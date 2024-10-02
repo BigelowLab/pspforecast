@@ -137,70 +137,20 @@ p3_v_tox_24
 
 ### Metrics 
 
-#### Season Accuracy:
- 
-
-```{r echo=FALSE}
-correct <- pred_w_results |>
-  filter(predicted_class == class) |>
-  nrow()
-
-metrics <- tibble(accuracy = correct/nrow(pred_w_results))
-
-metrics
-```
-
-#### Closure-level (Class 3) Predictions
-
  + tp - The model predicted class 3 and the following week's measurement was class 3
  + fp - The model predicted class 3 and the following week's measurement was not class 3
  + tn - The model predicted class 0,1,2 and the following week's measurement was in class 0,1,2
  + fn - The model predicted class 0,1,2 and the following week's measurement was class 3
+ + accuracy - Measure of how many correct classifications were predicted
+ + cl_accuracy - Considering predictions are those that correctly predicted toxicity above or below the closure limit or not
  + precision - TP/(TP+FP)
  + sensitivity - TP/(TP+FN)
  + specificity - TN/(TN+FP)
+ + f_1
 
 
 ```{r echo=FALSE}
-tn <- pred_w_results |>
-  filter(predicted_class != 3 & class != 3) |>
-  nrow()
-
-tp <- pred_w_results |> 
-  dplyr::filter(.data$predicted_class == 3 & .data$class == 3) |> 
-  nrow()
-  
-fp <- pred_w_results |> 
-  dplyr::filter(.data$predicted_class == 3 & .data$class != 3) |> 
-  nrow()
-  
-precision = tp/(tp+fp)
-  
-fn = pred_w_results |> 
-  dplyr::filter(.data$predicted_class != 3 & .data$class == 3) |> 
-  nrow()
-  
-recall = tp/(tp+fn)
-  
-f_1 = (2)*(precision*recall)/(precision+recall)
-
-sensitivity = tp/(tp+fn)
-
-specificity = tn/(tn+fp)
-
-cl_accuracy = (tn+tp)/nrow(pred_w_results)
-
-metrics_c3 <- tibble(tp = tp,
-                     fp = fp,
-                     tn = tn,
-                     fn = fn,
-                     cl_accuracy = cl_accuracy,
-                     precision = precision,
-                     #recall = recall,
-                     sensitivity = sensitivity,
-                     specificity = specificity)
-
-metrics_c3
+forecast_metrics(pred_w_results, measured_col = "class")
 ```
 
 
@@ -265,61 +215,8 @@ p3_v_tox_23
 
 ### Metrics 
 
-#### Season Accuracy:
- 
-
 ```{r echo=FALSE}
-correct <- pred_w_results |>
-  filter(predicted_class == class) |>
-  nrow()
-
-metrics <- tibble(accuracy = correct/nrow(pred_w_results))
-
-metrics
-```
-
-#### Closure-level (Class 3) Predictions
-
-```{r echo=FALSE}
-tn <- pred_w_results |>
-  filter(predicted_class != 3 & class != 3) |>
-  nrow()
-
-tp <- pred_w_results |> 
-  dplyr::filter(.data$predicted_class == 3 & .data$class == 3) |> 
-  nrow()
-  
-fp <- pred_w_results |> 
-  dplyr::filter(.data$predicted_class == 3 & .data$class != 3) |> 
-  nrow()
-  
-precision = tp/(tp+fp)
-  
-fn = pred_w_results |> 
-  dplyr::filter(.data$predicted_class != 3 & .data$class == 3) |> 
-  nrow()
-  
-recall = tp/(tp+fn)
-  
-f_1 = (2)*(precision*recall)/(precision+recall)
-
-sensitivity = tp/(tp+fn)
-
-specificity = tn/(tn+fp)
-
-cl_accuracy = (tn+tp)/nrow(pred_w_results)
-
-metrics_c3 <- tibble(tp = tp,
-                     fp = fp,
-                     tn = tn,
-                     fn = fn,
-                     cl_accuracy = cl_accuracy,
-                     precision = precision,
-                     #recall = recall,
-                     sensitivity = sensitivity,
-                     specificity = specificity)
-
-metrics_c3
+forecast_metrics(pred_w_results, measured_col = "class")
 ```
 
 
@@ -382,61 +279,8 @@ p3_v_tox_22
 
 ### Metrics 
 
-#### Season Accuracy:
-
-```{r acc22, echo=FALSE}
-
-correct <- pred_w_results |>
-  filter(predicted_class == class) |>
-  nrow()
-
-metrics <- tibble(accuracy = correct/nrow(pred_w_results))
-
-metrics
-```
-
-#### Closure-level (Class 3) Predictions
-
 ```{r metrics22, echo=FALSE}
-tn <- pred_w_results |>
-  filter(predicted_class != 3 & class != 3) |>
-  nrow()
-
-tp <- pred_w_results |> 
-  dplyr::filter(.data$predicted_class == 3 & .data$class == 3) |> 
-  nrow()
-  
-fp <- pred_w_results |> 
-  dplyr::filter(.data$predicted_class == 3 & .data$class != 3) |> 
-  nrow()
-  
-precision = tp/(tp+fp)
-  
-fn = pred_w_results |> 
-  dplyr::filter(.data$predicted_class != 3 & .data$class == 3) |> 
-  nrow()
-  
-recall = tp/(tp+fn)
-  
-f_1 = (2)*(precision*recall)/(precision+recall)
-
-sensitivity = tp/(tp+fn)
-
-specificity = tn/(tn+fp)
-
-cl_accuracy = (tn+tp)/nrow(pred_w_results)
-
-metrics_c3 <- tibble(tp = tp,
-                     fp = fp,
-                     tn = tn,
-                     fn = fn,
-                     cl_accuracy = cl_accuracy,
-                     precision = precision,
-                     #recall = recall,
-                     sensitivity = sensitivity,
-                     specificity = specificity)
-
-metrics_c3
+forecast_metrics(pred_w_results, measured_col = "class")
 ```
 
 
@@ -515,61 +359,8 @@ p3_v_tox_21
 
 ### Metrics 
 
-#### Season Accuracy:
-
-```{r acc21, echo=FALSE}
-
-correct <- pred_w_results |>
-  filter(predicted_class == class) |>
-  nrow()
-
-metrics <- tibble(accuracy = correct/nrow(pred_w_results))
-
-metrics
-```
-
-#### Closure-level (Class 3) Predictions
-
 ```{r metrics21, echo=FALSE}
-tn <- pred_w_results |>
-  filter(predicted_class != 3 & class != 3) |>
-  nrow()
-
-tp <- pred_w_results |> 
-  dplyr::filter(.data$predicted_class == 3 & .data$class == 3) |> 
-  nrow()
-  
-fp <- pred_w_results |> 
-  dplyr::filter(.data$predicted_class == 3 & .data$class != 3) |> 
-  nrow()
-  
-precision = tp/(tp+fp)
-  
-fn = pred_w_results |> 
-  dplyr::filter(.data$predicted_class != 3 & .data$class == 3) |> 
-  nrow()
-  
-recall = tp/(tp+fn)
-  
-f_1 = (2)*(precision*recall)/(precision+recall)
-
-sensitivity = tp/(tp+fn)
-
-specificity = tn/(tn+fp)
-
-cl_accuracy = (tn+tp)/nrow(pred_w_results)
-
-metrics_c3 <- tibble(tp = tp,
-                     fp = fp,
-                     tn = tn,
-                     fn = fn,
-                     cl_accuracy = cl_accuracy,
-                     precision = precision,
-                     #recall = recall,
-                     sensitivity = sensitivity,
-                     specificity = specificity)
-
-metrics_c3
+forecast_metrics(pred_w_results, measured_col = "class")
 ```
 
 
