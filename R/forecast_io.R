@@ -76,7 +76,7 @@ read_forecast <- function(format = FALSE,
 #' @param years numeric vector of years
 #' @returns tibble with all predictions made
 #' @export
-read_all_predictions <- function(years=2021:2023) {
+read_all_predictions <- function(years=2021:2025) {
   
   all_predictions <- dplyr::tibble()
   for (year in years) {
