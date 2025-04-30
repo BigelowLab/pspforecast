@@ -65,36 +65,47 @@ Shellfish toxicity forecast serving package
 
 - predicted_class - the predicted classification
 
-``` r
-predictions <- read_forecast(year = "2024") |>
-  distinct()
+## 2025 Results
 
-glimpse(predictions)
+``` r
+predictions <- read_forecast(year = "2025")
 ```
 
-    ## Rows: 464
-    ## Columns: 19
-    ## $ version             <chr> "v0.3.0", "v0.3.0", "v0.3.0", "v0.3.0", "v0.3.0", …
-    ## $ ensemble_n          <dbl> 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10…
-    ## $ location            <chr> "PSP10.11", "PSP10.33", "PSP12.01", "PSP12.03", "P…
-    ## $ date                <date> 2024-05-06, 2024-05-06, 2024-05-08, 2024-05-08, 2…
-    ## $ name                <chr> "Ogunquit River", "Spurwink River", "Basin Pt.", "…
-    ## $ lat                 <dbl> 43.25030, 43.56632, 43.73848, 43.73064, 43.79553, …
-    ## $ lon                 <dbl> -70.59540, -70.27305, -70.04343, -70.02556, -69.94…
-    ## $ class_bins          <chr> "0,10,30,80", "0,10,30,80", "0,10,30,80", "0,10,30…
-    ## $ forecast_start_date <date> 2024-05-10, 2024-05-10, 2024-05-12, 2024-05-12, 2…
-    ## $ forecast_end_date   <date> 2024-05-16, 2024-05-16, 2024-05-18, 2024-05-18, 2…
-    ## $ p_0                 <dbl> 93, 100, 100, 99, 31, 3, 95, 94, 95, 95, 100, 99, …
-    ## $ p_1                 <dbl> 6, 0, 0, 1, 44, 13, 4, 5, 4, 5, 0, 1, 0, 42, 9, 40…
-    ## $ p_2                 <dbl> 1, 0, 0, 0, 18, 43, 0, 1, 0, 0, 0, 0, 0, 2, 0, 17,…
-    ## $ p_3                 <dbl> 0, 0, 0, 0, 7, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 3…
-    ## $ p3_sd               <dbl> 2.537746e-02, 1.702311e-04, 5.835063e-07, 3.170006…
-    ## $ p_3_min             <dbl> 2.803591e-02, 1.613240e-06, 4.298889e-09, 3.494154…
-    ## $ p_3_max             <dbl> 1.114067e-01, 5.424280e-04, 1.839769e-06, 9.452227…
-    ## $ predicted_class     <dbl> 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,…
-    ## $ f_id                <chr> "PSP10.11_2024-05-06", "PSP10.33_2024-05-06", "PSP…
+![](README_files/figure-gfm/cm25-1.png)<!-- -->
+
+![](README_files/figure-gfm/scatter25-1.png)<!-- -->
+
+### Metrics
+
+- tp - The model predicted class 3 and the following week’s measurement
+  was class 3
+- fp - The model predicted class 3 and the following week’s measurement
+  was not class 3
+- tn - The model predicted class 0,1,2 and the following week’s
+  measurement was in class 0,1,2
+- fn - The model predicted class 0,1,2 and the following week’s
+  measurement was class 3
+- accuracy - Measure of how many correct classifications were predicted
+- cl_accuracy - Considering predictions are those that correctly
+  predicted toxicity above or below the closure limit or not
+- precision - TP/(TP+FP)
+- sensitivity - TP/(TP+FN)
+- specificity - TN/(TN+FP)
+- f_1
+
+<!-- -->
+
+    ## # A tibble: 1 × 10
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
+    ## 1     0     0     4     1      0.8         0.8   NaN       NaN           0
+    ## # ℹ 1 more variable: specificity <dbl>
 
 ## 2024 Season Results
+
+``` r
+predictions <- read_forecast(year = "2024")
+```
 
 ![](README_files/figure-gfm/cm24-1.png)<!-- -->
 
@@ -168,7 +179,7 @@ predictions <- read_forecast(year = "2023")
 
 ### Timing of initial closure-level predictions
 
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 ## 2021 Season Results
 
@@ -192,14 +203,14 @@ predictions <- read_forecast(year = "2023")
 
 ### Timing of initial closure-level predictions
 
-![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
 ### Possible manuscript plot(s)
 
-![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
-![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
 
 ### Last Updated
 
-    ## [1] "2024-10-02"
+    ## [1] "2025-04-30"

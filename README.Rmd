@@ -76,15 +76,88 @@ suppressPackageStartupMessages({
 psp <- read_psp_data()
 ```
 
+## 2025 Results
+
 
 ```{r}
-predictions <- read_forecast(year = "2024") |>
-  distinct()
-
-glimpse(predictions)
+predictions <- read_forecast(year = "2025")
 ```
 
+
+```{r echo=FALSE}
+pred_w_results <- add_forecast_results(predictions, toxin_measurements = psp) 
+```
+
+```{r cm25, echo=FALSE, cahce=FALSE}
+num_levels <- 4
+levels <- seq(from=0, to=(num_levels-1))
+
+
+cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, levels), actual = factor(pred_w_results$class, levels))) |> 
+  mutate(frac = round(Freq/sum(Freq)*100)) |> 
+  mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
+  #mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
+
+confusion_matrix_25 <- ggplot2::ggplot(data = cm,
+                                    mapping = ggplot2::aes(x = .data$predicted, y = .data$actual)) +
+  ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
+  ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
+  #ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f%%", .data$frac)), vjust = -1, hjust=1, size=5) +
+  #ggplot2::geom_text(ggplot2::aes(label = paste(.data$frac, "%", sep="")), vjust = 3, size=4)+
+  ggplot2::scale_fill_gradient(low = "white", 
+                               high = "blue") +
+  ggplot2::labs(x = "Predicted Classifications", 
+                y = "Actual Classifications") +
+  ggplot2::theme_linedraw() +
+  ggplot2::theme(axis.text=  ggplot2::element_text(size=14),
+                 axis.title= ggplot2::element_text(size=14,face="bold"),
+                 title =     ggplot2::element_text(size = 14, face = "bold"),
+                 legend.position = "none") +
+  ggplot2::geom_rect(aes(xmin=0.5, xmax=3.5, ymin=0.5, ymax=3.5), alpha=0) +
+  ggplot2::geom_rect(aes(xmin=3.5, xmax=4.5, ymin=3.5, ymax=4.5), alpha=0)
+
+
+confusion_matrix_25
+
+```
+
+```{r scatter25, echo=FALSE, cache=FALSE}
+
+p3_v_tox_25 <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, y=.data$toxicity)) +
+  ggplot2::geom_point(alpha=0.7, size=3) +
+  ggplot2::labs(x = "Predicted Probability of Closure-level Toxicity",
+                y = "Measured Toxicity") +
+  ggplot2::geom_hline(yintercept=80, linetype="dashed")
+
+p3_v_tox_25
+```
+
+
+### Metrics 
+
+ + tp - The model predicted class 3 and the following week's measurement was class 3
+ + fp - The model predicted class 3 and the following week's measurement was not class 3
+ + tn - The model predicted class 0,1,2 and the following week's measurement was in class 0,1,2
+ + fn - The model predicted class 0,1,2 and the following week's measurement was class 3
+ + accuracy - Measure of how many correct classifications were predicted
+ + cl_accuracy - Considering predictions are those that correctly predicted toxicity above or below the closure limit or not
+ + precision - TP/(TP+FP)
+ + sensitivity - TP/(TP+FN)
+ + specificity - TN/(TN+FP)
+ + f_1
+
+
+```{r echo=FALSE}
+forecast_metrics(pred_w_results, measured_col = "class")
+```
+
+
 ## 2024 Season Results
+
+```{r}
+predictions <- read_forecast(year = "2024")
+```
+
 
 ```{r echo=FALSE}
 pred_w_results <- add_forecast_results(predictions, toxin_measurements = psp) 
@@ -105,7 +178,7 @@ confusion_matrix_24 <- ggplot2::ggplot(data = cm,
   ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
   ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
   #ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f%%", .data$frac)), vjust = -1, hjust=1, size=5) +
-  ggplot2::geom_text(ggplot2::aes(label = paste(.data$frac, "%", sep="")), vjust = 3, size=4)+
+  #ggplot2::geom_text(ggplot2::aes(label = paste(.data$frac, "%", sep="")), vjust = 3, size=4)+
   ggplot2::scale_fill_gradient(low = "white", 
                                high = "blue") +
   ggplot2::labs(x = "Predicted Classifications", 
@@ -182,7 +255,7 @@ confusion_matrix_23 <- ggplot2::ggplot(data = cm,
   ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
   ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
   #ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f%%", .data$frac)), vjust = -1, hjust=1, size=5) +
-  ggplot2::geom_text(ggplot2::aes(label = paste(.data$frac, "%", sep="")), vjust = 3, size=4)+
+  #ggplot2::geom_text(ggplot2::aes(label = paste(.data$frac, "%", sep="")), vjust = 3, size=4)+
   ggplot2::scale_fill_gradient(low = "white", 
                                high = "blue") +
   ggplot2::labs(x = "Predicted Classifications", 
@@ -250,7 +323,7 @@ confusion_matrix_22 <- ggplot2::ggplot(data = cm,
   ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
   ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
   #ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f%%", .data$frac)), vjust = -1, hjust=1, size=5) +
-  ggplot2::geom_text(ggplot2::aes(label = paste(.data$frac, "%", sep="")), vjust = 3, size=4)+
+  #ggplot2::geom_text(ggplot2::aes(label = paste(.data$frac, "%", sep="")), vjust = 3, size=4)+
   ggplot2::scale_fill_gradient(low = "white", 
                                high = "blue") +
   ggplot2::labs(x = "Predicted Classifications", 
@@ -330,7 +403,7 @@ confusion_matrix_21 <- ggplot2::ggplot(data = cm,
   ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
   ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
   #ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f%%", .data$frac)), vjust = -1, hjust=1, size=5) +
-  ggplot2::geom_text(ggplot2::aes(label = paste(.data$frac, "%", sep="")), vjust = 3, size=4)+
+  #ggplot2::geom_text(ggplot2::aes(label = paste(.data$frac, "%", sep="")), vjust = 3, size=4)+
   ggplot2::scale_fill_gradient(low = "white", 
                                high = "blue") +
   ggplot2::labs(x = "Predicted Classifications", 
