@@ -96,10 +96,9 @@ predictions <- read_forecast(year = "2025")
 <!-- -->
 
     ## # A tibble: 1 × 10
-    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
-    ## 1     0     0     4     1      0.8         0.8   NaN       NaN           0
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1     0     0     8     1    0.778       0.889   NaN       NaN           0           1
 
 ## 2024 Season Results
 
@@ -132,10 +131,9 @@ predictions <- read_forecast(year = "2024")
 <!-- -->
 
     ## # A tibble: 1 × 10
-    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
-    ## 1     2     4   397     7    0.717       0.973 0.267     0.333       0.222
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1     2     4   397     7    0.717       0.973 0.267     0.333       0.222       0.990
 
 ## 2023 Season Results
 
@@ -154,10 +152,9 @@ predictions <- read_forecast(year = "2023")
 ### Metrics
 
     ## # A tibble: 1 × 10
-    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
-    ## 1     0     0   550     0    0.993           1   NaN       NaN         NaN
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1     0     0   550     0    0.993           1   NaN       NaN         NaN           1
 
 ## 2022 Season Results
 
@@ -172,10 +169,9 @@ predictions <- read_forecast(year = "2023")
 ### Metrics
 
     ## # A tibble: 1 × 10
-    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
-    ## 1    16    20   603    12    0.799       0.951   0.5     0.444       0.571
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1    16    20   603    12    0.799       0.951   0.5     0.444       0.571       0.968
 
 ### Timing of initial closure-level predictions
 
@@ -194,10 +190,9 @@ predictions <- read_forecast(year = "2023")
 ### Metrics
 
     ## # A tibble: 1 × 10
-    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
-    ## 1     2     3   463     0    0.938       0.994 0.571       0.4           1
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1     2     3   463     0    0.938       0.994 0.571       0.4           1       0.994
 
 ### Closure-level accuracy
 
@@ -213,4 +208,4 @@ predictions <- read_forecast(year = "2023")
 
 ### Last Updated
 
-    ## [1] "2025-04-30"
+    ## [1] "2025-05-02"
