@@ -4,7 +4,7 @@
 \alias{read_all_predictions}
 \title{Reads all predictions from all years into one tibble}
 \usage{
-read_all_predictions(years = 2021:2023)
+read_all_predictions(years = 2021:2025)
 }
 \arguments{
 \item{years}{numeric vector of years}

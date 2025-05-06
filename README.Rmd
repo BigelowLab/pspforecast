@@ -4,7 +4,9 @@ output: github_document
 ---
 
 
-Shellfish toxicity forecast serving package
+Shellfish toxicity (PSP) forecast serving package
+
+For the current 2025 Maine PSP predictions, click [here](https://github.com/BigelowLab/pspforecast/blob/master/inst/forecastdb/dmr_webpage_table.csv)
 
 
 ## Requirements

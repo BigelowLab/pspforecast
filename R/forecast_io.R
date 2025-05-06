@@ -51,7 +51,8 @@ read_forecast <- function(format = FALSE,
       dplyr::arrange(.data$date) |> 
       dplyr::group_by(.data$location) |> 
       dplyr::group_map(get_newest, .keep=TRUE) |> 
-      dplyr::bind_rows() 
+      dplyr::bind_rows() |>
+      dplyr::arrange(dplyr::desc(.data$p_3))
 
   } 
   

@@ -18,10 +18,10 @@ cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, lev
 
 plot1 <- ggplot2::ggplot(data = cm, ggplot2::aes(x=.data$predicted, y=.data$actual)) +
   ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
+  ggplot2::geom_tile(data = cm[c(16,32,48,64),], fill = NA, color = "black", linewidth = 2) +
   ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
   ggplot2::facet_grid(cols=vars(.data$year)) +
-  #ggplot2::geom_text(ggplot2::aes(label = paste(.data$frac, "%", sep="")), vjust = 3, size=4) +
-  ggplot2::scale_fill_gradient(low = "white", 
+  ggplot2::scale_fill_gradient2(low = "white", 
                                high = "blue") +
   ggplot2::labs(x = "Predicted Classifications", 
                 y = "Actual Classifications") +
@@ -29,7 +29,8 @@ plot1 <- ggplot2::ggplot(data = cm, ggplot2::aes(x=.data$predicted, y=.data$actu
   ggplot2::theme(axis.text=  ggplot2::element_text(size=14),
                  axis.title= ggplot2::element_text(size=14,face="bold"),
                  title =     ggplot2::element_text(size = 14, face = "bold"),
-                 legend.position = "none") +
+                 legend.position = "none",
+                 strip.text.x = element_text(size = 20)) +
   ggplot2::geom_rect(aes(xmin=0.5, xmax=3.5, ymin=0.5, ymax=3.5), alpha=0) +
   ggplot2::geom_rect(aes(xmin=3.5, xmax=4.5, ymin=3.5, ymax=4.5), alpha=0)
 

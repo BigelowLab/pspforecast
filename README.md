@@ -208,4 +208,4 @@ predictions <- read_forecast(year = "2023")
 
 ### Last Updated
 
-    ## [1] "2025-05-02"
+    ## [1] "2025-05-06"
