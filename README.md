@@ -1,7 +1,10 @@
 pspforecast
 ================
 
-Shellfish toxicity forecast serving package
+Shellfish toxicity (PSP) forecast serving package
+
+For the current 2025 Maine PSP predictions, click
+[here](https://github.com/BigelowLab/pspforecast/blob/master/inst/forecastdb/dmr_webpage_table.csv)
 
 ## Requirements
 
@@ -98,7 +101,7 @@ predictions <- read_forecast(year = "2025")
     ## # A tibble: 1 × 10
     ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
     ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1     0     0     8     1    0.778       0.889   NaN       NaN           0           1
+    ## 1     1     0    13     2    0.562       0.875   0.5         1       0.333           1
 
 ## 2024 Season Results
 
@@ -208,4 +211,4 @@ predictions <- read_forecast(year = "2023")
 
 ### Last Updated
 
-    ## [1] "2025-05-06"
+    ## [1] "2025-05-07"
