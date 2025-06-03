@@ -101,7 +101,7 @@ predictions <- read_forecast(year = "2025")
     ## # A tibble: 1 × 10
     ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
     ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1    17     6    74    11    0.583       0.843 0.667     0.739       0.607       0.925
+    ## 1    19     9    75    11    0.570       0.825 0.655     0.679       0.633       0.893
 
 ## 2024 Season Results
 
@@ -211,4 +211,4 @@ predictions <- read_forecast(year = "2023")
 
 ### Last Updated
 
-    ## [1] "2025-05-30"
+    ## [1] "2025-06-03"
