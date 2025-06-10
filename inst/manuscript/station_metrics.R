@@ -42,16 +42,22 @@ plot_station_metrics <- function(st_metrics) {
                         ggplot2::aes(x = .data$lon, y = .data$lat, colour=.data$accuracy),
                         size=1) +
     #ggplot2::scale_color_gradient(low="black", high="red") + 
-    ggplot2::scale_color_viridis_b()
+    ggplot2::scale_color_viridis_b() +
+    #ggplot2::scale_color_fermenter(palette="Spectral") +
+    ggplot2::theme(axis.title.x=element_blank(),
+                   axis.title.y=element_blank())
   
   p
 }
 
+library(pspforecast)
+library(ggplot2)
 
 st_metrics <- find_station_metrics()
 
 plot3 <- plot_station_metrics(st_metrics)
 
+plot3
 
 # Save plot
 
