@@ -15,7 +15,8 @@ find_station_metrics <- function(results = read_all_results()) {
   r <- results |>
     dplyr::group_by(location) |>
     dplyr::group_map(check_station) |>
-    dplyr::bind_rows()
+    dplyr::bind_rows() |>
+    dplyr::mutate(region = ifelse(lon < -69, "west", "east"))
   
   return(r)
 }
@@ -23,7 +24,7 @@ find_station_metrics <- function(results = read_all_results()) {
 
 plot_station_metrics <- function(st_metrics) {
   
-  bb <- c(xmin = -71, ymin = 43, xmax = -66.5, ymax = 45.5)
+  bb <- c(xmin = -71, ymin = 43, xmax = -66.5, ymax = 45.1)
 
   coast = rnaturalearth::ne_coastline(scale = "large", returnclass = 'sf') |>
     sf::st_crop(sf::st_bbox(bb))
@@ -35,9 +36,9 @@ plot_station_metrics <- function(st_metrics) {
   
   p <- ggplot2::ggplot(data = north_am) +
     ggplot2::geom_sf(fill = "antiquewhite") +
-    ggplot2::geom_sf(data = coast, color = "gray") +
+    #ggplot2::geom_sf(data = coast, color = "gray") +
     ggplot2::geom_sf(data = states, color="black") +
-    ggplot2::theme_bw() +
+    ggplot2::theme_classic() +
     ggplot2::geom_point(data = st_metrics, 
                         ggplot2::aes(x = .data$lon, y = .data$lat, colour=.data$accuracy),
                         size=1) +
@@ -45,7 +46,9 @@ plot_station_metrics <- function(st_metrics) {
     ggplot2::scale_color_viridis_b() +
     #ggplot2::scale_color_fermenter(palette="Spectral") +
     ggplot2::theme(axis.title.x=element_blank(),
-                   axis.title.y=element_blank())
+                   axis.title.y=element_blank(),
+                   axis.text = element_blank()) +
+    facet_grid(cols = vars(region))
   
   p
 }
