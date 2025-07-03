@@ -10,7 +10,8 @@ Imports:
   dplyr,
   readr,
   tidyr,
-  httr
+  httr,
+  yardstick
 Maintainer: Johnathan Evanilla <jevanilla@bigelow.org>
 Author: Johnathan Evanilla <jevanilla@bigelow.org>
 License: MIT + file LICENSE

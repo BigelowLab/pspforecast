@@ -2,6 +2,7 @@
 
 export(add_forecast_results)
 export(find_closures)
+export(find_station_metrics)
 export(forecast_metrics)
 export(format_probs)
 export(format_webpage_table)

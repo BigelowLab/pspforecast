@@ -1,67 +1,172 @@
 
-#' Finds skill metrics for each station included in the experimental forecast
-#' @param results tibble of results with columns class for truth and predicted class for estimate
-#' @returns tibble of metrics with one row per station
-find_station_metrics <- function(results = read_all_results()) {
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(ggplot2)
+  library(ggrepel)
+  library(sf)
+  library(rnaturalearth)
   
-  check_station <- function(tbl, key) {
-    dplyr::tibble(location = key$location[1],
-                  lat = tbl$lat[1],
-                  lon = tbl$lon[1],
-                  accuracy = yardstick::accuracy_vec(truth = factor(tbl$class, levels = c(0,1,2,3)), estimate=factor(tbl$predicted_class, , levels = c(0,1,2,3))),
-                  predictions = nrow(tbl))
-  }
+  library(pspdata)
+  library(pspforecast)
   
-  r <- results |>
-    dplyr::group_by(location) |>
-    dplyr::group_map(check_station) |>
-    dplyr::bind_rows() |>
-    dplyr::mutate(region = ifelse(lon < -69, "west", "east"))
-  
-  return(r)
-}
+  library(ggspatial)
+  library(gridExtra)
+  library(grid)
+})
+
+st_metrics <- find_station_metrics() |>
+  pspdata::add_lat_lon(station_col = "location", after_col = "location") |>
+  dplyr::mutate(place = ifelse(lon < -69, "west", "east")) 
+
+maine <- st_read("inst/manuscript/necoast/Northeast_Coast.shp")
+
+## western maine sttaions
+
+west <- filter(st_metrics, place=="west") |>
+  mutate(st_num = seq(1,n(),1),
+         st_lab = paste(st_num, ". ", name, sep=""))
+
+#we're going to set the theme for our legend to have a blank white background with no row striping 
+white_theme <- ttheme_default(
+  core = list(
+    fg_params = list(fontface = "plain",
+                     fontsize = 7),
+    bg_params = list(fill = "white", 
+                     col = NA)))
+
+#station_table <- as.data.frame(list(a = west$st_lab[1:17], b=west$st_lab[18:34], cc=c(west$st_lab[35:50],NA)))
+station_table <- as.data.frame(list(a = west$st_lab[1:13], b=west$st_lab[14:26], cc=west$st_lab[27:39], cc=c(west$st_lab[40:50],NA, NA)))
+
+#make a grob
+grob_df <- tableGrob(station_table, rows = NULL, cols=NULL, theme = white_theme)
+
+#add border to grob
+grob_df <- gtable::gtable_add_grob(
+  grob_df,
+  grobs = rectGrob(gp = gpar(fill = NA, lwd = 1)),
+  t = 1, 
+  l = 1, 
+  b = nrow(grob_df), 
+  r = ncol(grob_df)
+)
 
 
-plot_station_metrics <- function(st_metrics) {
-  
-  bb <- c(xmin = -71, ymin = 43, xmax = -66.5, ymax = 45.1)
+p_west <- ggplot2::ggplot(data = maine) +
+  geom_sf(data=maine, 
+          fill = "grey", 
+          color = "black", 
+          linewidth = 0.1) +
+  ggplot2::theme_classic() +
+  ggplot2::geom_point(data = west, 
+                      aes(x = .data$lon, 
+                          y = .data$lat, 
+                          colour=.data$accuracy),
+                      size=2) +
+  #geom_text(data = west,
+  #          aes(x = lon, 
+  #              y = lat, 
+  #              label = st_num),
+  #          hjust = -0.5,  
+  #          size = 4,
+  #          family = "serif") +
+  geom_label_repel(data=west, 
+                   aes(x=lon, 
+                       y=lat, 
+                       label=st_num),
+                   label.padding = unit(0.1, "lines")) +
+  coord_sf(expand = FALSE, 
+           xlim = c(-71.0, -69.0), 
+           ylim = c(43, 44.2), 
+           crs = 4326) +
+  scale_color_viridis_b(name = "Closure-level Accuracy") + 
+  annotation_north_arrow(
+    location = "tl", 
+    which_north = "true") + 
+  annotation_custom(
+    grob = grob_df,
+    xmin = -70.05, 
+    xmax = -69.05,  
+    ymin = 43.0, 
+    ymax = 43.62) +
+  ggplot2::theme(axis.title.x=element_blank(),
+                 axis.title.y=element_blank(),
+                 #axis.text = element_blank(),
+                 legend.position = "bottom") 
 
-  coast = rnaturalearth::ne_coastline(scale = "large", returnclass = 'sf') |>
-    sf::st_crop(sf::st_bbox(bb))
-  north_am <- rnaturalearth::ne_countries(scale = 10, returnclass = "sf", continent = "North America") |>
-    sf::st_crop(sf::st_bbox(bb))
-  
-  states <- rnaturalearth::ne_states(country="united states of america", returnclass = "sf") |>
-    sf::st_crop(sf::st_bbox(bb))
-  
-  p <- ggplot2::ggplot(data = north_am) +
-    ggplot2::geom_sf(fill = "antiquewhite") +
-    #ggplot2::geom_sf(data = coast, color = "gray") +
-    ggplot2::geom_sf(data = states, color="black") +
-    ggplot2::theme_classic() +
-    ggplot2::geom_point(data = st_metrics, 
-                        ggplot2::aes(x = .data$lon, y = .data$lat, colour=.data$accuracy),
-                        size=1) +
-    #ggplot2::scale_color_gradient(low="black", high="red") + 
-    ggplot2::scale_color_viridis_b() +
-    #ggplot2::scale_color_fermenter(palette="Spectral") +
-    ggplot2::theme(axis.title.x=element_blank(),
-                   axis.title.y=element_blank(),
-                   axis.text = element_blank()) +
-    facet_grid(cols = vars(region))
-  
-  p
-}
+#annotate(geom="text", x=-69.5, y=42.8, label=west$st_lab) 
 
-library(pspforecast)
-library(ggplot2)
-
-st_metrics <- find_station_metrics()
-
-plot3 <- plot_station_metrics(st_metrics)
-
-plot3
+p_west
 
 # Save plot
 
-ggsave(filename = "inst/manuscript/station_metrics_allyears.jpeg", plot=plot3, width=6, height=4)
+ggsave(filename = "inst/manuscript/western_station_metrics_allyears.jpeg", plot=p_west, width=12, height=8)
+
+
+## eastern Maine stations
+
+east <- filter(st_metrics, place=="east") |>
+  mutate(st_num = seq(51,73,1),
+         st_lab = paste(st_num, ". ", name, sep=""))
+
+
+#we're going to set the theme for our legend to have a blank white background with no row striping 
+white_theme <- ttheme_default(
+  core = list(
+    fg_params = list(fontface = "plain",
+                     fontsize = 7),
+    bg_params = list(fill = "white", 
+                     col = NA)))
+
+#station_table <- as.data.frame(list(a = west$st_lab[1:17], b=west$st_lab[18:34], cc=c(west$st_lab[35:50],NA)))
+station_table <- as.data.frame(list(a = east$st_lab[1:8], b = east$st_lab[9:16], cc=c(east$st_lab[17:23], NA)))
+#station_table <- as.data.frame(list(a = east$st_lab[1:12], cc=c(east$st_lab[13:23], NA)))
+
+#make a grob
+grob_df_east <- tableGrob(station_table, rows = NULL, cols=NULL, theme = white_theme) |>
+  gtable::gtable_add_grob(
+    grobs = rectGrob(gp = gpar(fill = NA, lwd = 1)),
+    t = 1, 
+    l = 1, 
+    b = nrow(station_table), 
+    r = ncol(station_table))
+
+
+p_east <- ggplot2::ggplot(data = maine) +
+  geom_sf(data=maine, 
+          fill = "grey", 
+          color = "black", 
+          linewidth = 0.1) +
+  ggplot2::theme_classic() +
+  ggplot2::geom_point(data = east, 
+                      aes(x = .data$lon, 
+                          y = .data$lat, 
+                          colour=.data$accuracy),
+                      size=2) +
+  scale_color_viridis_b(name = "Closure-level Accuracy") + 
+  geom_label_repel(data=east, 
+                   aes(x=lon, 
+                       y=lat, 
+                       label=st_num),
+                   label.padding = unit(0.1, "lines")) +
+  coord_sf(expand = FALSE, 
+           xlim = c(-69.0, -66.75), 
+           ylim = c(43.9, 45.1), 
+           crs = 4326) +
+  annotation_north_arrow(
+    location = "tl", 
+    which_north = "true") + 
+  annotation_custom(
+    grob = grob_df_east,
+    xmin = -67.75, 
+    xmax = -67.2,  
+    ymin = 44.0, 
+    ymax = 44.3) +
+  ggplot2::theme(axis.title.x=element_blank(),
+                 axis.title.y=element_blank(),
+                 #axis.text = element_blank(),
+                 legend.position = "bottom") 
+
+p_east
+
+ggsave(filename = "inst/manuscript/eastern_station_metrics_allyears.jpeg", plot=p_east, width=12, height=8)
+

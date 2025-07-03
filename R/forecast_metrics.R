@@ -44,3 +44,25 @@ forecast_metrics <- function(fc,
   
   return(metrics_c3)
 }
+
+#' Finds skill metrics for each station included in the experimental forecast
+#' @param results tibble of results with columns class for truth and predicted class for estimate
+#' @returns tibble of metrics with one row per station
+#' @export
+find_station_metrics <- function(results = read_all_results()) {
+  
+  check_station <- function(tbl, key) {
+    dplyr::tibble(location = key$location[1],
+                  lat = tbl$lat[1],
+                  lon = tbl$lon[1],
+                  accuracy = yardstick::accuracy_vec(truth = factor(tbl$class, levels = c(0,1,2,3)), estimate=factor(tbl$predicted_class, , levels = c(0,1,2,3))),
+                  predictions = nrow(tbl))
+  }
+  
+  r <- results |>
+    dplyr::group_by(.data$location) |>
+    dplyr::group_map(check_station) |>
+    dplyr::bind_rows()
+  
+  return(r)
+}
