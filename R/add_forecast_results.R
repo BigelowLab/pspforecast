@@ -18,7 +18,8 @@ add_forecast_results <- function(predictions,
   find_result <- function(tbl, key, tox=NULL) {
     
     db <- tox |> 
-      dplyr::filter(.data$location_id == key$location[1]) |> #add break
+      dplyr::filter(.data$location_id == key$location[1] &
+                      .data$species == key$species[1]) |> #add break
       dplyr::filter(dplyr::between(date, tbl$forecast_start_date[1], tbl$forecast_end_date[1]))
     
     if (nrow(db) == 0) {
@@ -79,7 +80,7 @@ add_forecast_results <- function(predictions,
     
   
   results <- predictions |>
-    dplyr::group_by(.data$location, .data$date) |> 
+    dplyr::group_by(.data$location, .data$date, .data$species) |> 
     dplyr::group_map(find_result, .keep=TRUE, tox=toxin_measurements) |> 
     dplyr::bind_rows() |> 
     dplyr::arrange(date)
