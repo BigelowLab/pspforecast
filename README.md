@@ -70,10 +70,6 @@ For the current 2025 Maine PSP predictions, click
 
 ## 2025 Results
 
-``` r
-predictions <- read_forecast(year = "2025")
-```
-
 ![](README_files/figure-gfm/cm25-1.png)<!-- -->
 
 ![](README_files/figure-gfm/scatter25-1.png)<!-- -->
@@ -99,15 +95,12 @@ predictions <- read_forecast(year = "2025")
 <!-- -->
 
     ## # A tibble: 1 × 10
-    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1    35    25   283    20    0.623       0.876 0.609     0.583       0.636       0.919
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
+    ## 1    35    25   289    21    0.624       0.876 0.603     0.583       0.625
+    ## # ℹ 1 more variable: specificity <dbl>
 
 ## 2024 Season Results
-
-``` r
-predictions <- read_forecast(year = "2024")
-```
 
 ![](README_files/figure-gfm/cm24-1.png)<!-- -->
 
@@ -115,34 +108,13 @@ predictions <- read_forecast(year = "2024")
 
 ### Metrics
 
-- tp - The model predicted class 3 and the following week’s measurement
-  was class 3
-- fp - The model predicted class 3 and the following week’s measurement
-  was not class 3
-- tn - The model predicted class 0,1,2 and the following week’s
-  measurement was in class 0,1,2
-- fn - The model predicted class 0,1,2 and the following week’s
-  measurement was class 3
-- accuracy - Measure of how many correct classifications were predicted
-- cl_accuracy - Considering predictions are those that correctly
-  predicted toxicity above or below the closure limit or not
-- precision - TP/(TP+FP)
-- sensitivity - TP/(TP+FN)
-- specificity - TN/(TN+FP)
-- f_1
-
-<!-- -->
-
     ## # A tibble: 1 × 10
-    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1     2     4   397     7    0.717       0.973 0.267     0.333       0.222       0.990
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
+    ## 1     2     4   397     7    0.717       0.973 0.267     0.333       0.222
+    ## # ℹ 1 more variable: specificity <dbl>
 
 ## 2023 Season Results
-
-``` r
-predictions <- read_forecast(year = "2023")
-```
 
 ### Confusion Matrix
 
@@ -155,9 +127,10 @@ predictions <- read_forecast(year = "2023")
 ### Metrics
 
     ## # A tibble: 1 × 10
-    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1     0     0   550     0    0.993           1   NaN       NaN         NaN           1
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
+    ## 1     0     0   550     0    0.993           1   NaN       NaN         NaN
+    ## # ℹ 1 more variable: specificity <dbl>
 
 ## 2022 Season Results
 
@@ -172,9 +145,10 @@ predictions <- read_forecast(year = "2023")
 ### Metrics
 
     ## # A tibble: 1 × 10
-    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1    16    20   603    12    0.799       0.951   0.5     0.444       0.571       0.968
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
+    ## 1    16    20   603    12    0.799       0.951   0.5     0.444       0.571
+    ## # ℹ 1 more variable: specificity <dbl>
 
 ### Timing of initial closure-level predictions
 
@@ -193,9 +167,10 @@ predictions <- read_forecast(year = "2023")
 ### Metrics
 
     ## # A tibble: 1 × 10
-    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1     2     3   463     0    0.938       0.994 0.571       0.4           1       0.994
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
+    ## 1     2     3   463     0    0.938       0.994 0.571       0.4           1
+    ## # ℹ 1 more variable: specificity <dbl>
 
 ### Closure-level accuracy
 

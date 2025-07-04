@@ -81,8 +81,9 @@ psp <- read_psp_data()
 ## 2025 Results
 
 
-```{r}
-predictions <- read_forecast(year = "2025")
+```{r echo=FALSE}
+predictions <- read_forecast(year = "2025") |>
+  mutate(species = "mytilus")
 ```
 
 
@@ -156,10 +157,10 @@ forecast_metrics(pred_w_results, measured_col = "class")
 
 ## 2024 Season Results
 
-```{r}
-predictions <- read_forecast(year = "2024")
+```{r echo=FALSE}
+predictions <- read_forecast(year = "2024") |>
+  mutate(species = "mytilus")
 ```
-
 
 ```{r echo=FALSE}
 pred_w_results <- add_forecast_results(predictions, toxin_measurements = psp) 
@@ -219,8 +220,9 @@ forecast_metrics(pred_w_results, measured_col = "class")
 
 ## 2023 Season Results
 
-```{r}
-predictions <- read_forecast(year = "2023")
+```{r echo=FALSE}
+predictions <- read_forecast(year = "2023") |>
+  mutate(species = "mytilus")
 ```
 
 
@@ -286,9 +288,9 @@ forecast_metrics(pred_w_results, measured_col = "class")
 
 ## 2022 Season Results
 
-
 ```{r echo=FALSE}
-predictions <- read_forecast(year = "2022")
+predictions <- read_forecast(year = "2022") |>
+  mutate(species = "mytilus")
 ```
 
 
@@ -368,7 +370,8 @@ ggplot(closures, aes(x = predicted_week, y = actual_week)) +
 ## 2021 Season Results
 
 ```{r echo=FALSE}
-predictions <- read_forecast(year = "2021")
+predictions <- read_forecast(year = "2021") |>
+  mutate(species = "mytilus")
 ```
 
 
