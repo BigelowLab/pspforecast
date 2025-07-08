@@ -95,10 +95,9 @@ For the current 2025 Maine PSP predictions, click
 <!-- -->
 
     ## # A tibble: 1 × 10
-    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
-    ## 1    35    25   289    21    0.624       0.876 0.603     0.583       0.625
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1    35    26   297    21    0.620       0.876 0.598     0.574       0.625       0.920
 
 ## 2024 Season Results
 
@@ -109,10 +108,9 @@ For the current 2025 Maine PSP predictions, click
 ### Metrics
 
     ## # A tibble: 1 × 10
-    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
-    ## 1     2     4   397     7    0.717       0.973 0.267     0.333       0.222
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1     2     4   397     7    0.717       0.973 0.267     0.333       0.222       0.990
 
 ## 2023 Season Results
 
@@ -127,10 +125,9 @@ For the current 2025 Maine PSP predictions, click
 ### Metrics
 
     ## # A tibble: 1 × 10
-    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
-    ## 1     0     0   550     0    0.993           1   NaN       NaN         NaN
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1     0     0   550     0    0.993           1   NaN       NaN         NaN           1
 
 ## 2022 Season Results
 
@@ -145,10 +142,9 @@ For the current 2025 Maine PSP predictions, click
 ### Metrics
 
     ## # A tibble: 1 × 10
-    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
-    ## 1    16    20   603    12    0.799       0.951   0.5     0.444       0.571
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1    16    20   603    12    0.799       0.951   0.5     0.444       0.571       0.968
 
 ### Timing of initial closure-level predictions
 
@@ -167,10 +163,9 @@ For the current 2025 Maine PSP predictions, click
 ### Metrics
 
     ## # A tibble: 1 × 10
-    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>
-    ## 1     2     3   463     0    0.938       0.994 0.571       0.4           1
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1     2     3   463     0    0.938       0.994 0.571       0.4           1       0.994
 
 ### Closure-level accuracy
 
@@ -186,4 +181,4 @@ For the current 2025 Maine PSP predictions, click
 
 ### Last Updated
 
-    ## [1] "2025-07-03"
+    ## [1] "2025-07-08"
