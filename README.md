@@ -97,7 +97,7 @@ For the current 2025 Maine PSP predictions, click
     ## # A tibble: 1 × 10
     ##      tp    fp    tn    fn accuracy cl_accuracy   f_1 precision sensitivity specificity
     ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1    46    32   418    30    0.618       0.882 0.597     0.590       0.605       0.929
+    ## 1    48    34   438    32    0.623       0.880 0.593     0.585         0.6       0.928
 
 ## 2024 Season Results
 
@@ -181,4 +181,4 @@ For the current 2025 Maine PSP predictions, click
 
 ### Last Updated
 
-    ## [1] "2025-07-25"
+    ## [1] "2025-07-30"
