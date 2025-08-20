@@ -7,7 +7,8 @@
 forecast_metrics(
   fc,
   predicted_col = "predicted_class",
-  measured_col = "actual_class"
+  measured_col = "actual_class",
+  positive_col = "prob_3"
 )
 }
 \arguments{
@@ -16,6 +17,11 @@ forecast_metrics(
 \item{predicted_col}{character string of predicted classification column name}
 
 \item{measured_col}{character string of measured classification column}
+
+\item{positive_col}{character stirng of positive (closure-level) class column}
+}
+\value{
+one row tibble of metrics
 }
 \description{
 Finds metrics from a table of forecast predictions
