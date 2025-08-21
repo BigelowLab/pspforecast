@@ -151,7 +151,7 @@ p3_v_tox_25
 
 
 ```{r echo=FALSE}
-forecast_metrics(pred_w_results, measured_col = "class")
+forecast_metrics(pred_w_results, measured_col = "class", positive_col = "p_3")
 ```
 
 
@@ -214,7 +214,7 @@ p3_v_tox_24
 ### Metrics 
 
 ```{r echo=FALSE}
-forecast_metrics(pred_w_results, measured_col = "class")
+forecast_metrics(pred_w_results, measured_col = "class", positive_col = "p_3")
 ```
 
 
@@ -281,7 +281,7 @@ p3_v_tox_23
 ### Metrics 
 
 ```{r echo=FALSE}
-forecast_metrics(pred_w_results, measured_col = "class")
+forecast_metrics(pred_w_results, measured_col = "class", positive_col = "p_3")
 ```
 
 
@@ -345,7 +345,7 @@ p3_v_tox_22
 ### Metrics 
 
 ```{r metrics22, echo=FALSE}
-forecast_metrics(pred_w_results, measured_col = "class")
+forecast_metrics(pred_w_results, measured_col = "class", positive_col = "p_3")
 ```
 
 
@@ -426,7 +426,7 @@ p3_v_tox_21
 ### Metrics 
 
 ```{r metrics21, echo=FALSE}
-forecast_metrics(pred_w_results, measured_col = "class")
+forecast_metrics(pred_w_results, measured_col = "class", positive_col = "prob_3")
 ```
 
 
