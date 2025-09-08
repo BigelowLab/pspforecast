@@ -2,7 +2,7 @@
 #' @param year integer year to read
 #' @returns tibble of results
 #' @export
-read_results <- function(year=c(2021,2022,2023,2024)[1]) {
+read_results <- function(year=c(2021,2022,2023,2024, 2025)[1]) {
   file_end <- sprintf("%s%s%s",
                       "forecastdb/seasonal_results/psp_forecast_results_",
                       year,
@@ -17,7 +17,7 @@ read_results <- function(year=c(2021,2022,2023,2024)[1]) {
 #' @param years vector of integer years
 #' @return tibble of results
 #' @export
-read_all_results <- function(years=2021:2024) {
+read_all_results <- function(years=2021:2025) {
   all_results <- dplyr::tibble()
   for (year in years) {
     r <- read_results(year)

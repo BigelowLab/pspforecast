@@ -1,4 +1,4 @@
-
+## Script for generating matched forecast predictions with their measured outcomes and writing them to file
 
 library(pspforecast)
 library(pspdata)
@@ -53,4 +53,13 @@ xx <- add_forecast_results(predictions24, toxin_measurements = psp)
 summary(xx)
 
 write_csv(xx, "inst/forecastdb/seasonal_results/psp_forecast_results_2024.csv.gz")
+
+## 2025
+
+predictions25 <- read_forecast(year=2025)
+xx <- add_forecast_results(predictions25, toxin_measurements = psp) 
+
+summary(xx)
+
+write_csv(xx, "inst/forecastdb/seasonal_results/psp_forecast_results_2025.csv.gz")
 

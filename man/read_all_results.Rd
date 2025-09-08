@@ -4,7 +4,7 @@
 \alias{read_all_results}
 \title{Reads all results in seasonal_results directory}
 \usage{
-read_all_results(years = 2021:2024)
+read_all_results(years = 2021:2025)
 }
 \arguments{
 \item{years}{vector of integer years}
