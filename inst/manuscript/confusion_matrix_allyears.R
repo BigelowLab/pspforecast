@@ -12,7 +12,7 @@ levels <- seq(from=0, to=(num_levels-1))
 
 cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, levels), 
                           actual = factor(pred_w_results$class, levels), 
-                          year=factor(pred_w_results$year, levels=2021:2024))) |> 
+                          year=factor(pred_w_results$year, levels=2021:2025))) |> 
   dplyr::mutate(frac = round(Freq/sum(Freq)*100)) |> 
   dplyr::mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
 
