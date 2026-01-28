@@ -99,7 +99,6 @@ read_all_predictions <- function(years=2021:2025) {
   
 }
 
-
 #' Adds or appends a new forecast file of predictions/data to the database 
 #'
 #' @param new_predictions list with two tibbles of new shellfish toxicity predictions
@@ -109,9 +108,66 @@ read_all_predictions <- function(years=2021:2025) {
 #' @export
 write_forecast <- function(new_predictions, user_config) {
   
+  if (!file.exists(user_config$output$ensemble_path)) {
+    readr::write_csv(empty_forecast("ensemble"), file.path(user_config$output$ensemble_path))
+  }
+  
+  if (!file.exists(user_config$output$all_path)) {
+    readr::write_csv(empty_forecast("single"), file.path(user_config$output$all_path))
+  }
+  
   suppressMessages(readr::write_csv(new_predictions$ensemble_forecast, file.path(user_config$output$ensemble_path), append=TRUE))
   
   suppressMessages(readr::write_csv(new_predictions$ensemble_runs, file.path(user_config$output$all_path), append=TRUE))
 }
 
-
+#' Defines an empty forecast table
+#' @param which character selecting single or ensemble forecast template
+#' @returns tibble with forecast columns and no rows
+empty_forecast <- function(which = c("single", "ensemble")[1]) {
+  switch(which,
+         "single" = {
+           dplyr::tibble(
+             "version"             = character(),
+             "location"            = character(),
+             "date"                = as.Date(x = integer(0)),
+             "species"             = character(),
+             "name"                = character(),
+             "lat"                 = numeric(),
+             "lon"                 = numeric(),
+             "class_bins"          = character(),
+             "forecast_start_date" = as.Date(x = integer(0)),
+             "forecast_end_date"   = as.Date(x = integer(0)),
+             "p_0"                 = numeric(),
+             "p_1"                 = numeric(),
+             "p_2"                 = numeric(),
+             "p_3"                 = numeric(),
+             "predicted_class"     = numeric(),
+             "f_id"                = character(),
+           )
+         },
+         "ensemble" = {
+           dplyr::tibble(
+             "version"             = character(),
+             "ensemble_n"          = numeric(),
+             "location"            = character(),
+             "date"                = as.Date(x = integer(0)),
+             "species"             = character(),
+             "name"                = character(),
+             "lat"                 = numeric(),
+             "lon"                 = numeric(),
+             "class_bins"          = character(),
+             "forecast_start_date" = as.Date(x = integer(0)),
+             "forecast_end_date"   = as.Date(x = integer(0)),
+             "p_0"                 = numeric(),
+             "p_1"                 = numeric(),
+             "p_2"                 = numeric(),
+             "p_3"                 = numeric(),
+             "p3_sd"               = numeric(),
+             "p_3_min"             = numeric(),
+             "p_3_max"             = numeric(),
+             "predicted_class"     = numeric(),
+             "f_id"                = character(),
+           )
+         })
+}

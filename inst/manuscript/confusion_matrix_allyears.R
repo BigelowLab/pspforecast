@@ -18,7 +18,7 @@ cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, lev
 
 plot1 <- ggplot2::ggplot(data = cm, ggplot2::aes(x=.data$predicted, y=.data$actual)) +
   ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
-  ggplot2::geom_tile(data = cm[c(16,32,48,64),], fill = NA, color = "black", linewidth = 2) +
+  ggplot2::geom_tile(data = cm[c(16,32,48,64, 80),], fill = NA, color = "black", linewidth = 2) +
   ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
   ggplot2::facet_grid(cols=vars(.data$year)) +
   ggplot2::scale_fill_gradient2(low = "white", 
