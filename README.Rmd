@@ -6,7 +6,7 @@ output: github_document
 
 Shellfish toxicity (PSP) forecast serving package
 
-For the current 2025 Maine PSP predictions, click [here](https://github.com/BigelowLab/pspforecast/blob/master/inst/forecastdb/dmr_webpage_table.csv)
+For the current 2026 Maine PSP predictions, click [here](https://github.com/BigelowLab/pspforecast/blob/master/inst/forecastdb/dmr_webpage_table.csv)
 
 
 ## Requirements
@@ -72,11 +72,45 @@ suppressPackageStartupMessages({
  + p_3_min - class 3 minimum probability (from ensemble run)
  + p_3_max - class 3 maximum probability (from ensemble run)
  + predicted_class - the predicted classification
+ 
+### Metrics:
+ 
+ + tp - The model predicted class 3 and the following week's measurement was class 3
+ + fp - The model predicted class 3 and the following week's measurement was not class 3
+ + tn - The model predicted class 0,1,2 and the following week's measurement was in class 0,1,2
+ + fn - The model predicted class 0,1,2 and the following week's measurement was class 3
+ + accuracy - Measure of how many correct classifications were predicted
+ + cl_accuracy - Considering predictions are those that correctly predicted toxicity above or below the closure limit or not
+ + precision - TP/(TP+FP)
+ + sensitivity - TP/(TP+FN)
+ + specificity - TN/(TN+FP)
+ + f_1 - (2TP)/(2TP-FP+FN)
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 psp <- read_psp_data()
 ```
+
+## Overall Results (2021-2025 seasons combined)
+
+
+```{r echo=FALSE}
+all_results <- read_all_results() |>
+  distinct()
+```
+
+Predictions evaluated:
+
+```{r echo=FALSE}
+nrow(all_results)
+```
+
+Metrics:
+
+```{r echo=FALSE}
+forecast_metrics(all_results, measured_col = "class", positive_col = "p_3")
+```
+
 
 ## 2025 Results
 
@@ -135,19 +169,14 @@ p3_v_tox_25 <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, 
 p3_v_tox_25
 ```
 
+### Predictions evaluated
+
+```{r echo=FALSE}
+nrow(pred_w_results)
+```
+
 
 ### Metrics 
-
- + tp - The model predicted class 3 and the following week's measurement was class 3
- + fp - The model predicted class 3 and the following week's measurement was not class 3
- + tn - The model predicted class 0,1,2 and the following week's measurement was in class 0,1,2
- + fn - The model predicted class 0,1,2 and the following week's measurement was class 3
- + accuracy - Measure of how many correct classifications were predicted
- + cl_accuracy - Considering predictions are those that correctly predicted toxicity above or below the closure limit or not
- + precision - TP/(TP+FP)
- + sensitivity - TP/(TP+FN)
- + specificity - TN/(TN+FP)
- + f_1
 
 
 ```{r echo=FALSE}
@@ -210,6 +239,11 @@ p3_v_tox_24 <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, 
 p3_v_tox_24
 ```
 
+### Predictions evaluated
+
+```{r echo=FALSE}
+nrow(pred_w_results)
+```
 
 ### Metrics 
 
@@ -227,7 +261,8 @@ predictions <- read_forecast(year = "2023") |>
 
 
 ```{r echo=FALSE}
-pred_w_results <- add_forecast_results(predictions, toxin_measurements = psp)
+pred_w_results <- add_forecast_results(predictions, toxin_measurements = psp) |>
+  distinct()
 ```
 
 ### Confusion Matrix
@@ -276,6 +311,12 @@ p3_v_tox_23 <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, 
   ggplot2::geom_hline(yintercept=80, linetype="dashed")
 
 p3_v_tox_23
+```
+
+### Predictions evaluated
+
+```{r echo=FALSE}
+nrow(pred_w_results)
 ```
 
 ### Metrics 
@@ -340,6 +381,12 @@ p3_v_tox_22 <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, 
   ggplot2::geom_hline(yintercept=80, linetype="dashed")
 
 p3_v_tox_22
+```
+
+### Predictions evaluated
+
+```{r echo=FALSE}
+nrow(pred_w_results)
 ```
 
 ### Metrics 
@@ -423,6 +470,12 @@ p3_v_tox_21 <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$prob_
 p3_v_tox_21
 ```
 
+### Predictions evaluated
+
+```{r echo=FALSE}
+nrow(pred_w_results)
+```
+
 ### Metrics 
 
 ```{r metrics21, echo=FALSE}
@@ -448,49 +501,6 @@ ggplot(closures, aes(x = predicted_week, y = actual_week)) +
        y = "First measured closure-level toxicity (week of year)")
 ```
 
-
-### Possible manuscript plot(s)
-
-```{r echo=FALSE}
-pred_w_results <- read_all_results()
-
-num_levels <- 4
-levels <- seq(from=0, to=(num_levels-1))
-
-
-cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, levels), actual = factor(pred_w_results$class, levels), year=factor(pred_w_results$year, levels=2021:2024))) |> 
-  dplyr::mutate(frac = round(Freq/sum(Freq)*100)) |> 
-  dplyr::mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
-
-ggplot2::ggplot(data = cm, ggplot2::aes(x = .data$predicted, y = .data$actual)) +
-  ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
-  ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
-  ggplot2::facet_grid(cols=vars(.data$year)) +
-  #ggplot2::geom_text(ggplot2::aes(label = paste(.data$frac, "%", sep="")), vjust = 3, size=4) +
-  ggplot2::scale_fill_gradient(low = "white", 
-                               high = "blue") +
-  ggplot2::labs(x = "Predicted Classifications", 
-                y = "Actual Classifications") +
-  ggplot2::theme_linedraw() +
-  ggplot2::theme(axis.text=  ggplot2::element_text(size=14),
-                 axis.title= ggplot2::element_text(size=14,face="bold"),
-                 title =     ggplot2::element_text(size = 14, face = "bold"),
-                 legend.position = "none") +
-  ggplot2::geom_rect(aes(xmin=0.5, xmax=3.5, ymin=0.5, ymax=3.5), alpha=0) +
-  ggplot2::geom_rect(aes(xmin=3.5, xmax=4.5, ymin=3.5, ymax=4.5), alpha=0)
-```
-
-
-```{r echo=FALSE}
-ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, y=.data$toxicity)) +
-  ggplot2::geom_point(alpha=0.7, size=3) +
-  ggplot2::facet_grid(cols=vars(.data$year)) +
-  ggplot2::labs(x = "Predicted Probability of Closure-level Toxicity",
-                y = "Measured Toxicity") +
-  ggplot2::geom_hline(yintercept=80, linetype="dashed") +
-  ggplot2::theme_bw()
-
-```
 
 ### Last Updated
 

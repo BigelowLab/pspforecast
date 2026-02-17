@@ -3,7 +3,7 @@ pspforecast
 
 Shellfish toxicity (PSP) forecast serving package
 
-For the current 2025 Maine PSP predictions, click
+For the current 2026 Maine PSP predictions, click
 [here](https://github.com/BigelowLab/pspforecast/blob/master/inst/forecastdb/dmr_webpage_table.csv)
 
 ## Requirements
@@ -68,13 +68,7 @@ For the current 2025 Maine PSP predictions, click
 
 - predicted_class - the predicted classification
 
-## 2025 Results
-
-![](README_files/figure-gfm/cm25-1.png)<!-- -->
-
-![](README_files/figure-gfm/scatter25-1.png)<!-- -->
-
-### Metrics
+### Metrics:
 
 - tp - The model predicted class 3 and the following week’s measurement
   was class 3
@@ -90,14 +84,39 @@ For the current 2025 Maine PSP predictions, click
 - precision - TP/(TP+FP)
 - sensitivity - TP/(TP+FN)
 - specificity - TN/(TN+FP)
-- f_1
+- f_1 - (2TP)/(2TP-FP+FN)
 
-<!-- -->
+## Overall Results (2021-2025 seasons combined)
+
+Predictions evaluated:
+
+    ## [1] 2634
+
+Metrics:
 
     ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn accuracy cl_accuracy  brier   f_1 precision sensitivity specificity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl>  <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1    49    38   581    32    0.671         0.9 0.0663 0.583     0.563       0.605       0.939
+    ##      tp    fp    tn    fn accuracy cl_accuracy brier   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl> <dbl>     <dbl>       <dbl>
+    ## 1    69    65  2449    51    0.806       0.956 0.028 0.543     0.515       0.575
+    ## # ℹ 1 more variable: specificity <dbl>
+
+## 2025 Results
+
+![](README_files/figure-gfm/cm25-1.png)<!-- -->
+
+![](README_files/figure-gfm/scatter25-1.png)<!-- -->
+
+### Predictions evaluated
+
+    ## [1] 700
+
+### Metrics
+
+    ## # A tibble: 1 × 11
+    ##      tp    fp    tn    fn accuracy cl_accuracy brier   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl> <dbl>     <dbl>       <dbl>
+    ## 1    49    38   581    32    0.671         0.9 0.066 0.583     0.563       0.605
+    ## # ℹ 1 more variable: specificity <dbl>
 
 ## 2024 Season Results
 
@@ -105,12 +124,17 @@ For the current 2025 Maine PSP predictions, click
 
 ![](README_files/figure-gfm/scatter24-1.png)<!-- -->
 
+### Predictions evaluated
+
+    ## [1] 410
+
 ### Metrics
 
     ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn accuracy cl_accuracy  brier   f_1 precision sensitivity specificity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl>  <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1     2     4   397     7    0.717       0.973 0.0168 0.267     0.333       0.222       0.990
+    ##      tp    fp    tn    fn accuracy cl_accuracy brier   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl> <dbl>     <dbl>       <dbl>
+    ## 1     2     4   397     7    0.717       0.973 0.017 0.267     0.333       0.222
+    ## # ℹ 1 more variable: specificity <dbl>
 
 ## 2023 Season Results
 
@@ -122,12 +146,17 @@ For the current 2025 Maine PSP predictions, click
 
 ![](README_files/figure-gfm/scatter23-1.png)<!-- -->
 
+### Predictions evaluated
+
+    ## [1] 401
+
 ### Metrics
 
     ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn accuracy cl_accuracy    brier   f_1 precision sensitivity specificity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl>    <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1     0     0   550     0    0.993           1 0.000120   NaN       NaN         NaN           1
+    ##      tp    fp    tn    fn accuracy cl_accuracy brier   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl> <dbl>     <dbl>       <dbl>
+    ## 1     0     0   401     0     0.99           1     0   NaN       NaN         NaN
+    ## # ℹ 1 more variable: specificity <dbl>
 
 ## 2022 Season Results
 
@@ -139,16 +168,21 @@ For the current 2025 Maine PSP predictions, click
 
 ![](README_files/figure-gfm/scatter22-1.png)<!-- -->
 
+### Predictions evaluated
+
+    ## [1] 651
+
 ### Metrics
 
     ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn accuracy cl_accuracy  brier   f_1 precision sensitivity specificity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl>  <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1    16    20   603    12    0.799       0.951 0.0298   0.5     0.444       0.571       0.968
+    ##      tp    fp    tn    fn accuracy cl_accuracy brier   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl> <dbl>     <dbl>       <dbl>
+    ## 1    16    20   603    12    0.799       0.951  0.03   0.5     0.444       0.571
+    ## # ℹ 1 more variable: specificity <dbl>
 
 ### Timing of initial closure-level predictions
 
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 
 ## 2021 Season Results
 
@@ -160,25 +194,24 @@ For the current 2025 Maine PSP predictions, click
 
 ![](README_files/figure-gfm/scatter21-1.png)<!-- -->
 
+### Predictions evaluated
+
+    ## [1] 468
+
 ### Metrics
 
     ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn accuracy cl_accuracy   brier   f_1 precision sensitivity specificity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl>   <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1     2     3   463     0    0.938       0.994 0.00456 0.571       0.4           1       0.994
+    ##      tp    fp    tn    fn accuracy cl_accuracy brier   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl> <dbl>     <dbl>       <dbl>
+    ## 1     2     3   463     0    0.938       0.994 0.005 0.571       0.4           1
+    ## # ℹ 1 more variable: specificity <dbl>
 
 ### Closure-level accuracy
 
 ### Timing of initial closure-level predictions
 
-![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
-
-### Possible manuscript plot(s)
-
-![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
-
-![](README_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
 
 ### Last Updated
 
-    ## [1] "2025-08-29"
+    ## [1] "2026-02-17"
