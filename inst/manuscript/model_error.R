@@ -1,4 +1,4 @@
-# Produces mdoel error figure for manuscript
+# Produces model error figure for manuscript
 # error defined as predicted class - actual (measured) class
 
 suppressPackageStartupMessages({
@@ -59,4 +59,18 @@ error_plot <- ggplot(data=t, aes(x=value, y=error)) +
         axis.text = ggplot2::element_text(size=14),
         strip.text.x = element_text(size = 20))
 
+error_plot
+
 ggsave(filename = "inst/manuscript/model_error.jpeg", plot=error_plot, width=12, height=8)
+
+
+ggplot(data=t, aes(x=value, y=error)) +
+  geom_point(alpha = 0.3) +
+  facet_grid(cols=vars(name), 
+             scales="free_x",
+             labeller = labeller(name = test.labs)) +
+  theme_bw() +
+  theme(axis.title.x=element_blank(),
+        axis.title.y=element_text(size = 14,face="bold"),
+        axis.text = ggplot2::element_text(size=14),
+        strip.text.x = element_text(size = 20))

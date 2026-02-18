@@ -1,4 +1,3 @@
-# Generates individual station metric plots for manuscript broken up by Eastern/Western Maine
 
 suppressPackageStartupMessages({
   library(dplyr)
@@ -19,11 +18,15 @@ st_metrics <- find_station_metrics() |>
   pspdata::add_lat_lon(station_col = "location", after_col = "location") |>
   dplyr::mutate(place = ifelse(lon < -69, "west", "east")) 
 
+x <- read_psp_data() 
+
 maine <- st_read("inst/manuscript/necoast/Northeast_Coast.shp")
+stations <- read_station_metadata() |>
+  filter(location_id %in% unique(x$location_id))
 
-## western maine sttaions
+## western maine staions
 
-west <- filter(st_metrics, place=="west") |>
+west <- filter(stations, region=="west") |>
   mutate(st_num = seq(1,n(),1),
          st_lab = paste(st_num, ". ", name, sep=""))
 
@@ -36,7 +39,7 @@ white_theme <- ttheme_default(
                      col = NA)))
 
 #station_table <- as.data.frame(list(a = west$st_lab[1:17], b=west$st_lab[18:34], cc=c(west$st_lab[35:50],NA)))
-station_table <- as.data.frame(list(a = west$st_lab[1:13], b=west$st_lab[14:26], cc=west$st_lab[27:39], cc=c(west$st_lab[40:50],"", "")))
+station_table <- as.data.frame(list(a = west$st_lab[1:13], b=west$st_lab[14:26], cc=west$st_lab[27:39], cc=c(west$st_lab[40:50],NA, NA)))
 
 #make a grob
 grob_df <- tableGrob(station_table, rows = NULL, cols=NULL, theme = white_theme)
@@ -54,15 +57,14 @@ grob_df <- gtable::gtable_add_grob(
 
 p_west <- ggplot2::ggplot(data = maine) +
   geom_sf(data=maine, 
-          fill = "grey", 
+          fill = "antiquewhite", 
           color = "black", 
           linewidth = 0.1) +
   ggplot2::theme_classic() +
   ggplot2::geom_point(data = west, 
                       aes(x = .data$lon, 
-                          y = .data$lat, 
-                          colour=.data$accuracy),
-                      size=2) +
+                          y = .data$lat),
+                      size=1) +
   #geom_text(data = west,
   #          aes(x = lon, 
   #              y = lat, 
@@ -70,11 +72,11 @@ p_west <- ggplot2::ggplot(data = maine) +
   #          hjust = -0.5,  
   #          size = 4,
   #          family = "serif") +
-  geom_label_repel(data=west, 
-                   aes(x=lon, 
-                       y=lat, 
-                       label=st_num),
-                   label.padding = unit(0.1, "lines")) +
+  #geom_label_repel(data=west, 
+  #                 aes(x=lon, 
+  #                     y=lat, 
+  #                     label=st_num),
+  #                 label.padding = unit(0.1, "lines")) +
   coord_sf(expand = FALSE, 
            xlim = c(-71.0, -69.0), 
            ylim = c(43, 44.2), 
@@ -83,12 +85,12 @@ p_west <- ggplot2::ggplot(data = maine) +
   annotation_north_arrow(
     location = "tl", 
     which_north = "true") + 
-  annotation_custom(
-    grob = grob_df,
-    xmin = -70.05, 
-    xmax = -69.05,  
-    ymin = 43.0, 
-    ymax = 43.62) +
+  #annotation_custom(
+  #  grob = grob_df,
+  #  xmin = -70.05, 
+  #  xmax = -69.05,  
+  #  ymin = 43.0, 
+  #  ymax = 43.62) +
   ggplot2::theme(axis.title.x=element_blank(),
                  axis.title.y=element_blank(),
                  #axis.text = element_blank(),
@@ -100,13 +102,13 @@ p_west
 
 # Save plot
 
-ggsave(filename = "inst/manuscript/western_station_metrics_allyears.jpeg", plot=p_west, width=12, height=8)
+ggsave(filename = "inst/manuscript/western_stations.jpeg", plot=p_west, width=12, height=8)
 
 
 ## eastern Maine stations
 
 east <- filter(st_metrics, place=="east") |>
-  mutate(st_num = seq(51,74,1),
+  mutate(st_num = seq(51,73,1),
          st_lab = paste(st_num, ". ", name, sep=""))
 
 
@@ -119,7 +121,7 @@ white_theme <- ttheme_default(
                      col = NA)))
 
 #station_table <- as.data.frame(list(a = west$st_lab[1:17], b=west$st_lab[18:34], cc=c(west$st_lab[35:50],NA)))
-station_table <- as.data.frame(list(a = east$st_lab[1:9], b = east$st_lab[10:18], cc=c(east$st_lab[19:24], "", "", "")))
+station_table <- as.data.frame(list(a = east$st_lab[1:8], b = east$st_lab[9:16], cc=c(east$st_lab[17:23], NA)))
 #station_table <- as.data.frame(list(a = east$st_lab[1:12], cc=c(east$st_lab[13:23], NA)))
 
 #make a grob

@@ -34,7 +34,8 @@ read_forecast <- function(format = FALSE,
     
     file = system.file(file_end, package="pspforecast")
     
-    forecast <- suppressMessages(readr::read_csv(file))
+    forecast <- suppressMessages(readr::read_csv(file)) |>
+      dplyr::distinct()
   }
   
   if (new_only) {
