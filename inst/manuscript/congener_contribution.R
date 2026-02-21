@@ -48,7 +48,7 @@ con <- get_congeners()
 f_labs <- c("Mean", "Median", "Standard Deviation")
 names(f_labs) <- c("cont_mean", "cont_med", "cont_sd")
 
-spec_labs <- c("Arctica", "Mya", "Mytilus")
+spec_labs <- c("A. islandica", "M. arenaria", "M. edulis")
 names(spec_labs) <- c("arctica", "mya", "mytilus")
 
 z <- t |>
@@ -77,7 +77,7 @@ p <- ggplot2::ggplot(data = z, ggplot2::aes(x=.data$period, y=.data$name, fill=.
   ggplot2::theme(axis.text = ggplot2::element_text(size=14),
                  axis.title= ggplot2::element_text(size=14,face="bold"),
                  title =     ggplot2::element_text(size = 14, face = "bold"),
-                 strip.text.x = element_text(size = 20),
+                 strip.text.x = element_text(size = 20, face="italic"),
                  legend.position = "none") +
   ggplot2::facet_grid(cols=ggplot2::vars(species),
                       labeller = labeller(species = spec_labs)) +

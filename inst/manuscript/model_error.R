@@ -34,6 +34,10 @@ ggplot(p, aes(x=sweek, y=error)) +
   theme_bw()
 
 ggplot(p, aes(x=lon, y=error)) +
+  geom_tile() +
+  theme_bw()
+
+ggplot(p, aes(x=lon, y=error)) +
   geom_point() +
   theme_bw()
 

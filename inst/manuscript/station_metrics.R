@@ -21,7 +21,7 @@ st_metrics <- find_station_metrics() |>
 
 maine <- st_read("inst/manuscript/necoast/Northeast_Coast.shp")
 
-## western maine sttaions
+## western maine staions
 
 west <- filter(st_metrics, place=="west") |>
   mutate(st_num = seq(1,n(),1),
@@ -51,6 +51,18 @@ grob_df <- gtable::gtable_add_grob(
   r = ncol(grob_df)
 )
 
+western_plot_label = tribble(
+  ~text, ~lon, ~lat,
+  "A",   -70.0,    44.1
+)
+
+western_labels = tribble(
+  ~text, ~lon, ~lat,
+  "Southern Maine",   -70.4,    43.1,
+  "Casco Bay",        -70.0,    43.6,
+  "Midcoast",         -69.1,    43.82
+)
+
 
 p_west <- ggplot2::ggplot(data = maine) +
   geom_sf(data=maine, 
@@ -62,14 +74,19 @@ p_west <- ggplot2::ggplot(data = maine) +
                       aes(x = .data$lon, 
                           y = .data$lat, 
                           colour=.data$accuracy),
-                      size=2) +
-  #geom_text(data = west,
-  #          aes(x = lon, 
-  #              y = lat, 
-  #              label = st_num),
-  #          hjust = -0.5,  
-  #          size = 4,
-  #          family = "serif") +
+                      size=4) +
+  geom_text(data = western_plot_label,
+            aes(x = lon, 
+                y = lat, 
+                label = text),
+            size = 10,
+            family = "serif") +
+  geom_text(data = western_labels,
+            aes(x = lon, 
+                y = lat, 
+                label = text),
+            size = 5,
+            family = "serif") +
   geom_label_repel(data=west, 
                    aes(x=lon, 
                        y=lat, 
@@ -132,6 +149,17 @@ grob_df_east <- tableGrob(station_table, rows = NULL, cols=NULL, theme = white_t
     r = ncol(station_table))
 
 
+eastern_plot_label = tribble(
+  ~text, ~lon, ~lat,
+  "B",   -68.0,    44.9
+)
+
+eastern_labels = tribble(
+  ~text, ~lon, ~lat,
+  "Downeast",  -67.0,    44.7,
+  "Penobscot Bay",  -68.8,    43.96
+)
+
 p_east <- ggplot2::ggplot(data = maine) +
   geom_sf(data=maine, 
           fill = "grey", 
@@ -142,7 +170,19 @@ p_east <- ggplot2::ggplot(data = maine) +
                       aes(x = .data$lon, 
                           y = .data$lat, 
                           colour=.data$accuracy),
-                      size=2) +
+                      size=4) +
+  geom_text(data = eastern_plot_label,
+            aes(x = lon, 
+                y = lat, 
+                label = text),
+            size = 10,
+            family = "serif") +
+  geom_text(data = eastern_labels,
+            aes(x = lon, 
+                y = lat, 
+                label = text),
+            size = 5,
+            family = "serif") +
   scale_color_viridis_b(name = "Closure-level Accuracy") + 
   geom_label_repel(data=east, 
                    aes(x=lon, 
