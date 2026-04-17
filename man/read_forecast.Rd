@@ -9,7 +9,8 @@ read_forecast(
   new_only = FALSE,
   shiny = FALSE,
   id = FALSE,
-  year = get_recent_year()
+  year = get_recent_year(),
+  user_config
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ read_forecast(
 \item{id}{logical if true the tibble of predictions returned will have an f_id column that is the location and date pasted together}
 
 \item{year}{character string selecting which year's predictions to read - default is to find the most recent year in the forecastdb directory}
+
+\item{user_config}{list user configuration file containing forecast db file locations}
 }
 \value{
 tibble of predicted shellfish toxicity classifications along with their metadata

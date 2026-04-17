@@ -5,6 +5,7 @@
 #' @param shiny logical, if true, forecast will be read from github csv rather than local; method used for deploying package in shiny app server
 #' @param id logical if true the tibble of predictions returned will have an f_id column that is the location and date pasted together
 #' @param year character string selecting which year's predictions to read - default is to find the most recent year in the forecastdb directory
+#' @param user_config list user configuration file containing forecast db file locations
 #' @return tibble of predicted shellfish toxicity classifications along with their metadata
 #' 
 #' @export
@@ -12,7 +13,8 @@ read_forecast <- function(format = FALSE,
                           new_only=FALSE,
                           shiny=FALSE,
                           id = FALSE,
-                          year=get_recent_year()) {
+                          year=get_recent_year(),
+                          user_config) {
   
   if (shiny) {
     gh_file <- sprintf("%s%s%s",
@@ -34,6 +36,15 @@ read_forecast <- function(format = FALSE,
     
     file = system.file(file_end, package="pspforecast")
     
+    if (!file.exists(file)) {
+      
+      readr::write_csv(x = empty_forecast("single"), 
+                       file = user_config$output$all_path)
+      readr::write_csv(x = empty_forecast("ensemble"), 
+                       file = user_config$output$ensemble_path)
+      cat(paste("creating new files", user_config$output$ensemble_path, "and", user_config$output$all_path), "\n")
+      return(NULL)
+    }
     forecast <- suppressMessages(readr::read_csv(file)) |>
       dplyr::distinct()
   }
@@ -125,6 +136,7 @@ write_forecast <- function(new_predictions, user_config) {
 #' Defines an empty forecast table
 #' @param which character selecting single or ensemble forecast template
 #' @returns tibble with forecast columns and no rows
+#' @export
 empty_forecast <- function(which = c("single", "ensemble")[1]) {
   switch(which,
          "single" = {
