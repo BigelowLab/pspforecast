@@ -95,10 +95,9 @@ Predictions evaluated:
 Metrics:
 
     ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn accuracy cl_accuracy brier   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl> <dbl>     <dbl>       <dbl>
-    ## 1    69    65  2449    51    0.806       0.956 0.028 0.543     0.515       0.575
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1    69    65  2449    51       0.956    0.806 0.028 0.543     0.515       0.575       0.974
 
 ## 2025 Results
 
@@ -113,10 +112,9 @@ Metrics:
 ### Metrics
 
     ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn accuracy cl_accuracy brier   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl> <dbl>     <dbl>       <dbl>
-    ## 1    49    38   581    32    0.671         0.9 0.066 0.583     0.563       0.605
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1    49    38   581    32         0.9    0.671 0.066 0.583     0.563       0.605       0.939
 
 ## 2024 Season Results
 
@@ -131,10 +129,9 @@ Metrics:
 ### Metrics
 
     ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn accuracy cl_accuracy brier   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl> <dbl>     <dbl>       <dbl>
-    ## 1     2     4   397     7    0.717       0.973 0.017 0.267     0.333       0.222
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1     2     4   397     7       0.973    0.717 0.017 0.267     0.333       0.222       0.990
 
 ## 2023 Season Results
 
@@ -153,10 +150,9 @@ Metrics:
 ### Metrics
 
     ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn accuracy cl_accuracy brier   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl> <dbl>     <dbl>       <dbl>
-    ## 1     0     0   401     0     0.99           1     0   NaN       NaN         NaN
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1     0     0   401     0           1     0.99     0   NaN       NaN         NaN           1
 
 ## 2022 Season Results
 
@@ -175,10 +171,9 @@ Metrics:
 ### Metrics
 
     ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn accuracy cl_accuracy brier   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl> <dbl>     <dbl>       <dbl>
-    ## 1    16    20   603    12    0.799       0.951  0.03   0.5     0.444       0.571
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1    16    20   603    12       0.951    0.799  0.03   0.5     0.444       0.571       0.968
 
 ### Timing of initial closure-level predictions
 
@@ -201,10 +196,9 @@ Metrics:
 ### Metrics
 
     ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn accuracy cl_accuracy brier   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>    <dbl>       <dbl> <dbl> <dbl>     <dbl>       <dbl>
-    ## 1     2     3   463     0    0.938       0.994 0.005 0.571       0.4           1
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1     2     3   463     0       0.994    0.938 0.005 0.571       0.4           1       0.994
 
 ### Closure-level accuracy
 
@@ -214,4 +208,4 @@ Metrics:
 
 ### Last Updated
 
-    ## [1] "2026-02-17"
+    ## [1] "2026-04-17"
