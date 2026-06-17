@@ -3,12 +3,12 @@
 library(pspforecast)
 library(pspdata)
 library(ggplot2)
+library(dplyr)
 
 pred_w_results <- read_all_results()
 
 num_levels <- 4
 levels <- seq(from=0, to=(num_levels-1))
-
 
 cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, levels), 
                           actual = factor(pred_w_results$class, levels), 
@@ -41,3 +41,44 @@ plot1
 ggsave(filename = "inst/manuscript/cm_allyears.jpeg", plot=plot1, width=12, height=8)
 
 
+
+year_labs = sapply(seq(min(pred_w_results$year), max(pred_w_results$year)), 
+                   function(x) {
+                     z=filter(pred_w_results, year == x) 
+                     
+                     paste0(x, " n=", nrow(z))
+                   },
+                   simplify = TRUE)
+names(year_labs) = seq(2021, 2025)
+
+
+cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, levels), 
+                          actual = factor(pred_w_results$class, levels), 
+                          year=factor(pred_w_results$year, levels=2021:2025))) |> 
+  dplyr::mutate(frac = round(Freq/sum(Freq)*100)) |> 
+  dplyr::mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x})) |> 
+  mutate(outcome = case_when(predicted %in% c(0,1,2) & actual %in% c(0,1,2) ~"TN",
+                             predicted == 3 & actual == 3 ~"TP",
+                             predicted %in% c(0,1,2) & actual == 3 ~ "FN",
+                             predicted == 3 & actual %in% c(0,1,2) ~ "FP"))
+
+plot2 <- ggplot2::ggplot(data = cm, ggplot2::aes(x=.data$predicted, y=.data$actual)) +
+  ggplot2::geom_tile(aes(fill = outcome)) +
+  #ggplot2::geom_tile(data = cm[c(16,32,48,64, 80),], fill = NA, color = "black", linewidth = 2) +
+  ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
+  ggplot2::facet_grid(cols=vars(.data$year),
+                      labeller = labeller(year = year_labs)) +
+  ggplot2::labs(x = "Predicted Classifications", 
+                y = "Actual Classifications") +
+  ggplot2::theme_linedraw() +
+  ggplot2::theme(axis.text=  ggplot2::element_text(size=14),
+                 axis.title= ggplot2::element_text(size=14,face="bold"),
+                 title =     ggplot2::element_text(size = 14, face = "bold"),
+                 legend.position = "none",
+                 strip.text.x = element_text(size = 20)) +
+  ggplot2::geom_rect(aes(xmin=0.5, xmax=3.5, ymin=0.5, ymax=3.5), alpha=0) +
+  ggplot2::geom_rect(aes(xmin=3.5, xmax=4.5, ymin=3.5, ymax=4.5), alpha=0)
+
+plot2
+
+ggsave(filename = "inst/manuscript/cm_allyears_revised.jpeg", plot=plot2, width=12, height=8)

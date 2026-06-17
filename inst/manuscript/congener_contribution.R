@@ -8,7 +8,8 @@ library(ggplot2)
 
 
 psp <- read_psp_data(fix_species = TRUE) |>
-  mutate(year = format(date, format="%Y"))
+  mutate(year = format(date, format="%Y")) |>
+  filter(date < as.Date("2026-01-01"))
 
 
 # mytilus
@@ -59,7 +60,8 @@ z <- t |>
   tidyr::pivot_longer(cols = dplyr::starts_with("cont_"),
                       names_to = "stat", 
                       values_to = "new_value") |>
-  mutate(new_value = round(new_value))
+  mutate(new_value = round(new_value),
+         name = toupper(name))
 
 
 p <- ggplot2::ggplot(data = z, ggplot2::aes(x=.data$period, y=.data$name, fill=.data$new_value)) +
