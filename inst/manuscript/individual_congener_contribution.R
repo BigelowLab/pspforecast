@@ -51,9 +51,13 @@ p = filter(z,
                        labels = c("GTX1", "GTX2", "GTX3", "STX", "Predicted probability", "Measured toxicity"))) |>
   ggplot(aes(x=period, y=value)) +
   geom_line() + 
+  geom_point() +
   facet_grid(rows = vars(name), scales = "free") +
-  theme_linedraw()
+  theme_linedraw() +
+  theme(axis.title.y = element_blank(),
+        strip.text.y = element_text(size = 16))
 
+p
 
 
 ggsave(filename = "inst/manuscript/individual_congener_contribution.jpeg", plot=p, width=12, height=8)
