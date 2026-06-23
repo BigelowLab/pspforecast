@@ -53,7 +53,7 @@ names(test.labs) <- c("lon", "sweek")
 
 
 error_plot <- ggplot(data=t, aes(x=value, y=error)) +
-  geom_jitter() +
+  geom_jitter(height=0.1) +
   facet_grid(cols=vars(name), 
              scales="free_x",
              labeller = labeller(name = test.labs)) +
@@ -61,9 +61,11 @@ error_plot <- ggplot(data=t, aes(x=value, y=error)) +
   theme(axis.title.x=element_blank(),
         axis.title.y=element_text(size = 14,face="bold"),
         axis.text = ggplot2::element_text(size=14),
-        strip.text.x = element_text(size = 20))
+        strip.text.x = element_text(size = 20)) +
+  labs(y = "Model Error")
 
 error_plot
+
 
 ggsave(filename = "inst/manuscript/model_error.jpeg", plot=error_plot, width=12, height=8)
 
