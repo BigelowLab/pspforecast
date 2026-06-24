@@ -14,11 +14,16 @@ cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, lev
                           actual = factor(pred_w_results$class, levels), 
                           year=factor(pred_w_results$year, levels=2021:2025))) |> 
   dplyr::mutate(frac = round(Freq/sum(Freq)*100)) |> 
-  dplyr::mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}))
+  dplyr::mutate(frac = sapply(.data$frac, function(x) if (x == "0") {x = "<1"} else {x}),
+                outcome = case_when(predicted %in% c(0,1,2) & actual %in% c(0,1,2) ~"TN",
+                                    predicted == 3 & actual == 3 ~"TP",
+                                    predicted %in% c(0,1,2) & actual == 3 ~ "FN",
+                                    predicted == 3 & actual %in% c(0,1,2) ~ "FP"))
 
 plot1 <- ggplot2::ggplot(data = cm, ggplot2::aes(x=.data$predicted, y=.data$actual)) +
   ggplot2::geom_tile(ggplot2::aes(fill = log(.data$Freq+1))) +
   ggplot2::geom_tile(data = cm[c(16,32,48,64, 80),], fill = NA, color = "black", linewidth = 2) +
+  #ggplot2::geom_tile(data = cm[c(cm$outcome == "TN"),], fill = NA, color = "black", linewidth = 2) +
   ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
   ggplot2::facet_grid(cols=vars(.data$year)) +
   ggplot2::scale_fill_gradient2(low = "white", 
@@ -60,12 +65,20 @@ cm <- as.data.frame(table(predicted = factor(pred_w_results$predicted_class, lev
   mutate(outcome = case_when(predicted %in% c(0,1,2) & actual %in% c(0,1,2) ~"TN",
                              predicted == 3 & actual == 3 ~"TP",
                              predicted %in% c(0,1,2) & actual == 3 ~ "FN",
-                             predicted == 3 & actual %in% c(0,1,2) ~ "FP"))
+                             predicted == 3 & actual %in% c(0,1,2) ~ "FP")) |>
+  group_by(year) |>
+  group_map(
+    function(x,y) {
+      mutate(x, prop = round(Freq/sum(Freq), 3))
+  }, .keep=TRUE) |>
+  bind_rows()
+
+cm
 
 plot2 <- ggplot2::ggplot(data = cm, ggplot2::aes(x=.data$predicted, y=.data$actual)) +
   ggplot2::geom_tile(aes(fill = outcome)) +
   #ggplot2::geom_tile(data = cm[c(16,32,48,64, 80),], fill = NA, color = "black", linewidth = 2) +
-  ggplot2::geom_text(ggplot2::aes(label = sprintf("%1.0f", .data$Freq)), size=8) +
+  ggplot2::geom_text(ggplot2::aes(label = prop), size=4) +
   ggplot2::facet_grid(cols=vars(.data$year),
                       labeller = labeller(year = year_labs)) +
   ggplot2::labs(x = "Predicted Classifications", 
