@@ -107,14 +107,14 @@ Metrics:
 
 ### Predictions evaluated
 
-    ## [1] 353
+    ## [1] 366
 
 ### Metrics
 
     ## # A tibble: 1 × 11
     ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity specificity
     ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1     8     6   331     8        0.96    0.603 0.029 0.533     0.571         0.5       0.982
+    ## 1     8     6   344     8       0.962    0.607 0.028 0.533     0.571         0.5       0.983
 
 ## 2025 Results
 
@@ -225,4 +225,4 @@ Metrics:
 
 ### Last Updated
 
-    ## [1] "2026-07-09"
+    ## [1] "2026-07-10"
