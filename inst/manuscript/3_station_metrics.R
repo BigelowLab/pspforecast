@@ -31,15 +31,19 @@ west <- filter(st_metrics, place=="west") |>
 white_theme <- ttheme_default(
   core = list(
     fg_params = list(fontface = "plain",
-                     fontsize = 7),
+                     fontsize = 8),
     bg_params = list(fill = "white", 
                      col = NA)))
 
 #station_table <- as.data.frame(list(a = west$st_lab[1:17], b=west$st_lab[18:34], cc=c(west$st_lab[35:50],NA)))
 station_table <- as.data.frame(list(a = west$st_lab[1:13], b=west$st_lab[14:26], cc=west$st_lab[27:39], cc=c(west$st_lab[40:50],"", "")))
+#station_table <- as.data.frame(list(a = west$st_lab[1:14], b=west$st_lab[15:28], cc=west$st_lab[29:42], cc=c(west$st_lab[43:50],"","","","","","")))
 
 #make a grob
-grob_df <- tableGrob(station_table, rows = NULL, cols=NULL, theme = white_theme)
+grob_df <- tableGrob(station_table, 
+                     rows = NULL, 
+                     cols=NULL, 
+                     theme = white_theme)
 
 #add border to grob
 grob_df <- gtable::gtable_add_grob(
@@ -59,7 +63,7 @@ western_plot_label = tribble(
 western_labels = tribble(
   ~text, ~lon, ~lat,
   "Southern Maine",   -70.4,    43.1,
-  "Casco Bay",        -70.0,    43.6,
+  "Casco Bay",        -70.0,    43.63,
   "Midcoast",         -69.1,    43.82
 )
 
@@ -100,12 +104,12 @@ p_west <- ggplot2::ggplot(data = maine) +
   annotation_north_arrow(
     location = "tl", 
     which_north = "true") + 
-  annotation_custom(
-    grob = grob_df,
-    xmin = -70.05, 
-    xmax = -69.05,  
-    ymin = 43.0, 
-    ymax = 43.62) +
+  #annotation_custom(
+  #  grob = grob_df,
+  #  xmin = -70.05, 
+  #  xmax = -69.05,  
+  #  ymin = 43.0, 
+  #  ymax = 43.62) +
   ggplot2::theme(axis.title.x=element_blank(),
                  axis.title.y=element_blank(),
                  #axis.text = element_blank(),
@@ -196,12 +200,12 @@ p_east <- ggplot2::ggplot(data = maine) +
   annotation_north_arrow(
     location = "tl", 
     which_north = "true") + 
-  annotation_custom(
-    grob = grob_df_east,
-    xmin = -67.75, 
-    xmax = -67.2,  
-    ymin = 44.0, 
-    ymax = 44.3) +
+  #annotation_custom(
+  #  grob = grob_df_east,
+  #  xmin = -67.75, 
+  #  xmax = -67.2,  
+  #  ymin = 44.0, 
+  #  ymax = 44.3) +
   ggplot2::theme(axis.title.x=element_blank(),
                  axis.title.y=element_blank(),
                  #axis.text = element_blank(),

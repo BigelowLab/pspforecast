@@ -1,15 +1,16 @@
 # Runs the congener contribution test for mytilus, mya and arctica for periods before, during and after peak toxicity
 
-
-library(pspdata)
-library(ctoxin)
-library(dplyr)
-library(ggplot2)
-
+suppressPackageStartupMessages({
+  library(pspdata)
+  library(ctoxin)
+  library(dplyr)
+  library(ggplot2)
+})
 
 psp <- read_psp_data(fix_species = TRUE) |>
   mutate(year = format(date, format="%Y")) |>
-  filter(date < as.Date("2026-01-01"))
+  filter(date < as.Date("2026-01-01")) |>
+  select(-name)
 
 
 # mytilus
@@ -75,18 +76,18 @@ p <- ggplot2::ggplot(data = z, ggplot2::aes(x=.data$period, y=.data$name, fill=.
                 y = "Congener") +
   ggplot2::scale_x_continuous(breaks = seq(from=-5, to=5, by=1), 
                               label = c("-5", "-4", "-3", "-2", "-1", "P", "1", "2", "3", "4", "5")) +
-  ggplot2::theme_dark() +
+  ggplot2::theme_bw() +
   ggplot2::theme(axis.text = ggplot2::element_text(size=14),
-                 axis.title= ggplot2::element_text(size=14,face="bold"),
+                 axis.title= ggplot2::element_text(size=16,face="bold"),
                  title =     ggplot2::element_text(size = 14, face = "bold"),
                  strip.text.x = element_text(size = 20, face="italic"),
-                 legend.position = "none") +
+                 legend.position = "right") +
   ggplot2::facet_grid(cols=ggplot2::vars(species),
                       labeller = labeller(species = spec_labs)) +
   ggplot2::scale_fill_fermenter(name="Mean \nContribution",
                                 #breaks=seq(0,100,10), 
                                 #breaks = c(0,0.999, seq(10,100,10)),
-                                breaks = seq(9,99,10),
+                                breaks = seq(10,100,10),
                                 palette="Spectral")
 
 p

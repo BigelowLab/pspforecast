@@ -83,15 +83,14 @@ plot2 <- ggplot2::ggplot(data = cm, ggplot2::aes(x=.data$predicted, y=.data$actu
   scale_fill_discrete(palette = c("#a6cee3", "#1f78b4", "#b2df8a", "#33a02c")) +
   ggplot2::labs(x = "Predicted Classifications", 
                 y = "Actual Classifications") +
-  ggplot2::theme_linedraw() +
+  ggplot2::theme_bw() +
   ggplot2::theme(axis.text=  ggplot2::element_text(size=14),
-                 axis.title= ggplot2::element_text(size=14,face="bold"),
+                 axis.title= ggplot2::element_text(size=18,face="bold"),
                  title =     ggplot2::element_text(size = 14, face = "bold"),
                  legend.position = "bottom",
                  legend.title = element_blank(),
-                 strip.text.x = element_text(size = 20)) +
-  ggplot2::geom_rect(aes(xmin=0.5, xmax=3.5, ymin=0.5, ymax=3.5), alpha=0) +
-  ggplot2::geom_rect(aes(xmin=3.5, xmax=4.5, ymin=3.5, ymax=4.5), alpha=0)
+                 legend.text = element_text(size = 14, face="bold"),
+                 strip.text.x = element_text(size = 20, face="bold")) 
 
 plot2
 
