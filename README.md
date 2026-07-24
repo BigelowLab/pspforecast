@@ -6,6 +6,9 @@ Shellfish toxicity (PSP) forecast serving package
 For the current 2026 Maine PSP predictions, click
 [here](https://github.com/BigelowLab/pspforecast/blob/master/inst/forecastdb/dmr_webpage_table.csv)
 
+For past season results, check out this [shiny
+application](https://eco.bigelow.org/pspforecast/)
+
 ## Requirements
 
 - [R v4+](https://www.r-project.org/)
@@ -95,9 +98,10 @@ Predictions evaluated:
 Metrics:
 
     ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity specificity
-    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1    69    65  2449    51       0.956    0.806 0.028 0.543     0.515       0.575       0.974
+    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>
+    ## 1    69    65  2449    51       0.956    0.806 0.028 0.543     0.515       0.575
+    ## # ℹ 1 more variable: specificity <dbl>
 
 ## 2026 (current season) Results
 
@@ -112,117 +116,11 @@ Metrics:
 ### Metrics
 
     ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity specificity
-    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1    12     8   438    11       0.959    0.588 0.028 0.558       0.6       0.522       0.982
-
-## 2025 Results
-
-![](README_files/figure-gfm/cm25-1.png)<!-- -->
-
-![](README_files/figure-gfm/scatter25-1.png)<!-- -->
-
-### Predictions evaluated
-
-    ## [1] 700
-
-### Metrics
-
-    ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity specificity
-    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1    49    38   581    32         0.9    0.671 0.066 0.583     0.563       0.605       0.939
-
-## 2024 Season Results
-
-![](README_files/figure-gfm/cm24-1.png)<!-- -->
-
-![](README_files/figure-gfm/scatter24-1.png)<!-- -->
-
-### Predictions evaluated
-
-    ## [1] 410
-
-### Metrics
-
-    ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity specificity
-    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1     2     4   397     7       0.973    0.717 0.017 0.267     0.333       0.222       0.990
-
-## 2023 Season Results
-
-### Confusion Matrix
-
-![](README_files/figure-gfm/cm23-1.png)<!-- -->
-
-### Probability of Closure-level Toxicity vs Measured Toxicity
-
-![](README_files/figure-gfm/scatter23-1.png)<!-- -->
-
-### Predictions evaluated
-
-    ## [1] 401
-
-### Metrics
-
-    ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity specificity
-    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1     0     0   401     0           1     0.99     0   NaN       NaN         NaN           1
-
-## 2022 Season Results
-
-### Confusion Matrix
-
-![](README_files/figure-gfm/cm22-1.png)<!-- -->
-
-### Probability of Closure-level Toxicity vs Measured Toxicity
-
-![](README_files/figure-gfm/scatter22-1.png)<!-- -->
-
-### Predictions evaluated
-
-    ## [1] 651
-
-### Metrics
-
-    ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity specificity
-    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1    16    20   603    12       0.951    0.799  0.03   0.5     0.444       0.571       0.968
-
-### Timing of initial closure-level predictions
-
-![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
-
-## 2021 Season Results
-
-### Confusion Matrix
-
-![](README_files/figure-gfm/cm21-1.png)<!-- -->
-
-### Probability of Closure-level Toxicity vs Measured Toxicity
-
-![](README_files/figure-gfm/scatter21-1.png)<!-- -->
-
-### Predictions evaluated
-
-    ## [1] 468
-
-### Metrics
-
-    ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity specificity
-    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>       <dbl>
-    ## 1     2     3   463     0       0.994    0.938 0.005 0.571       0.4           1       0.994
-
-### Closure-level accuracy
-
-### Timing of initial closure-level predictions
-
-![](README_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
+    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity
+    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>
+    ## 1    12     8   438    11       0.959    0.588 0.028 0.558       0.6       0.522
+    ## # ℹ 1 more variable: specificity <dbl>
 
 ### Last Updated
 
-    ## [1] "2026-07-23"
+    ## [1] "2026-07-24"
