@@ -98,10 +98,9 @@ Predictions evaluated:
 Metrics:
 
     ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>
-    ## 1    69    65  2449    51       0.956    0.806 0.028 0.543     0.515       0.575
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1    69    65  2449    51       0.956    0.806 0.028 0.543     0.515       0.575       0.974
 
 ## 2026 (current season) Results
 
@@ -111,15 +110,14 @@ Metrics:
 
 ### Predictions evaluated
 
-    ## [1] 469
+    ## [1] 478
 
 ### Metrics
 
     ## # A tibble: 1 × 11
-    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity
-    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>
-    ## 1    12     8   438    11       0.959    0.588 0.028 0.558       0.6       0.522
-    ## # ℹ 1 more variable: specificity <dbl>
+    ##      tp    fp    tn    fn cl_accuracy accuracy brier   f_1 precision sensitivity specificity
+    ##   <int> <int> <int> <int>       <dbl>    <dbl> <dbl> <dbl>     <dbl>       <dbl>       <dbl>
+    ## 1    12     9   446    11       0.958    0.588 0.028 0.545     0.571       0.522       0.980
 
 ### Last Updated
 
