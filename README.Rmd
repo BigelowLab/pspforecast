@@ -11,20 +11,6 @@ For the current 2026 Maine PSP predictions, click [here](https://github.com/Bige
 For past season results, check out this [shiny application](https://eco.bigelow.org/pspforecast/)
 
 
-## Requirements
-
-  + [R v4+](https://www.r-project.org/)
-  
-  + [rlang](https://CRAN.R-project.org/package=rlang)
-  
-  + [dplyr](https://CRAN.R-project.org/package=dplyr)
-  
-  + [readr](https://CRAN.R-project.org/package=readr)
-  
-  + [tidyr](https://CRAN.R-project.org/package=tidyr)
-  
-  + [httr](https://CRAN.R-project.org/package=httr)
-
 ## Installation
 
 ```
@@ -46,25 +32,23 @@ suppressPackageStartupMessages({
 
 ## Reading the forecast database 
 
-### Variables:
+```{r}
+library(pspforecast)
+fc = read_forecast()
+glimpse(fc)
+```
+
+Forecast Variables:
+
  + version - the version/configuration of the model used to make the prediction
- 
  + ensemble_n - number of ensemble members used to generate prediction
- 
  + location - the sampling station the forecast is for
- 
  + date - the date the forecast was made on
- 
  + name - site name
- 
  + lat - latitude
- 
  + lon - longitude
- 
  + class_bins - the bins used to classify shellfish total toxicity (i.e. 0: 0-10, 1: 10-30, 2: 30-80, 3: >80)
- 
  + forecast_date - the date the forecast is valid for (i.e. one week ahead of when it was made)
- 
  + predicted_class - the predicted classification at the location listed on the forecast_date (in this case 0-3)
  + p_0 - class 0 probability
  + p_1 - class 1 probability
@@ -74,8 +58,10 @@ suppressPackageStartupMessages({
  + p_3_min - class 3 minimum probability (from ensemble run)
  + p_3_max - class 3 maximum probability (from ensemble run)
  + predicted_class - the predicted classification
- 
-### Metrics:
+
+## Results
+
+Metrics:
  
  + tp - The model predicted class 3 and the following week's measurement was class 3
  + fp - The model predicted class 3 and the following week's measurement was not class 3
@@ -93,8 +79,6 @@ suppressPackageStartupMessages({
 psp <- read_psp_data()
 ```
 
-## Overall Results (2021-2025 seasons combined)
-
 
 ```{r echo=FALSE}
 all_results <- read_all_results() |>
@@ -107,10 +91,20 @@ Predictions evaluated:
 nrow(all_results)
 ```
 
-Metrics:
+Metrics (overall):
 
 ```{r echo=FALSE}
 forecast_metrics(all_results, measured_col = "class", positive_col = "p_3")
+```
+
+
+Individual seasons:
+
+```{r echo=FALSE}
+group_by(all_results, year) |>
+  group_map(~ forecast_metrics(.x, measured_col = "class", positive_col = "p_3")) |>
+  bind_rows() |>
+  mutate(year = 2021:2025, .before=tp)
 ```
 
 
@@ -157,15 +151,20 @@ ggplot2::ggplot(data = cm, ggplot2::aes(x=.data$predicted, y=.data$actual)) +
 
 
 ```{r scatter26, echo=FALSE, cache=FALSE}
-p3_v_tox_26 <- ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, y=.data$toxicity)) +
+ggplot2::ggplot(data = pred_w_results, ggplot2::aes(x=.data$p_3, y=.data$toxicity, colour = cl_correct)) +
   ggplot2::geom_point(alpha=0.7, size=3) +
-  ggplot2::labs(x = "Predicted Probability (%) of Closure-level Toxicity",
-                y = "Measured Toxicity") +
+  ggplot2::labs(x = "Predicted Probability of Closure-level Toxicity (%)",
+                y = "Measured Toxicity (μg STX eq/100g shellfish)") +
   ggplot2::geom_hline(yintercept=80, linetype="dashed") +
-  ggplot2::xlim(0,100)
-
-p3_v_tox_26
+  ggplot2::theme_bw() +
+  scale_x_continuous(breaks = seq(0,100,20), limits=c(0,100)) +
+  theme(axis.text=  ggplot2::element_text(size=14),
+        axis.title= ggplot2::element_text(size=14,face="bold"),
+        title =     ggplot2::element_text(size = 14, face = "bold"),
+        legend.position = "none",
+        strip.text.x = element_text(size = 20, face="bold"))
 ```
+
 
 ### Predictions evaluated
 
@@ -188,3 +187,17 @@ forecast_metrics(pred_w_results, measured_col = "class", positive_col = "p_3")
 Sys.Date()
 ```
 
+
+## Requirements
+
+  + [R v4+](https://www.r-project.org/)
+  
+  + [rlang](https://CRAN.R-project.org/package=rlang)
+  
+  + [dplyr](https://CRAN.R-project.org/package=dplyr)
+  
+  + [readr](https://CRAN.R-project.org/package=readr)
+  
+  + [tidyr](https://CRAN.R-project.org/package=tidyr)
+  
+  + [httr](https://CRAN.R-project.org/package=httr)
