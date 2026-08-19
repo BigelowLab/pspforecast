@@ -46,3 +46,5 @@ docs/
 
 # translation temp files
 po/*~
+
+*.html
