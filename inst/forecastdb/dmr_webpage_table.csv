@@ -1,15 +1,2 @@
 DMR Station ID,Forecast Initialized Date,species,Location,Latitude,Longitude,Forecast Start Date,Forecast End Date,Closure-level PSP Probability,Predicted Class
-PSP19.12,2026-08-31,mytilus,IAH Town Dock,44.0737,-68.64,2026-09-04,2026-09-10,5%,Medium
-PSP21.09,2026-09-02,mytilus,Bass Hbr.,44.23824,-68.34792,2026-09-06,2026-09-12,2%,Low
-PSP19.38,2026-09-02,mytilus,Burntcoat Hbr.,44.14834,-68.44768,2026-09-06,2026-09-12,1%,Low
-PSP26.07,2026-09-01,mytilus,Cutler Hbr.,44.65701,-67.20525,2026-09-05,2026-09-11,1%,Low
-PSP19.15,2026-08-31,mytilus,Stonington,44.15419,-68.65947,2026-09-04,2026-09-10,<1%,Low
-PSP19.33,2026-08-24,mytilus,Blue Hill Falls,44.37713,-68.5612,2026-08-28,2026-09-03,<1%,Low
-PSP19.39,2026-09-02,mytilus,Back Cove,44.16649,-68.43606,2026-09-06,2026-09-12,<1%,Low
-PSP22.1,2026-08-31,mytilus,Lamoine State Park,44.45356,-68.27976,2026-09-04,2026-09-10,<1%,Low
-PSP23.07,2026-09-01,mytilus,Corea Hbr.,44.39319,-67.97628,2026-09-05,2026-09-11,<1%,Low
-PSP24.08,2026-08-31,mytilus,Ripley Pt.,44.52198,-67.79233,2026-09-04,2026-09-10,<1%,Low
-PSP25.06,2026-09-02,mytilus,Kelley Pt.,44.53205,-67.5655,2026-09-06,2026-09-12,<1%,Low
-PSP26.15,2026-09-01,mytilus,Lubec Channel,44.85891,-66.98028,2026-09-05,2026-09-11,<1%,Low
-PSP27.05,2026-09-01,mytilus,Gove Pt.,44.90545,-67.05621,2026-09-05,2026-09-11,<1%,Low
-PSP27.46,2026-09-02,mytilus,Gleason Cove,44.97084,-67.05254,2026-09-06,2026-09-12,<1%,Low
+PSP19.02,2026-09-07,mytilus,Castine,44.38764,-68.7962,2026-09-11,2026-09-17,<1%,Low
