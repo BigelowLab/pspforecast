@@ -1,2 +1,3 @@
 DMR Station ID,Forecast Initialized Date,species,Location,Latitude,Longitude,Forecast Start Date,Forecast End Date,Closure-level PSP Probability,Predicted Class
 PSP19.02,2026-09-14,mytilus,Castine,44.38764,-68.7962,2026-09-18,2026-09-24,<1%,Low
+PSP19.15,2026-09-21,mytilus,Stonington,44.15419,-68.65947,2026-09-25,2026-10-01,<1%,Low
