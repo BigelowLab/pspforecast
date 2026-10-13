@@ -17,6 +17,8 @@ export(write_forecast)
 export(write_forecast_tables)
 importFrom(dplyr,"%>%")
 importFrom(rlang,.data)
-importFrom(utils,download.file)
-importFrom(utils,head)
-importFrom(utils,tail)
+importFrom(utils,
+  download.file,
+  head,
+  tail
+)
